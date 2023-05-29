@@ -1,7 +1,7 @@
 
-#include "states.h"
-#include "../parser/parser.h"
-#include "../selector/selector.h"
+#include "pop3_states.h"
+#include "../../parser/parser.h"
+#include "../../selector/selector.h"
 
 enum pop3_parser_states {
     POP3_STATE_CMD,

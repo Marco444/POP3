@@ -1,7 +1,7 @@
-#include "../stm/stm.h"
-#include "../buffer/buffer.h"
-#include "../parser/parser.h"
-#include "../selector/selector.h"
+#include "../../stm/stm.h"
+#include "../../buffer/buffer.h"
+#include "../../parser/parser.h"
+#include "../../selector/selector.h"
 
 #define POP3_MAX_CMD_LENGTH 512 
 #define POP3_MAX_ARG_LENGTH 512 
