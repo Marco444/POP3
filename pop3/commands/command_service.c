@@ -2,15 +2,6 @@
 
 
 
-void handle_stat(struct connection_state *ctx, const char *arg1, const char *arg2) {
-    // Handle the STAT command here.
-}
-
-void handle_list(struct connection_state *ctx, const char *arg1, const char *arg2) {
-    // Handle the LIST command here.
-}
-
-
 pop3_command commands[] = {
     { "STAT", handle_stat },
     { "LIST", handle_list },
