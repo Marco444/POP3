@@ -99,7 +99,7 @@ parse_args(const int argc, char **argv, struct socks5args *args) {
             { "doh-query", required_argument, 0, 0xD005 },
             { 0,           0,                 0, 0 }
         };
-
+        //TODO hay que ver que se hace aca
         c = getopt_long(argc, argv, "hl:L:Np:P:u:v", long_options, &option_index);
         if (c == -1)
             break;
