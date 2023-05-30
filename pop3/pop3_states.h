@@ -5,7 +5,7 @@
 
 #define POP3_MAX_CMD_LENGTH 512 
 #define POP3_MAX_ARG_LENGTH 512 
-
+#define BUFFER_SIZE 4096
 enum pop3_states {
     AUTHORIZATION_STATE = 0,
     TRANSACTION_STATE,
@@ -15,13 +15,14 @@ enum pop3_states {
 };
 
 struct connection_state {
-    buffer read_buffer; 
-    buffer write_buffer; 
+    buffer * read_buffer; 
+    buffer * write_buffer; 
     char cmd[POP3_MAX_CMD_LENGTH+1];
     char arg[POP3_MAX_ARG_LENGTH+1];
     size_t cmd_len;
     size_t arg_len;
     struct parser *parser;
+    struct state_machine stm;
 };
 
 
