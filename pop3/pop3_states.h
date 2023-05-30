@@ -23,10 +23,19 @@ enum pop3_states {
 struct connection_state {
     buffer * read_buffer; 
     buffer * write_buffer; 
-    char in_buffer[POP3_MAX_CMD_LENGTH+1];
-    char out_buffer[POP3_MAX_ARG_LENGTH+1];
-    size_t in_buffer_length;
-    size_t out_buffer_length;
+    
+    //donde almaceno la informacion del ADT buffer 
+    uint8_t in_buffer[BUFFER_SIZE+1];
+    uint8_t out_buffer[BUFFER_SIZE+1];
+    size_t in_buffer_length, out_buffer_length;
+
+    //donde almaceno el comando y argumentos que rellena el parser
+    //a partir de los buffers
+    char cmd[POP3_MAX_CMD_LENGTH + 1];
+    char arg1[POP3_MAX_ARG_LENGTH + 1];
+    char arg2[POP3_MAX_ARG_LENGTH + 1];
+    size_t cmd_length, arg1_length, arg2_length;
+
     struct parser *parser;
     struct state_machine stm;
 };
