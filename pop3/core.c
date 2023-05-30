@@ -9,7 +9,6 @@ unsigned on_read_ready_trans(struct selector_key *key) {
     uint8_t *write_ptr = buffer_write_ptr(&conn->read_buffer, &nbyte);
 
     // Read from the socket into the buffer
-    // TODO: OJO si se bloquea
     ssize_t received = recv(key->fd, write_ptr, nbyte, 0);
 
     if (received > 0) {
@@ -34,7 +33,8 @@ unsigned on_read_ready_trans(struct selector_key *key) {
         buffer_compact(&conn->read_buffer);
     } else if (received == 0) {
       // Client closed connection
-      //return CLOSED_STATE;
+      // CTRL C DEL CLIENTE
+      // return ;
     } else {
       // Handle error
       return ERROR_STATE;

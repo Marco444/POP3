@@ -11,6 +11,7 @@ enum pop3_states {
     TRANSACTION_STATE,
     UPDATE_STATE,
     ERROR_STATE,
+    FORCED_QUIT_STATE,
     SERVER_STATE_COUNT, 
 };
 
