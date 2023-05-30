@@ -39,9 +39,8 @@ user(char *s, struct users *user) {
 
 static void
 version(void) {
-    fprintf(stderr, "socks5v version 0.0\n"
-                    "ITBA Protocolos de Comunicación 2020/1 -- Grupo X\n"
-                    "AQUI VA LA LICENCIA\n");
+    fprintf(stderr, "pop3 version 0.0\n"
+                    "ITBA Protocolos de Comunicación 2023a \n");
 }
 
 static void
@@ -50,11 +49,11 @@ usage(const char *progname) {
         "Usage: %s [OPTION]...\n"
         "\n"
         "   -h               Imprime la ayuda y termina.\n"
-        "   -l <SOCKS addr>  Dirección donde servirá el proxy SOCKS.\n"
-        "   -L <conf  addr>  Dirección donde servirá el servicio de management.\n"
-        "   -p <SOCKS port>  Puerto entrante conexiones SOCKS.\n"
+        "   -l <SOCKS addr>  Dirección donde servirá el POP3.\n"
+        "   -L <conf  addr>  Dirección donde servirá el servicio de monitoreo.\n"
+        "   -p <SOCKS port>  Puerto entrante conexiones POP3.\n"
         "   -P <conf port>   Puerto entrante conexiones configuracion\n"
-        "   -u <name>:<pass> Usuario y contraseña de usuario que puede usar el proxy. Hasta 10.\n"
+        "   -u <name>:<pass> Usuario y contraseña de usuario que puede usar el servidor. Hasta 10.\n"
         "   -v               Imprime información sobre la versión versión y termina.\n"
         "\n"
         "   --doh-ip    <ip>    \n"
@@ -69,7 +68,7 @@ usage(const char *progname) {
 }
 
 void 
-parse_args(const int argc, char **argv, struct socks5args *args) {
+parse_args(const int argc, char **argv, struct pop3args *args) {
     memset(args, 0, sizeof(*args)); // sobre todo para setear en null los punteros de users
 
     args->socks_addr = "0.0.0.0";

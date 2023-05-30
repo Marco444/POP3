@@ -19,7 +19,7 @@ static void sigterm_handler(const int signal) {
 int main(int argc, char** argv) {
 
     // Parse command line arguments
-    struct socks5args args;
+    struct pop3args args;
     parse_args(argc, argv, &args);
 
     // Initialize the server socket
