@@ -1,15 +1,12 @@
-//#include "../../stm/stm.h"
 #include "../lib/stm/stm.h"
-//#include "../../buffer/buffer.h"
 #include "../lib/buffer/buffer.h"
-//#include "../../parser/parser.h"
 #include "../lib/parser/parser.h"
-//include "../../selector/selector.h"
 #include "../lib/selector/selector.h"
 
 #define POP3_MAX_CMD_LENGTH 512 
 #define POP3_MAX_ARG_LENGTH 512 
 #define BUFFER_SIZE 4096
+
 enum pop3_states {
     AUTHORIZATION_STATE = 0,
     TRANSACTION_STATE,

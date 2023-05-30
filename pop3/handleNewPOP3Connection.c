@@ -1,17 +1,22 @@
-#include "./lib/selector/selector.h"
-#include "pop3_states.h"
+#include "../lib/selector/selector.h"
+#include "./pop3_states.h"
 #include <sys/socket.h>
 #include <unistd.h>
+#include <stdlib.h>
 
-int handleNewPOP3Connection() {
+// int handleNewPOP3Connection() {
+//
+//      // Initialize the state machine
+//     struct state_machine stm = {
+//         .initial   = AUTHORIZATION_STATE,
+//         .states    = server_states,
+//         .max_state = SERVER_STATE_COUNT,
+//     };
+//     stm_init(&stm);
+// }
 
-     // Initialize the state machine
-    struct state_machine stm = {
-        .initial   = AUTHORIZATION_STATE,
-        .states    = server_states,
-        .max_state = SERVER_STATE_COUNT,
-    };
-    stm_init(&stm);
+fd_handler * pop3State() {
+
 }
 void handleNewPOP3Connection(struct selector_key * key) {
     struct sockaddr_storage clientAddress;
@@ -35,8 +40,9 @@ void handleNewPOP3Connection(struct selector_key * key) {
         return;
     }
 
-    clientData->read_buffer = buffer_new(BUFFER_SIZE);
-    clientData->write_buffer = buffer_new(BUFFER_SIZE);
+    char character;
+    buffer_init(clientData->read_buffer, BUFFER_SIZE, character);
+    buffer_init(clientData->write_buffer, BUFFER_SIZE, character);
     // clientData->parser = parser_init();
 
     clientData->stm.initial = AUTHORIZATION_STATE;
@@ -44,7 +50,7 @@ void handleNewPOP3Connection(struct selector_key * key) {
     clientData->stm.max_state = SERVER_STATE_COUNT;
     stm_init(&clientData->stm);
 
-    int status = selector_register(key->s, newClientSocket, getStateHandler(), OP_READ, clientData);
+    int status = selector_register(key->s, newClientSocket, pop3State(), OP_READ, clientData);
 
     if (status != SELECTOR_SUCCESS) {
         close(newClientSocket);
