@@ -1,4 +1,4 @@
-#include "states.h"
+#include "monitor/monitor_states.h"
 #include "../stm/stm.h"
 #include "./lib/args/args.h"
 #include "./lib/selector/selector.h"
@@ -43,15 +43,7 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Failed to create selector\n");
         return 1;
     }
-
-    // Initialize the state machine
-    struct state_machine stm = {
-        .initial   = AUTHORIZATION_STATE,
-        .states    = server_states,
-        .max_state = SERVER_STATE_COUNT,
-    };
-    stm_init(&stm);
-
+\
   
     //Initialize logging for server
 
@@ -67,6 +59,7 @@ int main(int argc, char** argv) {
         .handle_block = NULL,
         .handle_close = NULL
     };
+
     ss = selector_register(selector, server_socket, &server_handler, OP_READ, &stm);
     if (ss != SELECTOR_SUCCESS) {
         fprintf(stderr, "Failed to register server socket to selector: %s\n", selector_error(ss));
@@ -74,7 +67,7 @@ int main(int argc, char** argv) {
     }
 
     // Main server loop
-    while (terminationRequested) {
+    while (!terminationRequested) {
         ss = selector_select(selector);
         if (ss != SELECTOR_SUCCESS) {
             fprintf(stderr, "Failed to select: %s\n", selector_error(ss));
