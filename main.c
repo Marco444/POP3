@@ -1,9 +1,12 @@
 #include "monitor/monitor_states.h"
-#include "../stm/stm.h"
+#include "lib/stm/stm.h"
 #include "./lib/args/args.h"
 #include "./lib/selector/selector.h"
+#include "./pop3/pop3.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+
 
 #define MAX_CONCURRENT_CONNECTIONS 1024 
 
@@ -20,7 +23,7 @@ int main(int argc, char** argv) {
     parse_args(argc, argv, &args);
 
     // Initialize the server socket
-    int server_socket = initializeServerSocket(port);
+    int server_socket; //= initializeServerSocket(args);
     if (server_socket < 0) {
         fprintf(stderr, "Failed to initialize server socket\n");
         return 1;
@@ -60,6 +63,7 @@ int main(int argc, char** argv) {
         .handle_close = NULL
     };
 
+    char stm;
     ss = selector_register(selector, server_socket, &server_handler, OP_READ, &stm);
     if (ss != SELECTOR_SUCCESS) {
         fprintf(stderr, "Failed to register server socket to selector: %s\n", selector_error(ss));
