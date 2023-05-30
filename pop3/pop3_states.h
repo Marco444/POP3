@@ -1,3 +1,7 @@
+
+#ifndef POP3_STATES_HEADER 
+#define POP3_STATES_HEADER 
+
 #include "../lib/stm/stm.h"
 #include "../lib/buffer/buffer.h"
 #include "../lib/parser/parser.h"
@@ -57,38 +61,6 @@ unsigned on_write_ready_error(struct selector_key *key);
 unsigned on_block_ready_error(struct selector_key *key);
 
 // Define the state behavior
-struct state_definition server_states[] = {
-    {
-        .state            = AUTHORIZATION_STATE,
-        .on_arrival       = on_arrival_auth,
-        .on_departure     = on_departure_auth,
-        .on_read_ready    = on_read_ready_auth,
-        .on_write_ready   = on_write_ready_auth,
-        .on_block_ready   = on_block_ready_auth,
-    },
-    {
-        .state            = TRANSACTION_STATE,
-        .on_arrival       = on_arrival_trans,
-        .on_departure     = on_departure_trans,
-        .on_read_ready    = on_read_ready_trans,
-        .on_write_ready   = on_write_ready_trans,
-        .on_block_ready   = on_block_ready_trans,
-    },
-    {
-        .state            = UPDATE_STATE,
-        .on_arrival       = on_arrival_update,
-        .on_departure     = on_departure_update,
-        .on_read_ready    = on_read_ready_update,
-        .on_write_ready   = on_write_ready_update,
-        .on_block_ready   = on_block_ready_update,
-    },
-    {
-        .state            = ERROR_STATE,
-        .on_arrival       = on_arrival_update,
-        .on_departure     = on_departure_update,
-        .on_read_ready    = on_read_ready_update,
-        .on_write_ready   = on_write_ready_update,
-        .on_block_ready   = on_block_ready_update,
-    }
-};
 
+extern struct state_definition server_states[];
+#endif
