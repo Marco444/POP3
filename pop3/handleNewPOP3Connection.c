@@ -33,16 +33,14 @@ void handleNewPOP3Connection(struct selector_key * key) {
         return;
     }
 
-    // Consider using a function to initialize the TClientData structure.
     struct connection_state * clientData = calloc(1, sizeof(struct connection_state));
     if (clientData == NULL) {
         close(newClientSocket);
         return;
     }
 
-    char character;
-    buffer_init(clientData->read_buffer, BUFFER_SIZE, character);
-    buffer_init(clientData->write_buffer, BUFFER_SIZE, character);
+    buffer_init(clientData->read_buffer, BUFFER_SIZE, clientData->in_buffer);
+    buffer_init(clientData->write_buffer, BUFFER_SIZE, clientData->out_buffer);
     // clientData->parser = parser_init();
 
     clientData->stm.initial = AUTHORIZATION_STATE;

@@ -19,10 +19,10 @@ enum pop3_states {
 struct connection_state {
     buffer * read_buffer; 
     buffer * write_buffer; 
-    char cmd[POP3_MAX_CMD_LENGTH+1];
-    char arg[POP3_MAX_ARG_LENGTH+1];
-    size_t cmd_len;
-    size_t arg_len;
+    char in_buffer[POP3_MAX_CMD_LENGTH+1];
+    char out_buffer[POP3_MAX_ARG_LENGTH+1];
+    size_t in_buffer_length;
+    size_t out_buffer_length;
     struct parser *parser;
     struct state_machine stm;
 };
