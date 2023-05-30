@@ -1,4 +1,4 @@
-/**
+/*
  * selector.c - un muliplexor de entrada salida
  */
 #include <stdio.h>  // perror
@@ -59,6 +59,7 @@ static sigset_t emptyset, blockset;
 
 selector_status
 selector_init(const struct selector_init  *c) {
+
     memcpy(&conf, c, sizeof(conf));
 
     // inicializamos el sistema de comunicación entre threads y el selector

@@ -1,6 +1,7 @@
 #include "states.h"
 #include "../stm/stm.h"
-#include "../args/args.h"
+#include "./lib/args/args.h"
+#include "./lib/selector/selector.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -19,7 +20,7 @@ int main(int argc, char** argv) {
     parse_args(argc, argv, &args);
 
     // Initialize the server socket
-    int server_socket;// = initializeServerSocket(port);
+    int server_socket = initializeServerSocket(port);
     if (server_socket < 0) {
         fprintf(stderr, "Failed to initialize server socket\n");
         return 1;
