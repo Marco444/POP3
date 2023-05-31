@@ -1,5 +1,5 @@
 #include "command_service.h"
 
-void handle_stat(struct connection_state *ctx, const char *arg1, const char *arg2) {
+void handle_stat(struct commands_state * ctx) {
     // Handle the STAT command here.
 }

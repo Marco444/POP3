@@ -40,8 +40,8 @@ void handleNewPOP3Connection(struct selector_key * key) {
         return;
     }
 
-    buffer_init(clientData->read_buffer, BUFFER_SIZE, clientData->in_buffer);
-    buffer_init(clientData->write_buffer, BUFFER_SIZE, clientData->out_buffer);
+    buffer_init(clientData->commands->read_buffer, BUFFER_SIZE, clientData->commands->in_buffer);
+    buffer_init(clientData->commands->write_buffer, BUFFER_SIZE, clientData->commands->out_buffer);
     // clientData->parser = parser_init();
 
     clientData->stm.initial = AUTHORIZATION_STATE;

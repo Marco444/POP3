@@ -7,16 +7,16 @@
 
 typedef struct {
     const char *name;
-    void (*handler)(struct connection_state *ctx, const char *arg1, const char *arg2);
+    void (*handler)(struct commands_state * ctx);
 } pop3_command;
 
 
 extern pop3_command commands[];
 
-void process_command(struct connection_state * ctx, char *cmd, char *arg1, char *arg2);
+void process_command(struct commands_state * ctx);
 
-void handle_stat(struct connection_state *ctx, const char *arg1, const char *arg2);
+void handle_stat(struct commands_state * ctx);
 
-void handle_list(struct connection_state *ctx, const char *arg1, const char *arg2);
+void handle_list(struct commands_state * ctx);
 
 #endif

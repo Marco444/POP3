@@ -12,7 +12,7 @@ enum pop3_parser_states {
 };
 
 
-void act1_cmd(struct parser_event *ret, const uint8_t c, struct connection_state * ctx) {
+void act1_cmd(struct parser_event *ret, const uint8_t c, struct commands_state * ctx) {
     // append the character to the command
     if (ctx->cmd_length < POP3_MAX_CMD_LENGTH) {
         ctx->cmd[ctx->cmd_length++] = c;
@@ -20,7 +20,7 @@ void act1_cmd(struct parser_event *ret, const uint8_t c, struct connection_state
     }
 }
 
-void act1_arg(struct parser_event *ret, const uint8_t c, struct connection_state * ctx) {
+void act1_arg(struct parser_event *ret, const uint8_t c, struct commands_state * ctx) {
     // append the character to the first argument
     if (ctx->arg1_length < POP3_MAX_ARG_LENGTH) {
         ctx->arg1[ctx->arg1_length++] = c;
@@ -28,7 +28,7 @@ void act1_arg(struct parser_event *ret, const uint8_t c, struct connection_state
     }
 }
 
-void act1_arg2(struct parser_event *ret, const uint8_t c, struct connection_state * ctx) {
+void act1_arg2(struct parser_event *ret, const uint8_t c, struct commands_state * ctx) {
     // append the character to the second argument
     if (ctx->arg2_length < POP3_MAX_ARG_LENGTH) {
         ctx->arg2[ctx->arg2_length++] = c;
@@ -36,9 +36,9 @@ void act1_arg2(struct parser_event *ret, const uint8_t c, struct connection_stat
     }
 }
 
-void act1_cr(struct parser_event *ret, const uint8_t c, struct connection_state * ctx) {
+void act1_cr(struct parser_event *ret, const uint8_t c, struct commands_state * ctx) {
     // process the command here, then reset the command and argument buffers
-    process_command(ctx, ctx->cmd, ctx->arg1, ctx->arg2);
+    process_command(ctx);
 
     // reset buffers
     ctx->cmd[0] = ctx->arg1[0] = ctx->arg2[0] = '\0';

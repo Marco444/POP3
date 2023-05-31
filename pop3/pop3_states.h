@@ -3,13 +3,9 @@
 #define POP3_STATES_HEADER 
 
 #include "../lib/stm/stm.h"
-#include "../lib/buffer/buffer.h"
 #include "../lib/parser/parser.h"
 #include "../lib/selector/selector.h"
-
-#define POP3_MAX_CMD_LENGTH 512 
-#define POP3_MAX_ARG_LENGTH 512 
-#define BUFFER_SIZE 4096
+#include "shared.h"
 
 enum pop3_states {
     AUTHORIZATION_STATE = 0,
@@ -21,21 +17,8 @@ enum pop3_states {
 };
 
 struct connection_state {
-    buffer * read_buffer; 
-    buffer * write_buffer; 
-    
-    //donde almaceno la informacion del ADT buffer 
-    uint8_t in_buffer[BUFFER_SIZE+1];
-    uint8_t out_buffer[BUFFER_SIZE+1];
-    size_t in_buffer_length, out_buffer_length;
 
-    //donde almaceno el comando y argumentos que rellena el parser
-    //a partir de los buffers
-    char cmd[POP3_MAX_CMD_LENGTH + 1];
-    char arg1[POP3_MAX_ARG_LENGTH + 1];
-    char arg2[POP3_MAX_ARG_LENGTH + 1];
-    size_t cmd_length, arg1_length, arg2_length;
-
+    struct commands_state * commands;
     struct parser *parser;
     struct state_machine stm;
 };
