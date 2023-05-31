@@ -72,6 +72,7 @@ static int setupSocket(struct pop3args args , struct sockaddr_storage auxAddr, s
     }
 
     // man 7 ip. no importa reportar nada si falla.
+    // esto le dice al SO que se puede reusar inmediatamente el socket 
     setsockopt(server, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int));
 
     if (bind(server, (struct sockaddr*)&auxAddr, auxAddrLen) < 0) {
@@ -103,7 +104,7 @@ int main(int argc, char** argv) {
     // Parse command line arguments
     struct pop3args args = {
         .pop3_port = 8080,
-        .pop3_addr = "0.0.0.0"
+        .pop3_addr = "127.0.0.1"
     };
     //parse_args(argc, argv, &args);
 
@@ -116,6 +117,7 @@ int main(int argc, char** argv) {
 
     // Initialize the server socket
     int server_socket = setupSocket(args, auxAddr, auxAddrLen);
+
     if (server_socket < 0) {
         fprintf(stderr, "Failed to initialize server socket\n");
         return 1;
