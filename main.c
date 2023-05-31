@@ -16,6 +16,7 @@ static void sigterm_handler(const int signal) {
     terminationRequested = true;
 }
 
+
 int main(int argc, char** argv) {
 
     // Parse command line arguments
