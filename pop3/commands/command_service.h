@@ -13,10 +13,22 @@ typedef struct {
 
 extern pop3_command commands[];
 
+/* Lista de los comandos soportados por el servidor pop3 en el TRANSACTION state */
+
 void process_command(struct commands_state * ctx);
 
 void handle_stat(struct commands_state * ctx);
 
 void handle_list(struct commands_state * ctx);
+
+void handle_retr(struct commands_state * ctx);
+
+void handle_dele(struct commands_state * ctx);
+
+void handle_noop(struct commands_state * ctx);
+
+void handle_rset(struct commands_state * ctx);
+
+void handle_quit(struct commands_state * ctx);
 
 #endif

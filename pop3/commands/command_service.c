@@ -1,10 +1,13 @@
 #include "./command_service.h"
 
-
-
 pop3_command commands[] = {
     { "STAT", handle_stat },
     { "LIST", handle_list },
+    { "RETR", handle_retr },
+    { "DELE", handle_dele },
+    { "NOOP", handle_noop },
+    { "RSET", handle_rset },
+    { "QUIT", handle_quit },
 };
 
 
