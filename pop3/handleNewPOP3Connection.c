@@ -24,7 +24,8 @@ void pop3_read(struct selector_key * key) {
 }
 
 void pop3_write(struct selector_key * key) {
-
+    struct state_machine* stm = &((struct connection_state *) key->data)->stm;
+    const unsigned st = stm_handler_write(stm, key);
 }
 void pop3_close(struct selector_key * key) {
 
@@ -78,7 +79,7 @@ void handleNewPOP3Connection(struct selector_key * key) {
     
     stm_init(&clientData->stm);
 
-    int status = selector_register(key->s, newClientSocket, pop3State(), OP_READ, clientData);
+    int status = selector_register(key->s, newClientSocket, pop3State(), OP_READ , clientData);
 
     if (status != SELECTOR_SUCCESS) {
         close(newClientSocket);
