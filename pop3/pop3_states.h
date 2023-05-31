@@ -7,6 +7,9 @@
 #include "../lib/selector/selector.h"
 #include "shared.h"
 
+// Define the state behavior
+extern struct state_definition pop3_server_states[];
+
 enum pop3_states {
     AUTHORIZATION_STATE = 0,
     TRANSACTION_STATE,
@@ -51,7 +54,4 @@ unsigned on_read_ready_error(struct selector_key *key);
 unsigned on_write_ready_error(struct selector_key *key);
 unsigned on_block_ready_error(struct selector_key *key);
 
-// Define the state behavior
-
-extern struct state_definition server_states[];
 #endif

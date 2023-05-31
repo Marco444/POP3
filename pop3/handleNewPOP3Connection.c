@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void pop3_read(struct selector_key * key);
 void pop3_write(struct selector_key * key);
@@ -14,7 +15,12 @@ void pop3_block(struct selector_key * key);
 
 
 void pop3_read(struct selector_key * key) {
-
+   printf("reading some shit \n");
+    struct state_machine* stm = &((struct connection_state *) key->data)->stm;
+    const unsigned st = stm_handler_read(stm, key);
+    // if (st == ERROR) {
+    //     closeConnection(key);
+    // }
 }
 void pop3_write(struct selector_key * key) {
 
@@ -60,12 +66,15 @@ void handleNewPOP3Connection(struct selector_key * key) {
         return;
     }
 
+
     buffer_init(&clientData->commands.read_buffer, BUFFER_SIZE, clientData->commands.in_buffer);
     buffer_init(&clientData->commands.write_buffer, BUFFER_SIZE, clientData->commands.out_buffer);
     clientData->parser = parser_init(parser_no_classes(), &pop3_parser_definition);
+
     clientData->stm.initial = AUTHORIZATION_STATE;
-    clientData->stm.states = server_states;
-    clientData->stm.max_state = SERVER_STATE_COUNT;
+    clientData->stm.states = pop3_server_states;
+    clientData->stm.max_state = ERROR_STATE;
+    
     stm_init(&clientData->stm);
 
     int status = selector_register(key->s, newClientSocket, pop3State(), OP_READ, clientData);
