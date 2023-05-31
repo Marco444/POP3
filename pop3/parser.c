@@ -46,7 +46,7 @@ void act1_cr(struct parser_event *ret, const uint8_t c, struct commands_state * 
 }
 
 struct parser_state_transition pop3_transitions[] = {
-    { ' ', POP3_STATE_ARG, act1_cmd, NULL },  // when in cmd state, space takes us to arg state
+    { .when = ' ', .dest = POP3_STATE_ARG, .act1 = act1_cmd, .act2 = NULL },  // when in cmd state, space takes us to arg state
     { '\r', POP3_STATE_CR, act1_arg, NULL },  // when in arg state, '\r' takes us to cr state
     { ' ', POP3_STATE_ARG, act1_arg2, NULL },  // when in arg state, ' ' takes us to the second argument! 
     { '\n', POP3_STATE_CMD, act1_cr, NULL },  // when in cr state, '\n' takes us back to cmd state

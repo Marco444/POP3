@@ -9,8 +9,8 @@
 #define POP3_MAX_ARG_LENGTH 512 
 
 struct commands_state {
-    buffer * read_buffer; 
-    buffer * write_buffer; 
+    buffer read_buffer; 
+    buffer write_buffer; 
     
     //donde almaceno la informacion del ADT buffer 
     uint8_t in_buffer[BUFFER_SIZE+1];

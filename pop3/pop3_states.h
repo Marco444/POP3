@@ -17,8 +17,8 @@ enum pop3_states {
 };
 
 struct connection_state {
-    struct commands_state * commands;
-    struct parser *parser;
+    struct commands_state commands;
+    struct parser * parser;
     struct state_machine stm;
 };
 
