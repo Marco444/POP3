@@ -22,6 +22,7 @@ void pop3_read(struct selector_key * key) {
     //     closeConnection(key);
     // }
 }
+
 void pop3_write(struct selector_key * key) {
 
 }
