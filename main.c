@@ -61,6 +61,35 @@ static int initializeServerSocket(char* addr, unsigned short port, void* res, so
     return 0;
 }
 
+static int setupSocket(struct pop3args args , struct sockaddr_storage auxAddr, socklen_t auxAddrLen) {
+
+    int server_socket = initializeServerSocket(args.pop3_addr, args.pop3_port, &auxAddr, &auxAddrLen);
+    int server = socket(auxAddr.ss_family, SOCK_STREAM, IPPROTO_TCP);
+
+    if (server < 0) {
+        fprintf(stderr, "Unable to create socket");
+        return -1;
+    }
+
+    // man 7 ip. no importa reportar nada si falla.
+    setsockopt(server, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int));
+
+    if (bind(server, (struct sockaddr*)&auxAddr, auxAddrLen) < 0) {
+        fprintf(stderr, "Unable to bind socket");
+        return -1;
+    }
+
+    if (listen(server, 20) < 0) {
+        fprintf(stderr, "Unable to listen");
+        return -1;
+    }
+
+    // if (selector_fd_set_nio(server) == -1) {
+    //     fprintf(stderr, "Getting server socket flags";
+    // }
+    return 0;
+}
+
 
 int main(int argc, char** argv) {
 
@@ -78,22 +107,19 @@ int main(int argc, char** argv) {
     };
     //parse_args(argc, argv, &args);
 
-    printf("initialised");
-
 
     //define the address to store the socket
     struct sockaddr_storage auxAddr;
     memset(&auxAddr, 0, sizeof(auxAddr));
     socklen_t auxAddrLen = sizeof(auxAddr);
+    int server = -1;
 
     // Initialize the server socket
-    int server_socket = initializeServerSocket(args.pop3_addr, args.pop3_port, &auxAddr, &auxAddrLen);
+    int server_socket = setupSocket(args, auxAddr, auxAddrLen);
     if (server_socket < 0) {
         fprintf(stderr, "Failed to initialize server socket\n");
         return 1;
     }
-
-    printf("loaded the socket");
 
     // Initialize selector
     struct selector_init init_data = {
@@ -112,7 +138,6 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Failed to create selector\n");
         return 1;
     }
-\
   
     //Initialize logging for server
 
@@ -129,8 +154,7 @@ int main(int argc, char** argv) {
         .handle_close = NULL
     };
 
-    char stm;
-    ss = selector_register(selector, server_socket, &server_handler, OP_READ, &stm);
+    ss = selector_register(selector, server_socket, &server_handler, OP_READ, NULL);
     if (ss != SELECTOR_SUCCESS) {
         fprintf(stderr, "Failed to register server socket to selector: %s\n", selector_error(ss));
         return 1;
@@ -145,8 +169,6 @@ int main(int argc, char** argv) {
         }
     }
 
-
-    printf("loaded the socket");
 
 finally:
     // Clean up
