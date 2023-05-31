@@ -1,8 +1,8 @@
-#include "../lib/selector/selector.h"
-#include "./pop3_states.h"
+#include "../../lib/selector/selector.h"
+#include "../pop3_states.h"
 #include "pop3.h"
-#include "parser.h"
-#include "shared.h"
+#include "../commands/parser.h"
+#include "../shared.h"
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdlib.h>

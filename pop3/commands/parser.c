@@ -1,9 +1,9 @@
 
-#include "commands/command_service.h"
+#include "command_service.h"
 #include "parser.h"
-#include "pop3_states.h"
-#include "../lib/parser/parser.h"
-#include "../lib/selector/selector.h"
+#include "../pop3_states.h"
+#include "../../lib/parser/parser.h"
+#include "../../lib/selector/selector.h"
 
 static void act1_cr(struct parser_event *ret, const uint8_t c, struct commands_state * ctx);
 static void act1_cmd(struct parser_event *ret, const uint8_t c, struct commands_state * ctx);

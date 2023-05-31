@@ -1,7 +1,12 @@
-#include "pop3_states.h"
+#include "../pop3_states.h"
 #include <sys/socket.h>
 
-/* ESTO VIENE A SER EL BREAD-BUTTER DE PROCESAR LAS COSAS UNA VEZ ESTABLECIDA LA CONEXION Y TODO*/
+// State function declarations for TRANSACTION_STATE
+void on_arrival_trans(const unsigned state, struct selector_key *key){ return; }
+void on_departure_trans(const unsigned state, struct selector_key *key){ return; }
+enum pop3_states on_write_ready_trans(struct selector_key *key){ return 0; }
+enum pop3_states on_block_ready_trans(struct selector_key *key){ return 0; }
+
 unsigned on_read_ready_trans(struct selector_key *key) {
     struct connection_state *conn = (struct connection_state*) key->data;
 
@@ -43,4 +48,3 @@ unsigned on_read_ready_trans(struct selector_key *key) {
 
     return TRANSACTION_STATE;
 }
-

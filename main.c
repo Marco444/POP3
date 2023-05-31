@@ -2,7 +2,7 @@
 #include "lib/stm/stm.h"
 #include "./lib/args/args.h"
 #include "./lib/selector/selector.h"
-#include "./pop3/pop3.h"
+#include "./pop3/new_connection/pop3.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -103,7 +103,7 @@ int main(int argc, char** argv) {
 
     // Parse command line arguments
     struct pop3args args = {
-        .pop3_port = 8080,
+        .pop3_port = 8088,
         .pop3_addr = "127.0.0.1"
     };
     //parse_args(argc, argv, &args);
@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
     // Initialize selector
     struct selector_init init_data = {
         .signal = SIGALRM, 
-        .select_timeout = { .tv_sec = 1, .tv_nsec = 0 }
+        .select_timeout = { .tv_sec = 100, .tv_nsec = 0 }
     };
 
     selector_status ss = selector_init(&init_data);
