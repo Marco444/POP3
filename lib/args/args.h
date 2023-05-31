@@ -10,25 +10,10 @@ struct users {
     char *pass;
 };
 
-struct doh {
-    char           *host;
-    char           *ip;
-    unsigned short  port;
-    char           *path;
-    char           *query;
-};
-
 struct pop3args {
-    char           *socks_addr;
-    unsigned short  socks_port;
+    char           *pop3_addr;
+    unsigned short  pop3_port;
 
-    char *          mng_addr;
-    unsigned short  mng_port;
-
-    bool            disectors_enabled;
-
-    struct doh      doh;
-    struct users    users[MAX_USERS];
 };
 
 /**
