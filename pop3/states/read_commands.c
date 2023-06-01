@@ -13,6 +13,7 @@ enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_s
     // Read from the socket into the buffer
     ssize_t received = recv(key->fd, write_ptr, nbyte, 0);
 
+    enum pop3_states next_state = pop3_state;
 
     if (received > 0) {
         // Update the write pointer in the buffer
@@ -27,7 +28,7 @@ enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_s
 
             // feed the parser, the parse in itself will define the tranisitions!
             for(size_t i = 0; i < nbyte; i++) {
-              parser_feed(conn->parser, read_ptr[i], &conn->commands, pop3_state);
+              parser_feed(conn->parser, read_ptr[i], &conn->commands, pop3_state, &next_state);
             }
 
             // advance the read pointer
@@ -45,5 +46,5 @@ enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_s
       return ERROR_STATE;
     }
 
-    return pop3_state;
+    return next_state;
 }

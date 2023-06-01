@@ -16,9 +16,9 @@ enum pop3_parser_states {
     POP3_STATE_END,
 };
 
-static void consume_space(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state){}
+static void consume_space(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state, enum pop3_states * next_state){}
 
-static void consume_into_cmd(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state) {
+static void consume_into_cmd(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state, enum pop3_states * next_state) {
     // append the character to the command
     if (ctx->cmd_length < POP3_MAX_CMD_LENGTH) {
         ctx->cmd[ctx->cmd_length++] = c;
@@ -26,7 +26,7 @@ static void consume_into_cmd(struct parser_event *ret, const uint8_t c, struct c
     }
 }
 
-static void consume_into_arg1(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state) {
+static void consume_into_arg1(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state, enum pop3_states * next_state) {
     // append the character to the first argument
     if (ctx->arg1_length < POP3_MAX_ARG_LENGTH) {
         ctx->arg1[ctx->arg1_length++] = c;
@@ -35,7 +35,7 @@ static void consume_into_arg1(struct parser_event *ret, const uint8_t c, struct 
 }
 
 
-static void consume_into_arg2(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state) {
+static void consume_into_arg2(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state, enum pop3_states * next_state) {
     // append the character to the first argument
     if (ctx->arg2_length < POP3_MAX_ARG_LENGTH) {
         ctx->arg2[ctx->arg2_length++] = c;
@@ -44,16 +44,16 @@ static void consume_into_arg2(struct parser_event *ret, const uint8_t c, struct 
 }
 
 
-static void process_command_handler(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state) {
+static void process_command_handler(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state, enum pop3_states * next_state) {
     // process the command here, then reset the command and argument buffers
-    process_command(ctx, pop3_state);
+    *next_state = process_command(ctx, pop3_state);
 
     // reset buffers
     ctx->cmd_length = ctx->arg1_length = ctx->arg2_length = 0;
 }
 
 
-static void invalid_arguments(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state) {
+static void invalid_arguments(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state, enum pop3_states * next_state) {
     //notify invalid command
 
     // reset buffers
