@@ -88,11 +88,9 @@ static const struct parser_state_transition st_arg2 [] =  {
     {.when = ANY,  .dest = POP3_STATE_ARG2, .act1 = consume_into_arg2},
 };
 
-//should create cr for cmd, arg1, arg2 in case we have '\r' as part of the
-//desired command or argument!
 static const struct parser_state_transition st_end [] =  {
     {.when = '\n', .dest = POP3_STATE_START, .act1 = process_command_handler},
-    {.when = ANY,  .dest = POP3_STATE_ARG2, .act1 = consume_into_arg2},
+    {.when = ANY,  .dest = POP3_STATE_ARG2, .act1 = invalid_arguments},
 };
 
  // state transition mapping
