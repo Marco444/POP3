@@ -30,7 +30,6 @@ struct parser_event {
     struct parser_event *next;
 };
 
-/*TODO: modify the act1, act2 definitions to consider we receive the context as params*/
 /** describe una transición entre estados  */
 struct parser_state_transition {
     /* condición: un caracter o una clase de caracter. Por ej: '\r' */
@@ -38,9 +37,9 @@ struct parser_state_transition {
     /** descriptor del estado destino cuando se cumple la condición */
     unsigned  dest;
     /** acción 1 que se ejecuta cuando la condición es verdadera. requerida. */
-    void    (*act1)(struct parser_event *ret, const uint8_t c, struct commands_state * ctx);
+    void    (*act1)(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state, enum pop3_states * next_state);
     /** otra acción opcional */
-    void    (*act2)(struct parser_event *ret, const uint8_t c, struct commands_state * ctx);
+    void    (*act2)(struct parser_event *ret, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state, enum pop3_states * next_state);
 };
 
 /** predicado para utilizar en `when' que retorna siempre true */
@@ -82,7 +81,7 @@ parser_reset    (struct parser *p);
  * capturar los datos se debe clonar.
  */
 const struct parser_event *
-parser_feed     (struct parser *p, const uint8_t c, struct commands_state * ctx);
+parser_feed     (struct parser *p, const uint8_t c, struct commands_state * ctx, enum pop3_states pop3_state, enum pop3_states * next_state);
 
 /**
  * En caso de la aplicacion no necesite clases caracteres, se

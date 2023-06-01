@@ -1,4 +1,5 @@
 #include "./command_service.h"
+#include <stdio.h>
 
 pop3_command transaction_commands[] = {
     { "STAT", handle_stat },
@@ -21,16 +22,26 @@ pop3_command update_commands[] = {
     {"QUIT", handle_update_quit}
 };
 
-void process_command(struct commands_state * ctx) {
-    size_t num_commands = sizeof(transaction_commands) / sizeof(pop3_command);
-
+static enum pop3_states process_command_acc(pop3_command commands[], size_t num_commands, struct commands_state * ctx) {
     size_t i = 0;
     for (i = 0; i < num_commands; i++) {
-        if (strcmp(ctx->cmd, transaction_commands[i].name) == 0) {
-            transaction_commands[i].handler(ctx);
-            return;
+        if (strcmp(ctx->cmd, commands[i].name) == 0) {
+            return commands[i].handler(ctx);
         }
     }
 
-    //ERROR
+    return ERROR_STATE; 
+}
+
+enum pop3_states process_command(struct commands_state *ctx, enum pop3_states pop3_state) {
+    switch(pop3_state) {
+        case AUTHORIZATION_STATE:
+            return process_command_acc(authorization_commands, sizeof(authorization_commands) / sizeof(pop3_command) , ctx);
+        case TRANSACTION_STATE:
+            return process_command_acc(transaction_commands, sizeof(transaction_commands) / sizeof(pop3_command) , ctx);
+        case UPDATE_STATE:
+            return process_command_acc(update_commands, sizeof(update_commands) / sizeof(pop3_command) , ctx);
+        default:
+            return ERROR_STATE;
+    }
 }

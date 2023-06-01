@@ -1,8 +1,9 @@
-#include "pop3_states.h"
+
+#include "../pop3_states.h"
+#include <stdio.h>
 #include <sys/socket.h>
 
-/* ESTO VIENE A SER EL BREAD-BUTTER DE PROCESAR LAS COSAS UNA VEZ ESTABLECIDA LA CONEXION Y TODO*/
-unsigned on_read_ready_trans(struct selector_key *key) {
+enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_state) { 
     struct connection_state *conn = (struct connection_state*) key->data;
 
     // get write pointer and available size
@@ -12,18 +13,22 @@ unsigned on_read_ready_trans(struct selector_key *key) {
     // Read from the socket into the buffer
     ssize_t received = recv(key->fd, write_ptr, nbyte, 0);
 
+    enum pop3_states next_state = pop3_state;
+
     if (received > 0) {
         // Update the write pointer in the buffer
         buffer_write_adv(&conn->commands.read_buffer, received);
+
 
         while(buffer_can_read(&conn->commands.read_buffer)) {
             // get read pointer
             size_t nbyte;
             uint8_t *read_ptr = buffer_read_ptr(&conn->commands.read_buffer, &nbyte);
             
+
             // feed the parser, the parse in itself will define the tranisitions!
             for(size_t i = 0; i < nbyte; i++) {
-              parser_feed(conn->parser, read_ptr[i], &conn->commands);
+              parser_feed(conn->parser, read_ptr[i], &conn->commands, pop3_state, &next_state);
             }
 
             // advance the read pointer
@@ -41,6 +46,5 @@ unsigned on_read_ready_trans(struct selector_key *key) {
       return ERROR_STATE;
     }
 
-    return TRANSACTION_STATE;
+    return next_state;
 }
-

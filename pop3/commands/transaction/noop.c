@@ -1,5 +1,6 @@
 #include "../command_service.h"
 
-void handle_noop(struct commands_state * ctx) {
+enum pop3_states handle_noop(struct commands_state * ctx) {
 
+  return TRANSACTION_STATE;
 }

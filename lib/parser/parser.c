@@ -47,7 +47,7 @@ parser_reset(struct parser *p) {
 }
 
 const struct parser_event *
-parser_feed(struct parser *p, const uint8_t c, struct commands_state * ctx) {
+parser_feed(struct parser *p, const uint8_t c, struct commands_state * ctx, enum pop3_states pop_3_state, enum pop3_states * next_state) {
     const unsigned type = p->classes[c];
 
     p->e1.next = p->e2.next = 0;
@@ -69,10 +69,10 @@ parser_feed(struct parser *p, const uint8_t c, struct commands_state * ctx) {
         }
 
         if(matched) {
-            state[i].act1(&p->e1, c, ctx);
+            state[i].act1(&p->e1, c, ctx, pop_3_state, next_state);
             if(state[i].act2 != NULL) {
                 p->e1.next = &p->e2;
-                state[i].act2(&p->e2, c, ctx);
+                state[i].act2(&p->e2, c, ctx, pop_3_state, next_state);
             }
             p->state = state[i].dest;
             break;

@@ -8,6 +8,14 @@
 #define POP3_MAX_CMD_LENGTH 512 
 #define POP3_MAX_ARG_LENGTH 512 
 
+enum pop3_states {
+    AUTHORIZATION_STATE = 0,
+    TRANSACTION_STATE,
+    UPDATE_STATE,
+    ERROR_STATE,
+    FORCED_QUIT_STATE,
+    SERVER_STATE_COUNT, 
+};
 struct commands_state {
     buffer read_buffer; 
     buffer write_buffer; 
