@@ -1,4 +1,5 @@
 #include "./command_service.h"
+#include <stdio.h>
 
 pop3_command transaction_commands[] = {
     { "STAT", handle_stat },
@@ -22,15 +23,16 @@ pop3_command update_commands[] = {
 };
 
 void process_command(struct commands_state * ctx) {
-    size_t num_commands = sizeof(transaction_commands) / sizeof(pop3_command);
+    size_t num_commands = 3; //sizeof(authorization_commands) / sizeof(pop3_command);
 
     size_t i = 0;
     for (i = 0; i < num_commands; i++) {
-        if (strcmp(ctx->cmd, transaction_commands[i].name) == 0) {
-            transaction_commands[i].handler(ctx);
+        if (strcmp(ctx->cmd, authorization_commands[i].name) == 0) {
+            authorization_commands[i].handler(ctx);
             return;
         }
     }
+
 
     //ERROR
 }

@@ -1,6 +1,7 @@
 #include "../pop3_states.h"
 #include <sys/socket.h>
 
+
 // State function declarations for TRANSACTION_STATE
 void on_arrival_trans(const unsigned state, struct selector_key *key){ return; }
 void on_departure_trans(const unsigned state, struct selector_key *key){ return; }
@@ -16,6 +17,7 @@ unsigned on_read_ready_trans(struct selector_key *key) {
 
     // Read from the socket into the buffer
     ssize_t received = recv(key->fd, write_ptr, nbyte, 0);
+
 
     if (received > 0) {
         // Update the write pointer in the buffer

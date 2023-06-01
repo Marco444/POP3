@@ -5,6 +5,16 @@
 #include "../../lib/parser/parser.h"
 #include "../../lib/selector/selector.h"
 
+#include <stdio.h>
+
+
+enum pop3_parser_states {
+    POP3_STATE_CMD,
+    POP3_STATE_ARG,
+    POP3_STATE_CR,
+    POP3_STATE_LF,
+};
+
 static void act1_cr(struct parser_event *ret, const uint8_t c, struct commands_state * ctx);
 static void act1_cmd(struct parser_event *ret, const uint8_t c, struct commands_state * ctx);
 static void act1_arg2(struct parser_event *ret, const uint8_t c, struct commands_state * ctx);
@@ -12,6 +22,8 @@ static void act1_arg(struct parser_event *ret, const uint8_t c, struct commands_
 
 static const struct parser_state_transition ST_CMD [] =  {
     {.when = ' ',  .dest = POP3_STATE_ARG, .act1 = act1_cmd},
+    {.when = '\r', .dest = POP3_STATE_CR,  .act1 = act1_cr},
+    {.when = ANY,  .dest = POP3_STATE_CMD, .act1 = act1_cmd},
 };
 
 static const struct parser_state_transition ST_ARG [] =  {
