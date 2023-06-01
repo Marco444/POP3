@@ -76,7 +76,7 @@ void handleNewPOP3Connection(struct selector_key * key) {
 
     clientData->stm.initial = AUTHORIZATION_STATE;
     clientData->stm.states = pop3_server_states;
-    clientData->stm.max_state = ERROR_STATE;
+    clientData->stm.max_state = FORCED_QUIT_STATE;
     
     stm_init(&clientData->stm);
 
@@ -88,4 +88,10 @@ void handleNewPOP3Connection(struct selector_key * key) {
         return;
     }
 
+}
+
+void clean_user_data(void *user_data){
+    struct connection_state * clientData = (struct connection_state *)user_data;
+    parser_destroy(clientData->parser);
+    free(clientData);
 }

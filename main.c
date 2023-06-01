@@ -21,7 +21,7 @@
 static bool terminationRequested = false;
 
 static void sigterm_handler(const int signal) {
-    terminationRequested = true;
+   terminationRequested = true;
 }
 
 static int initializeServerSocket(char* addr, unsigned short port, void* res, socklen_t* socklenResult) {

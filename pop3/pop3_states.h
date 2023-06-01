@@ -47,4 +47,10 @@ enum pop3_states on_read_ready_error(struct selector_key *key);
 enum pop3_states on_write_ready_error(struct selector_key *key);
 enum pop3_states on_block_ready_error(struct selector_key *key);
 
+
+void on_arrival_force_quit(const unsigned state, struct selector_key *key);
+void on_departure_force_quit(const unsigned state, struct selector_key *key);
+enum pop3_states on_read_ready_force_quit(struct selector_key *key);
+enum pop3_states on_write_ready_force_quit(struct selector_key *key);
+enum pop3_states on_block_ready_force_quit(struct selector_key *key);
 #endif
