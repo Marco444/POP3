@@ -16,9 +16,6 @@ enum pop3_parser_states {
     POP3_STATE_END,
 };
 
-// static void act1_cr(struct parser_event *ret, const uint8_t c, struct commands_state * ctx);
-// static void act1_cmd(struct parser_event *ret, const uint8_t c, struct commands_state * ctx);
-// static void act1_arg2(struct parser_event *ret, const uint8_t c, struct commands_state * ctx);
 static void consume_space(struct parser_event *ret, const uint8_t c, struct commands_state * ctx){}
 
 static void consume_into_cmd(struct parser_event *ret, const uint8_t c, struct commands_state * ctx) {
@@ -52,7 +49,6 @@ static void process_command_handler(struct parser_event *ret, const uint8_t c, s
     process_command(ctx);
 
     // reset buffers
-    ctx->cmd[0] = ctx->arg1[0] = ctx->arg2[0] = '\0';
     ctx->cmd_length = ctx->arg1_length = ctx->arg2_length = 0;
 }
 

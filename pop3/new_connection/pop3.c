@@ -15,7 +15,6 @@ void pop3_block(struct selector_key * key);
 
 
 void pop3_read(struct selector_key * key) {
-   printf("reading some shit \n");
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;
     const unsigned st = stm_handler_read(stm, key);
     // if (st == ERROR) {
@@ -28,10 +27,12 @@ void pop3_write(struct selector_key * key) {
     const unsigned st = stm_handler_write(stm, key);
 }
 void pop3_close(struct selector_key * key) {
-
+    struct state_machine* stm = &((struct connection_state *) key->data)->stm;
+    stm_handler_close(stm, key);
 }
 void pop3_block(struct selector_key * key) {
-
+    struct state_machine* stm = &((struct connection_state *) key->data)->stm;
+    const enum pop3_states st = stm_handler_block(stm, key);
 }
 
 static fd_handler handler = {
