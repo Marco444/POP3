@@ -22,7 +22,7 @@ pop3_command update_commands[] = {
     {"QUIT", handle_update_quit}
 };
 
-void process_command(struct commands_state * ctx) {
+void process_command(struct commands_state * ctx, enum pop3_states pop3_state) {
     size_t num_commands = 3; //sizeof(authorization_commands) / sizeof(pop3_command);
 
     size_t i = 0;

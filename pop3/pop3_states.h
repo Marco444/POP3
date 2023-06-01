@@ -10,15 +10,6 @@
 // Define the state behavior
 extern struct state_definition pop3_server_states[];
 
-enum pop3_states {
-    AUTHORIZATION_STATE = 0,
-    TRANSACTION_STATE,
-    UPDATE_STATE,
-    ERROR_STATE,
-    FORCED_QUIT_STATE,
-    SERVER_STATE_COUNT, 
-};
-
 struct connection_state {
     struct commands_state commands;
     struct parser * parser;

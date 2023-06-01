@@ -12,6 +12,7 @@ typedef struct {
 
 
 extern pop3_command commands[];
+void process_command(struct commands_state * ctx, enum pop3_states pop3_state);
 
 /* Lista de los comandos soportados por el servidor pop3 en el AUTHORIZATION state como definidos en RFC 1939*/
 void handle_user(struct commands_state * ctx);
@@ -19,7 +20,6 @@ void handle_pass(struct commands_state * ctx);
 void handle_authorization_quit(struct commands_state * ctx);
 
 /* Lista de los comandos soportados por el servidor pop3 en el TRANSACTION state como definidos en RFC 1939*/
-void process_command(struct commands_state * ctx);
 void handle_stat(struct commands_state * ctx);
 void handle_list(struct commands_state * ctx);
 void handle_retr(struct commands_state * ctx);

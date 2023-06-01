@@ -30,7 +30,7 @@ unsigned on_read_ready_trans(struct selector_key *key) {
             
             // feed the parser, the parse in itself will define the tranisitions!
             for(size_t i = 0; i < nbyte; i++) {
-              parser_feed(conn->parser, read_ptr[i], &conn->commands);
+              parser_feed(conn->parser, read_ptr[i], &conn->commands, TRANSACTION_STATE);
             }
 
             // advance the read pointer
