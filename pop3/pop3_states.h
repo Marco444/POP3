@@ -16,6 +16,8 @@ struct connection_state {
     struct state_machine stm;
 };
 
+enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_state);
+
 
 // State function declarations
 void on_arrival_auth(const unsigned state, struct selector_key *key);
