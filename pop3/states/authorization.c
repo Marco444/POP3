@@ -6,7 +6,6 @@
 char buff[1024];
 
 void on_arrival_auth(const unsigned state, struct selector_key *key){ 
-    printf("arrive al auth");
     return; 
 }
 
