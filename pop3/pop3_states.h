@@ -7,6 +7,8 @@
 #include "../lib/selector/selector.h"
 #include "shared.h"
 
+#define IS_COMMAND 1
+
 // Define the state behavior
 extern struct state_definition pop3_server_states[];
 

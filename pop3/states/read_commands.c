@@ -1,4 +1,5 @@
 
+#include "../commands/command_service.h"
 #include "../pop3_states.h"
 #include <stdio.h>
 #include <sys/socket.h>
@@ -29,18 +30,25 @@ enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_s
 
             // feed the parser, the parser in itself will define the transitions!
             for(i = 0; i < nbyte; i++) {
-                if(read_command) {
+                
+                const struct parser_event * ret = parser_feed(conn->parser, read_ptr[i], &conn->commands);
+
+                //this means I read a valid command into the cmd[], arg1[], arg2[] arrays in conn->commands
+                if(ret->type == IS_COMMAND) {
+                    process_command(&conn->commands, pop3_state);
                     break;
                 }
-                parser_feed(conn->parser, read_ptr[i], &conn->commands, pop3_state, &next_state, &read_command);
-                
-                // advance the read pointer by 1 for every processed byte
+
                 buffer_read_adv(&conn->commands.read_buffer, 1);
+
             }
         }
 
         // compact the buffer
         buffer_compact(&conn->commands.read_buffer);
+
+    selector_set_interest_key(key, OP_WRITE);
+
     } else if (received == 0) {
       // Client closed connection
       return  FORCED_QUIT_STATE;
@@ -49,7 +57,6 @@ enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_s
       return ERROR_STATE;
     }
 
-    printf("next state is: %d", next_state);
     return next_state;
 }
 

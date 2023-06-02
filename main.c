@@ -103,7 +103,7 @@ int main(int argc, char** argv) {
 
     // Parse command line arguments
     struct pop3args args = {
-        .pop3_port = 8089,
+        .pop3_port = 8100,
         .pop3_addr = "127.0.0.1"
     };
     //parse_args(argc, argv, &args);
