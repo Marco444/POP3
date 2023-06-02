@@ -16,7 +16,13 @@ void pop3_block(struct selector_key * key);
 
 void pop3_read(struct selector_key * key) {
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;
-    const unsigned st = stm_handler_read(stm, key);
+    enum pop3_states st = stm_handler_read(stm, key);
+
+    struct connection_state * conn =((struct connection_state *) key->data);
+    while(buffer_can_read(&conn->commands.read_buffer)) {
+        st = read_commands(key, st ,false);
+    }
+    //while(buffer.notEmpty()) read_commad()
     // if (st == ERROR) {
     //     closeConnection(key);
     // }

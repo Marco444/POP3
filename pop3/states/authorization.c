@@ -12,21 +12,17 @@ void on_arrival_auth(const unsigned state, struct selector_key *key){
 void on_departure_auth(const unsigned state, struct selector_key *key){ return; }
 
 enum pop3_states on_read_ready_auth(struct selector_key *key) { 
-    puts("on_read_ready_auth");
-    return read_commands(key, AUTHORIZATION_STATE);
+    return read_commands(key, AUTHORIZATION_STATE, true);
 }
 
 enum pop3_states on_write_ready_auth(struct selector_key *key){
-    printf("antes imprimi del buff");
     write(key->fd, buff, 1024);
-    printf("imprimi del buff");
     selector_set_interest_key(key, OP_READ);
     //desactivarme para escribir si se termino el buffer
     return 0; 
 }
 
 enum pop3_states on_block_ready_auth(struct selector_key *key){ 
-    puts("on_block_ready_auth");
 
     char buff[1] = {0};
     write(key->fd, buff, 1);
