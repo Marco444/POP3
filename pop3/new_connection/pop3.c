@@ -22,10 +22,6 @@ void pop3_read(struct selector_key * key) {
     while(buffer_can_read(&conn->commands.read_buffer)) {
         st = read_commands(key, st ,false);
     }
-    //while(buffer.notEmpty()) read_commad()
-    // if (st == ERROR) {
-    //     closeConnection(key);
-    // }
 }
 
 void pop3_write(struct selector_key * key) {
