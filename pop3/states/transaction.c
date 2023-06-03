@@ -9,5 +9,5 @@ enum pop3_states on_write_ready_trans(struct selector_key *key){ return 0; }
 enum pop3_states on_block_ready_trans(struct selector_key *key){ return 0; }
 
 unsigned on_read_ready_trans(struct selector_key *key) {
-    return read_commands(key, TRANSACTION_STATE);
+    return read_commands(key, TRANSACTION_STATE, true);
 }

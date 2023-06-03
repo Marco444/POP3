@@ -7,6 +7,8 @@
 #include "../lib/selector/selector.h"
 #include "shared.h"
 
+#define IS_COMMAND 1
+
 // Define the state behavior
 extern struct state_definition pop3_server_states[];
 
@@ -16,7 +18,7 @@ struct connection_state {
     struct state_machine stm;
 };
 
-enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_state);
+enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_state, bool toRead);
 
 
 // State function declarations

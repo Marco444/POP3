@@ -6,7 +6,6 @@
 char buff[1024];
 
 void on_arrival_auth(const unsigned state, struct selector_key *key){ 
-    printf("arrive al auth");
     return; 
 }
 
@@ -47,4 +46,10 @@ enum pop3_states on_write_ready_auth(struct selector_key *key){
     }
     return AUTHORIZATION_STATE;
 }
-enum pop3_states on_block_ready_auth(struct selector_key *key){ return 0; }
+
+enum pop3_states on_block_ready_auth(struct selector_key *key){ 
+
+    char buff[1] = {0};
+    write(key->fd, buff, 1);
+    return 0; 
+}
