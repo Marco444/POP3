@@ -18,7 +18,6 @@ enum pop3_states on_read_ready_auth(struct selector_key *key) {
 enum pop3_states on_write_ready_auth(struct selector_key *key){
     selector_set_interest_key(key, OP_READ);
     elem_type elem =  peek(((struct connection_state *)key->data)->commands.write_list);
-    
     if(elem == NULL)
         return ERROR_STATE;
     switch (elem->cmd_id)
@@ -36,8 +35,11 @@ enum pop3_states on_write_ready_auth(struct selector_key *key){
                 return AUTHORIZATION_STATE;
             }    
         }
-        buffer_write(&((struct connection_state *)key->data)->commands.write_buffer, '\n');
-        dequeue(((struct connection_state *)key->data)->commands.write_list,&elem);
+        if(buffer_can_write(&((struct connection_state *)key->data)->commands.write_buffer)){
+            buffer_write(&((struct connection_state *)key->data)->commands.write_buffer, '\n');
+            dequeue(((struct connection_state *)key->data)->commands.write_list,&elem);
+            free(elem);
+        }
         return AUTHORIZATION_STATE;
         }
     case USER:
