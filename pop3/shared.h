@@ -3,8 +3,8 @@
 
 
 #include "../lib/buffer/buffer.h"
-
-#define BUFFER_SIZE 4096
+#include "./commands/write_list.h"
+#define BUFFER_SIZE 2
 #define POP3_MAX_CMD_LENGTH 512 
 #define POP3_MAX_ARG_LENGTH 512 
 
@@ -32,6 +32,8 @@ struct commands_state {
     char arg2[POP3_MAX_ARG_LENGTH + 1];
     size_t cmd_length, arg1_length, arg2_length;
 
+    // Aca es donde voy a agregar las lista de escritura
+    queue_adt write_list;
 };
 
 #endif

@@ -36,7 +36,6 @@ enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_s
 
             // feed the parser, the parser in itself will define the transitions!
             for(i = 0; i < nbyte; i++) {
-                
                 const struct parser_event * ret = parser_feed(conn->parser, read_ptr[i], &conn->commands);
 
                 //this means I read a valid command into the cmd[], arg1[], arg2[] arrays in conn->commands

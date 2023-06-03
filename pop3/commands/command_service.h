@@ -18,6 +18,7 @@ enum pop3_states process_command(struct commands_state * ctx, enum pop3_states p
 enum pop3_states handle_user(struct commands_state * ctx);
 enum pop3_states handle_pass(struct commands_state * ctx);
 enum pop3_states handle_authorization_quit(struct commands_state * ctx);
+enum pop3_states handle_ehlo(struct commands_state * ctx);
 
 /* Lista de los comandos soportados por el servidor pop3 en el TRANSACTION state como definidos en RFC 1939*/
 enum pop3_states handle_stat(struct commands_state * ctx);
