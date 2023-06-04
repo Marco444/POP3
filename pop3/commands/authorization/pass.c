@@ -6,5 +6,5 @@ enum pop3_states handle_pass(struct commands_state * ctx) {
     elem->offset = 0;
     elem->is_done = false;
     queue(ctx->write_list,elem);
-    return TRANSACTION_STATE; 
+    return AUTHORIZATION_STATE; 
 }

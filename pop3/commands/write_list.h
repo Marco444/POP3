@@ -9,7 +9,13 @@ enum CMD_ID {
     EHLO,
     USER,
     PASS,
-    QUIT
+    QUIT,
+    LIST,
+    RETR,
+    DELE,
+    NOOP,
+    RSET,
+    STAT,
 };
 
 struct cmd {
