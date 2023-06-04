@@ -8,7 +8,8 @@
 enum CMD_ID {
     EHLO,
     USER,
-    PASS
+    PASS,
+    QUIT
 };
 
 struct cmd {

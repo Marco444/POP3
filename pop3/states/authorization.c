@@ -3,6 +3,8 @@
 #include <sys/socket.h>
 #include "../commands/write_list.h"
 #include <stdio.h>
+void write_in_buffer(elem_type elem,struct selector_key * key,char * buff);
+
 
 void on_arrival_auth(const unsigned state, struct selector_key *key){ 
        return; 
@@ -24,29 +26,19 @@ enum pop3_states on_write_ready_auth(struct selector_key *key){
     {
     case EHLO:{
         char buff[100] = "+OK POP3 server ready\r\n";
-        for (size_t i = elem->offset; buff[i] != '\n'; i++)
-        {
-            if(buffer_can_write(&((struct connection_state *)key->data)->commands.write_buffer))
-                buffer_write(&((struct connection_state *)key->data)->commands.write_buffer, buff[i]);
-            else{
-                elem->offset = i;
-                elem->is_done = false;
-                selector_set_interest_key(key, OP_WRITE);
-                return AUTHORIZATION_STATE;
-            }    
-        }
-        if(buffer_can_write(&((struct connection_state *)key->data)->commands.write_buffer)){
-            buffer_write(&((struct connection_state *)key->data)->commands.write_buffer, '\n');
-            dequeue(((struct connection_state *)key->data)->commands.write_list,&elem);
-            free(elem);
-        }
+        write_in_buffer(elem,key,buff);
         return AUTHORIZATION_STATE;
         }
-    case USER:
-        /* code */
         break;
-    case PASS:
-        /* code */
+    case USER:{
+        char buff[100] = "+OK User\r\n";
+        write_in_buffer(elem,key,buff);
+        return AUTHORIZATION_STATE;  }  
+        break;
+    case PASS:{
+        char buff[100] = "+OK Pass\r\n";
+        write_in_buffer(elem,key,buff); 
+        return TRANSACTION_STATE;}
         break;
     default :
         /*ERROR*/
