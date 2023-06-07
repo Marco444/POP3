@@ -1,6 +1,11 @@
 #include "../command_service.h"
 
 enum pop3_states handle_noop(struct commands_state * ctx) {
-
-  return TRANSACTION_STATE;
+    printf("NOOP\n");
+    elem_type elem = calloc(1,sizeof(struct cmd));
+    elem->cmd_id = NOOP;
+    elem->offset = 0;
+    elem->is_done = false;
+    ctx->write_data = elem;
+    return TRANSACTION_STATE;
 }
