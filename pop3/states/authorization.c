@@ -3,8 +3,7 @@
 #include <sys/socket.h>
 #include "../commands/write_list.h"
 #include <stdio.h>
-void write_in_buffer(elem_type elem,struct selector_key * key,char * buff);
-
+bool write_in_buffer(elem_type elem,struct selector_key * key,char * buff);
 
 void on_arrival_auth(const unsigned state, struct selector_key *key){ 
        return; 
@@ -17,26 +16,31 @@ enum pop3_states on_read_ready_auth(struct selector_key *key) {
 }
 
 enum pop3_states on_write_ready_auth(struct selector_key *key){
-    selector_set_interest_key(key, OP_READ);
-    elem_type elem =  peek(((struct connection_state *)key->data)->commands.write_list);
+    elem_type  elem =  ((struct connection_state *)key->data)->commands.write_data;
     if(elem == NULL)
         return ERROR_STATE;
     switch (elem->cmd_id)
     {
     case EHLO:{
         char buff[100] = "+OK POP3 server ready\r\n";
-        write_in_buffer(elem,key,buff);
+        bool hasFinish = write_in_buffer(elem,key,buff);
+        if(hasFinish)
+            selector_set_interest_key(key, OP_READ);
         return AUTHORIZATION_STATE;
         }
         break;
     case USER:{
         char buff[100] = "+OK User\r\n";
-        write_in_buffer(elem,key,buff);
+        bool hasFinish = write_in_buffer(elem,key,buff);
+        if(hasFinish)
+            selector_set_interest_key(key, OP_READ);  
         return AUTHORIZATION_STATE;  }  
         break;
     case PASS:{
         char buff[100] = "+OK Pass\r\n";
-        write_in_buffer(elem,key,buff); 
+        bool hasFinish = write_in_buffer(elem,key,buff);
+        if(hasFinish)
+            selector_set_interest_key(key, OP_READ);
         return TRANSACTION_STATE;
         }
         break;

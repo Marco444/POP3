@@ -7,6 +7,6 @@ enum pop3_states handle_list(struct commands_state * ctx) {
     elem->cmd_id = LIST;
     elem->offset = 0;
     elem->is_done = false;
-    queue(ctx->write_list,elem);
+    ctx->write_data = elem;
     return TRANSACTION_STATE;
 }

@@ -8,8 +8,8 @@ void write_in_buffer(elem_type elem,struct selector_key * key,char * buff);
 void on_arrival_trans(const unsigned state, struct selector_key *key){ return; }
 void on_departure_trans(const unsigned state, struct selector_key *key){ return; }
 enum pop3_states on_write_ready_trans(struct selector_key *key){
-    selector_set_interest_key(key, OP_READ);
-    elem_type elem =  peek(((struct connection_state *)key->data)->commands.write_list);
+    //selector_set_interest_key(key, OP_READ);
+    elem_type elem =  ((struct connection_state *)key->data)->commands.write_data;
     if(elem == NULL)
         return ERROR_STATE;
     switch (elem->cmd_id)

@@ -3,7 +3,7 @@
 #include "../pop3_states.h"
 #include <stdio.h>
 #include <sys/socket.h>
-void write_in_buffer(elem_type elem,struct selector_key * key,char * buff){
+bool write_in_buffer(elem_type elem,struct selector_key * key,char * buff){
     for (size_t i = elem->offset; buff[i] != '\n'; i++)
         {
             if(buffer_can_write(&((struct connection_state *)key->data)->commands.write_buffer))
@@ -16,7 +16,8 @@ void write_in_buffer(elem_type elem,struct selector_key * key,char * buff){
         }
         if(buffer_can_write(&((struct connection_state *)key->data)->commands.write_buffer)){
             buffer_write(&((struct connection_state *)key->data)->commands.write_buffer, '\n');
-            dequeue(((struct connection_state *)key->data)->commands.write_list,&elem);
             free(elem);
+            return true;
         }
+        return false;
 }

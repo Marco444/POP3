@@ -19,9 +19,13 @@ void pop3_read(struct selector_key * key) {
     enum pop3_states st = stm_handler_read(stm, key);
     
     struct connection_state * conn =((struct connection_state *) key->data);
+    /*
+    Esto mismo dijo el coda que se puede hacer unicamente procesar un comando a la vez
+
     while(buffer_can_read(&conn->commands.read_buffer) && buffer_can_write(&conn->commands.write_buffer)) {
         st = read_commands(key, st ,false);
     }
+    */
     //while(buffer.notEmpty()) read_commad()
     // if (st == ERROR) {
     //     closeConnection(key);
@@ -81,7 +85,7 @@ void handleNewPOP3Connection(struct selector_key * key) {
     buffer_init(&clientData->commands.read_buffer, BUFFER_SIZE, clientData->commands.in_buffer);
     buffer_init(&clientData->commands.write_buffer, BUFFER_SIZE, clientData->commands.out_buffer);
     clientData->parser = parser_init(parser_no_classes(), &pop3_parser_definition);
-    clientData->commands.write_list = new_queue();
+    clientData->commands.write_data = NULL;
     clientData->stm.initial = AUTHORIZATION_STATE;
     clientData->stm.states = pop3_server_states;
     clientData->stm.max_state = FORCED_QUIT_STATE;
@@ -101,6 +105,5 @@ void handleNewPOP3Connection(struct selector_key * key) {
 void clean_user_data(void *user_data){
     struct connection_state * clientData = (struct connection_state *)user_data;
     parser_destroy(clientData->parser);
-    free_queue(clientData->commands.write_list);
     free(clientData);
 }

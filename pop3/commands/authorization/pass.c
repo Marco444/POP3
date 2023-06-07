@@ -5,6 +5,6 @@ enum pop3_states handle_pass(struct commands_state * ctx) {
     elem->cmd_id = PASS;
     elem->offset = 0;
     elem->is_done = false;
-    queue(ctx->write_list,elem);
+    ctx->write_data = elem;
     return AUTHORIZATION_STATE; 
 }
