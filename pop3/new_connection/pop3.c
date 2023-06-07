@@ -105,5 +105,6 @@ void handleNewPOP3Connection(struct selector_key * key) {
 void clean_user_data(void *user_data){
     struct connection_state * clientData = (struct connection_state *)user_data;
     parser_destroy(clientData->parser);
+    free(clientData->commands.write_data);
     free(clientData);
 }

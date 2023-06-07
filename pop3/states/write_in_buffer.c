@@ -16,7 +16,7 @@ bool write_in_buffer(elem_type elem,struct selector_key * key,char * buff){
         }
         if(buffer_can_write(&((struct connection_state *)key->data)->commands.write_buffer)){
             buffer_write(&((struct connection_state *)key->data)->commands.write_buffer, '\n');
-            free(elem);
+            //free(elem);
             return true;
         }
         return false;
