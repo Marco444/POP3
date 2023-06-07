@@ -44,6 +44,7 @@ struct commands_state {
     // Aca va a tener la lista de los archivos que tiene en el file
     email_file  email_files[POP3_MAX_EMAILS];
     int email_files_length;
+    int email_fd;
 };
 
 #endif

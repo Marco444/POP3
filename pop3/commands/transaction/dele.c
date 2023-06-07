@@ -2,7 +2,7 @@
 #include "../command_service.h"
 #include <stdio.h>
 
-enum pop3_states handle_dele(struct commands_state * ctx) {
+enum pop3_states handle_dele(struct commands_state * ctx, struct selector_key *key) {
     printf("DELE\n");
     elem_type elem = calloc(1,sizeof(struct cmd));
     elem->cmd_id = DELE;

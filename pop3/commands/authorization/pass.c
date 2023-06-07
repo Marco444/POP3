@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#define PATH_DIR "/home/laucha/protos/POP3/foo/laucha"
+#define PATH_DIR "/home/laucha/protos/POP3/foo/laucha/"
 
-enum pop3_states handle_pass(struct commands_state * ctx) {
+enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *key) {
  elem_type elem = calloc(1,sizeof(struct cmd));
     DIR *folder;
     struct dirent *entry;

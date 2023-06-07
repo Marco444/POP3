@@ -22,8 +22,8 @@ enum pop3_states on_write_ready_trans(struct selector_key *key){
             elem->offset = 0;
             for (size_t i = 0; i < commands->email_files_length; i++)
             {
-                char buff2[300];
-                sprintf(buff2,"%ld %s %ld\r\n",i+1,commands->email_files[i].name,commands->email_files[i].size);
+                char buff2[100];
+                sprintf(buff2,"%ld %ld\r\n",i+1,commands->email_files[i].size);
                 write_in_buffer(elem,key,buff2);
             }
             free(elem);
@@ -34,7 +34,9 @@ enum pop3_states on_write_ready_trans(struct selector_key *key){
     case RETR:
         {
         char buff[100] = "+OK RETR\r\n";
-        write_in_buffer(elem,key,buff);
+        //write_in_buffer(elem,key,buff);
+        selector_set_interest_key(key, OP_NOOP);
+        selector_set_interest(key->s,commands->email_fd, OP_READ);
         return TRANSACTION_STATE;
         }    
         break;
