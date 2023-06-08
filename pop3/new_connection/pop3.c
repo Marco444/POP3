@@ -41,7 +41,11 @@ void pop3_write(struct selector_key * key) {
         struct state_machine* stm = &((struct connection_state *) key->data)->stm;
         read_commands(key, stm->current->state, false);
     }
-
+    if(buffer_can_read(targetBuffer)){
+        selector_set_interest(key->s, key->fd, OP_WRITE);
+    }else{
+        selector_set_interest(key->s, key->fd, OP_READ);
+    }
 }
 void pop3_close(struct selector_key * key) {
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;
