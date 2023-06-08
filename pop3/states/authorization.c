@@ -12,7 +12,7 @@ void on_arrival_auth(const unsigned state, struct selector_key *key){
 void on_departure_auth(const unsigned state, struct selector_key *key){ return; }
 
 enum pop3_states on_read_ready_auth(struct selector_key *key) { 
-    enum pop3_states next_state =  read_commands(key, AUTHORIZATION_STATE);
+    enum pop3_states next_state =  read_commands(key, AUTHORIZATION_STATE, true);
     selector_set_interest_key(key, OP_WRITE);
     return TRANSACTION_STATE;
 }

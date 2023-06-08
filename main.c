@@ -92,6 +92,14 @@ static int setupSocket(struct pop3args args , struct sockaddr_storage auxAddr, s
 }
 
 
+/*Parse arguments*/
+void parseArguments(int argc, char * argv[]){
+
+    
+
+}
+
+
 int main(int argc, char** argv) {
 
     setvbuf(stdout, NULL, _IONBF, 0);
@@ -102,11 +110,14 @@ int main(int argc, char** argv) {
 
 
     // Parse command line arguments
-    struct pop3args args = {
-        .pop3_port = 8112,
-        .pop3_addr = "127.0.0.1"
-    };
-    //parse_args(argc, argv, &args);
+    // struct pop3args args = {
+    //     .pop3_port = 8112,
+    //     .pop3_addr = "127.0.0.1"
+    // };
+    struct pop3args args;
+
+    
+    parse_args(argc, argv, &args);
 
 
     //define the address to store the socket
