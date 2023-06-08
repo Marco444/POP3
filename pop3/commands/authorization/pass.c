@@ -27,8 +27,12 @@ enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *k
         strcpy(ctx->email_files[i].name, entry->d_name);
         strcpy(ctx->email_files[i].path, PATH_DIR);
         strcat(ctx->email_files[i].path, entry->d_name);    
+        FILE *fp = fopen(ctx->email_files[i].path, "r");
+        fseek(fp, 0L, SEEK_END);    // seek to the EOF
+        int size = ftell(fp);       // get the current position
+        fclose(fp);
         ctx->email_files[i].is_deleted = false; 
-        ctx->email_files[i].size = st.st_size;
+        ctx->email_files[i].size = size;
         i++;
     }
     ctx->email_files_length = i;
