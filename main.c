@@ -92,13 +92,6 @@ static int setupSocket(struct pop3args args , struct sockaddr_storage auxAddr, s
 }
 
 
-/*Parse arguments*/
-void parseArguments(int argc, char * argv[]){
-
-    
-
-}
-
 
 int main(int argc, char** argv) {
 
@@ -119,6 +112,8 @@ int main(int argc, char** argv) {
     
     parse_args(argc, argv, &args);
 
+    printf(args.users[0].name);
+    printf(args.users[0].pass);
 
     //define the address to store the socket
     struct sockaddr_storage auxAddr;
