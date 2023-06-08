@@ -36,7 +36,12 @@ void pop3_write(struct selector_key * key) {
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;
     const unsigned st = stm_handler_write(stm, key);
     write_in_fd(key);
-    
+    buffer* targetBuffer = &((struct connection_state *) key->data)->commands.write_buffer;
+     if(!buffer_can_read(targetBuffer)){  
+        struct state_machine* stm = &((struct connection_state *) key->data)->stm;
+        read_commands(key, stm->current->state, false);
+    }
+
 }
 void pop3_close(struct selector_key * key) {
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;

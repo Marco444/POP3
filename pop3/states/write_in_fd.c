@@ -21,9 +21,5 @@ void write_in_fd(struct selector_key *key){
         buffer_read_adv(targetBuffer, sent);
     }
     
-    if(buffer_can_read(targetBuffer))
-        selector_set_interest_key(key, OP_WRITE);
-    else
-        selector_set_interest_key(key, OP_READ);
     
 }
