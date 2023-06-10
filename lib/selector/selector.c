@@ -363,7 +363,6 @@ selector_register(fd_selector        s,
         item->handler  = handler;
         item->interest = interest;
         item->data     = data;
-
         // actualizo colaterales
         if(fd > s->max_fd) {
             s->max_fd = fd;

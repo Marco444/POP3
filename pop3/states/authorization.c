@@ -1,20 +1,20 @@
 #include "../pop3_states.h"
-#include <stdio.h>
-#include <sys/socket.h>
+#include "write_buffer_helpers.h"
 
-#include <stdio.h>
-char buff[1024];
+#define OK_USER "+OK is a valid mailbox\r\n"
+#define OK_PASS "+OK mailbox locked and ready\r\n"
+#define OK_QUIT "+OK Quit\r\n"
+#define ERRORS_USER "-ERR never heard of mailbox name\r\n"
+#define ERRORS_PASS "-ERR unable to lock mailbox\r\n"
 
 void on_arrival_auth(const unsigned state, struct selector_key *key){ 
-    return; 
+       return;
 }
 
 void on_departure_auth(const unsigned state, struct selector_key *key){ return; }
 
 enum pop3_states on_read_ready_auth(struct selector_key *key) { 
-    enum pop3_states next_state =  read_commands(key, AUTHORIZATION_STATE);
-    selector_set_interest_key(key, OP_WRITE);
-    return TRANSACTION_STATE;
+    return read_commands(key, AUTHORIZATION_STATE, true);
 }
 
 
@@ -22,29 +22,55 @@ enum pop3_states on_read_ready_auth(struct selector_key *key) {
 
 
 enum pop3_states on_write_ready_auth(struct selector_key *key){
-    selector_set_interest_key(key, OP_READ);
-    //desactivarme para escribir si se termino el buffer
-    struct connection_state * data =(struct connection_state *) key->data;
+    pop3_current_command * pop3_current =  ((struct connection_state *)key->data)->commands.pop3_current_command;
 
-    size_t writeLimit;      // how many bytes we want to send
-    ssize_t writeCount = 0; // how many bytes where written
-    uint8_t* writeBuffer;   // buffer that stores the data to be sended
-
-    writeBuffer = buffer_read_ptr(&data->commands.write_buffer, &writeLimit);
-    writeCount = send(key->fd, writeBuffer, writeLimit, MSG_NOSIGNAL);
-
-    if (writeCount < 0) {
-        return ERROR_STATE;
-    }
-    if (writeCount == 0) {
-        return ERROR_STATE;
-    }
-    buffer_read_adv(&data->commands.write_buffer, writeCount);
-    selector_set_interest_key(key, OP_READ);
-    if (buffer_can_read(&data->commands.write_buffer)) {
+    switch (pop3_current->cmd_id)
+    {
+    case USER:{
+        if(!pop3_current->has_error) {
+            bool has_place = enters_the_buffer(key, OK_USER);
+            if (has_place) {
+                long offset = write_in_buffer(key, OK_USER, strlen(OK_USER), 0);
+                if (offset == -1) {
+                    pop3_current->is_finished = true;
+                }
+            }
+        }else{
+            bool has_place = enters_the_buffer(key, ERRORS_USER);
+            if (has_place) {
+                long offset = write_in_buffer(key, ERRORS_USER, strlen(ERRORS_USER), 0);
+                if (offset == -1) {
+                    pop3_current->is_finished = true;
+                }
+            }
+        }
         return AUTHORIZATION_STATE;
     }
-    return AUTHORIZATION_STATE;
+    case PASS: {
+        if (!pop3_current->has_error) {
+            bool has_place = enters_the_buffer(key, OK_PASS);
+            if (has_place) {
+                long offset = write_in_buffer(key, OK_PASS, strlen(OK_PASS), 0);
+                if (offset == -1) {
+                    pop3_current->is_finished = true;
+                }
+            }
+        } else {
+            bool has_place = enters_the_buffer(key, ERRORS_PASS);
+            if (has_place) {
+                long offset = write_in_buffer(key, ERRORS_PASS, strlen(ERRORS_PASS), 0);
+                if (offset == -1) {
+                    pop3_current->is_finished = true;
+                }
+            }
+        }
+        return TRANSACTION_STATE;
+    }
+    default :
+        break;
+    }
+
+    return 0; 
 }
 
 enum pop3_states on_block_ready_auth(struct selector_key *key){ 

@@ -1,6 +1,9 @@
 #include "../command_service.h"
 #include <stdio.h>
-enum pop3_states handle_authorization_quit(struct commands_state * ctx) {
-  printf("\nllegue a leer QUIT command! arg1: %s, arg2: %s", ctx->arg1, ctx->arg2);
-  return AUTHORIZATION_STATE;
+enum pop3_states handle_authorization_quit(struct commands_state * ctx, struct selector_key *key) {
+    ctx->pop3_current_command->cmd_id = QUIT;
+    ctx->pop3_current_command->is_finished = false;
+    ctx->pop3_current_command->has_error = false;
+    ctx->pop3_current_command->noop_state = true;
+    return AUTHORIZATION_STATE;
 }
