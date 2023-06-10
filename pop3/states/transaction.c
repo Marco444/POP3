@@ -21,7 +21,6 @@ enum pop3_states on_write_ready_trans(struct selector_key *key) {
     struct commands_state *commands = &((struct connection_state *) key->data)->commands;
 
     switch (current_command->cmd_id) {
-        //sprintf(buff2,"%ld %ld\r\n",i+1,commands->email_files[i].size);
         case LIST: {
             if (current_command->has_error) {
                 bool has_place = enters_the_buffer(key, ERRORS_LIST);
@@ -41,47 +40,48 @@ enum pop3_states on_write_ready_trans(struct selector_key *key) {
                         }
                     }
                 }
-                for (int i = current_command->list_state.current_index; i < commands->email_files_length; ++i) {
-                    if (!commands->email_files[i].is_deleted) {
-                        char buff2[30];
-                        sprintf(buff2, "%d %ld\r\n", i + 1, commands->email_files[i].size);
-                        bool has_place = enters_the_buffer(key, buff2);
-                        if (has_place) {
-                            long offset = write_in_buffer(key, buff2, strlen(buff2), 0);
-                            if (offset == -1) {
-                                current_command->list_state.current_index = i + 1;
-                            }
-                        } else {
-                            current_command->list_state.current_index = i;
-                            current_command->is_finished = false;
-                            break;
-                        }
-                    }
-                }
-                if (current_command->list_state.current_index == commands->email_files_length) {
-                    bool has_place = enters_the_buffer(key, FINISH_RETR);
+                if (current_command->list_state.argument != -1){
+                    char buff[30];
+                    sprintf(buff, "%d %ld\r\n", current_command->list_state.argument + 1, commands->email_files[current_command->list_state.argument].size);
+                    bool has_place = enters_the_buffer(key, buff);
                     if (has_place) {
-                        long offset = write_in_buffer(key, FINISH_RETR, strlen(FINISH_RETR), 0);
+                        long offset = write_in_buffer(key, buff, strlen(buff), 0);
                         if (offset == -1) {
                             current_command->is_finished = true;
                         }
                     }
-                }
-
-            }
-            return TRANSACTION_STATE;
-        }
-            break;
-        case RETR: {
-            if (!current_command->retr_state.title_sent) {
-                bool has_place = enters_the_buffer(key, OK_RETR);
-                if (has_place) {
-                    long offset = write_in_buffer(key, OK_RETR, strlen(OK_RETR), 0);
-                    if (offset == -1) {
-                        current_command->retr_state.title_sent = true;
+                }else {
+                    for (int i = current_command->list_state.current_index; i < commands->email_files_length; ++i) {
+                        if (!commands->email_files[i].is_deleted) {
+                            char buff2[30];
+                            sprintf(buff2, "%d %ld\r\n", i + 1, commands->email_files[i].size);
+                            bool has_place = enters_the_buffer(key, buff2);
+                            if (has_place) {
+                                long offset = write_in_buffer(key, buff2, strlen(buff2), 0);
+                                if (offset == -1) {
+                                    current_command->list_state.current_index = i + 1;
+                                }
+                            } else {
+                                current_command->list_state.current_index = i;
+                                current_command->is_finished = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (current_command->list_state.current_index == commands->email_files_length) {
+                        bool has_place = enters_the_buffer(key, FINISH_RETR);
+                        if (has_place) {
+                            long offset = write_in_buffer(key, FINISH_RETR, strlen(FINISH_RETR), 0);
+                            if (offset == -1) {
+                                current_command->is_finished = true;
+                            }
+                        }
                     }
                 }
             }
+            return TRANSACTION_STATE;
+        }
+        case RETR: {
             if (current_command->has_error) {
                 bool has_place = enters_the_buffer(key, ERRORS_RETR);
                 if (has_place) {
@@ -91,6 +91,15 @@ enum pop3_states on_write_ready_trans(struct selector_key *key) {
                     }
                 }
             } else {
+                if (!current_command->retr_state.title_sent) {
+                    bool has_place = enters_the_buffer(key, OK_RETR);
+                    if (has_place) {
+                        long offset = write_in_buffer(key, OK_RETR, strlen(OK_RETR), 0);
+                        if (offset == -1) {
+                            current_command->retr_state.title_sent = true;
+                        }
+                    }
+                }
                 if (current_command->retr_state.mail_finished) {
                     bool has_place = enters_the_buffer(key, FINISH_RETR);
                     if (has_place) {

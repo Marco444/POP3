@@ -41,6 +41,7 @@ typedef struct retr_state{
 typedef struct list_state{
     bool title_sent;
     int current_index;
+    int argument;
 
 }list_state;
 typedef struct pop3_current_command{
