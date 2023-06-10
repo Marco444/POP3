@@ -17,19 +17,6 @@ void write_in_fd(struct selector_key *key);
 void pop3_read(struct selector_key * key) {
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;
     enum pop3_states st = stm_handler_read(stm, key);
-
-    struct connection_state * conn =((struct connection_state *) key->data);
-    /*
-    Esto mismo dijo el coda que se puede hacer unicamente procesar un comando a la vez
-
-    while(buffer_can_read(&conn->commands.read_buffer) && buffer_can_write(&conn->commands.write_buffer)) {
-        st = read_commands(key, st ,false);
-    }
-    */
-    //while(buffer.notEmpty()) read_commad()
-    // if (st == ERROR) {
-    //     closeConnection(key);
-    // }
 }
 
 void pop3_write(struct selector_key * key) {

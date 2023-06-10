@@ -23,9 +23,12 @@ void pop3_read_email_handler(struct selector_key *key){
     size_t capacity;
     ssize_t sent;
     uint8_t * readPtr = buffer_write_ptr(write_buffer, &(capacity));
+
     sent = read(data->email_fd, readPtr, capacity);
+
     if (sent <= 0 && !buffer_can_read(write_buffer)) {
         *(data->isAllDone) = true;
+        // Me tengo que desregristrar
         selector_set_interest_key(key, OP_NOOP);
         selector_set_interest(key->s,data->connection_fd, OP_WRITE);
         return;

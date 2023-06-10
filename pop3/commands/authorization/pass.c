@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <sys/stat.h>
+
 #define PATH_DIR "/home/lhernando/protos/foo/laucha/"
 
 enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *key) {
