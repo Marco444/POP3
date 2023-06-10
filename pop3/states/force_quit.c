@@ -12,4 +12,4 @@ enum pop3_states on_read_ready_force_quit(struct selector_key *key){
      return AUTHORIZATION_STATE;
 }
 enum pop3_states on_write_ready_force_quit(struct selector_key *key){ return 0; }
-enum pop3_states on_block_ready_force_quit(struct selector_key *key){ return 0; }
+enum pop3_states on_block_ready_force_quit(struct selector_key *key){ return 0;}

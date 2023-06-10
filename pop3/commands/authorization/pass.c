@@ -2,13 +2,11 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#define PATH_DIR "/home/laucha/protos/POP3/foo/laucha"
+#define PATH_DIR "/home/lhernando/protos/foo/laucha/"
 
-enum pop3_states handle_pass(struct commands_state * ctx) {
- elem_type elem = calloc(1,sizeof(struct cmd));
+enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *key) {
     DIR *folder;
-    struct dirent *entry;
-
+    struct dirent * entry;
     folder = opendir(PATH_DIR);
     if(folder == NULL)
     {
@@ -19,23 +17,21 @@ enum pop3_states handle_pass(struct commands_state * ctx) {
     int i = 0;
     while( (entry=readdir(folder)) && i < POP3_MAX_EMAILS)
     {
-
-        stat(entry->d_name, &st);
         if(strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
             continue;
-
         strcpy(ctx->email_files[i].name, entry->d_name);
         strcpy(ctx->email_files[i].path, PATH_DIR);
-        strcat(ctx->email_files[i].path, entry->d_name);    
+        strcat(ctx->email_files[i].path, entry->d_name);
+        stat(ctx->email_files[i].path, &st);
+        long size = (long)st.st_size;
         ctx->email_files[i].is_deleted = false; 
-        ctx->email_files[i].size = st.st_size;
+        ctx->email_files[i].size = size;
         i++;
     }
     ctx->email_files_length = i;
-
-    elem->cmd_id = PASS;
-    elem->offset = 0;
-    elem->is_done = false;
-    ctx->write_data = elem;
-    return AUTHORIZATION_STATE; 
+    ctx->pop3_current_command->cmd_id = PASS;
+    ctx->pop3_current_command->is_finished = false;
+    ctx->pop3_current_command->has_error = false;
+    ctx->pop3_current_command->noop_state = true;
+    return AUTHORIZATION_STATE;
 }

@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/Users/marcoscilipoti/Documents/1Q 2023/Protocolos de Comunicacion/TPE/bin",
+            "binaryPath": "/Users/marcoscilipoti/Documents/1Q 2023/Protocolos de Comunicacion/TPE/bin/main",
+            "binaryArgs": []
+        }
+    ]
+}

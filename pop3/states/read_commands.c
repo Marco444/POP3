@@ -42,7 +42,9 @@ enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_s
                 //this means I read a valid command into the cmd[], arg1[], arg2[] arrays in conn->commands
                 if(ret->type == IS_COMMAND) {
                     buffer_read_adv(&conn->commands.read_buffer, 1);
-                    enum pop3_states state = process_command(&conn->commands, pop3_state);
+                    enum pop3_states state = process_command(&conn->commands,key,pop3_state);
+                    conn->commands.arg1[0] = '\0';
+                    conn->commands.arg2[0] = '\0';
                     selector_set_interest_key(key, OP_WRITE);
                     return state;
                 }
