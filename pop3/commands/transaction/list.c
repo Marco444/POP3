@@ -2,11 +2,10 @@
 #include "../../../lib/selector/selector.h"
 #include <stdio.h>
 enum pop3_states handle_list(struct commands_state * ctx, struct selector_key *key) {
-    printf("LIST\n");
-    elem_type elem = calloc(1,sizeof(struct cmd));
-    elem->cmd_id = LIST;
-    elem->offset = 0;
-    elem->is_done = false;
-    ctx->write_data = elem;
+    ctx->pop3_current_command->cmd_id = LIST;
+    ctx->pop3_current_command->is_finished = false;
+    ctx->pop3_current_command->has_error = false;
+    ctx->pop3_current_command->list_state.title_sent = false;
+    ctx->pop3_current_command->list_state.current_index = 0;
     return TRANSACTION_STATE;
 }

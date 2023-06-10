@@ -1,9 +1,11 @@
 #include "../pop3_states.h"
-#include <stdio.h>
-#include <sys/socket.h>
-#include "../commands/write_list.h"
-#include <stdio.h>
-bool write_in_buffer(elem_type elem,struct selector_key * key,char * buff);
+#include "write_buffer_helpers.h"
+
+#define OK_USER "+OK is a valid mailbox\r\n"
+#define OK_PASS "+OK mailbox locked and ready\r\n"
+#define OK_QUIT "+OK Quit\r\n"
+#define ERRORS_USER "-ERR never heard of mailbox name\r\n"
+#define ERRORS_PASS "-ERR unable to lock mailbox\r\n"
 
 void on_arrival_auth(const unsigned state, struct selector_key *key){ 
        return; 
@@ -16,34 +18,50 @@ enum pop3_states on_read_ready_auth(struct selector_key *key) {
 }
 
 enum pop3_states on_write_ready_auth(struct selector_key *key){
-    elem_type  elem =  ((struct connection_state *)key->data)->commands.write_data;
-    if(elem == NULL)
-        return ERROR_STATE;
-    switch (elem->cmd_id)
+    pop3_current_command * pop3_current =  ((struct connection_state *)key->data)->commands.pop3_current_command;
+
+    switch (pop3_current->cmd_id)
     {
-    case EHLO:{
-        char buff[100] = "+OK POP3 server ready\r\n";
-        bool hasFinish = write_in_buffer(elem,key,buff);
-        if(hasFinish)
-            selector_set_interest_key(key, OP_READ);
-        return AUTHORIZATION_STATE;
-        }
-        break;
     case USER:{
-        char buff[100] = "+OK User\r\n";
-        bool hasFinish = write_in_buffer(elem,key,buff);
-        if(hasFinish)
-            selector_set_interest_key(key, OP_READ);  
-        return AUTHORIZATION_STATE;  }  
-        break;
-    case PASS:{
-        char buff[100] = "+OK Pass\r\n";
-        bool hasFinish = write_in_buffer(elem,key,buff);
-        if(hasFinish)
-            selector_set_interest_key(key, OP_READ);
-        return TRANSACTION_STATE;
+        if(!pop3_current->has_error) {
+            bool has_place = enters_the_buffer(key, OK_USER);
+            if (has_place) {
+                long offset = write_in_buffer(key, OK_USER, strlen(OK_USER), 0);
+                if (offset == -1) {
+                    pop3_current->is_finished = true;
+                }
+            }
+        }else{
+            bool has_place = enters_the_buffer(key, ERRORS_USER);
+            if (has_place) {
+                long offset = write_in_buffer(key, ERRORS_USER, strlen(ERRORS_USER), 0);
+                if (offset == -1) {
+                    pop3_current->is_finished = true;
+                }
+            }
         }
-        break;
+        return AUTHORIZATION_STATE;
+    }
+    case PASS: {
+        if (!pop3_current->has_error) {
+            bool has_place = enters_the_buffer(key, OK_PASS);
+            if (has_place) {
+                long offset = write_in_buffer(key, OK_PASS, strlen(OK_PASS), 0);
+                if (offset == -1) {
+                    pop3_current->is_finished = true;
+                }
+            }
+        } else {
+            bool has_place = enters_the_buffer(key, ERRORS_PASS);
+            if (has_place) {
+                long offset = write_in_buffer(key, ERRORS_PASS, strlen(ERRORS_PASS), 0);
+                if (offset == -1) {
+                    pop3_current->is_finished = true;
+                }
+            }
+        }
+        return TRANSACTION_STATE;
+    }
     default :
         break;
     }
