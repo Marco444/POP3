@@ -1,5 +1,6 @@
 
 #include "../commands/command_service.h"
+#include "../commands/parser.h"
 #include "../pop3_states.h"
 #include <stdio.h>
 #include <sys/socket.h>
@@ -44,6 +45,12 @@ enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_s
                     enum pop3_states state = process_command(&conn->commands, pop3_state);
                     selector_set_interest_key(key, OP_WRITE);
                     return state;
+                }
+
+                if(ret->type == INVALID_COMMAND) {
+                    buffer_read_adv(&conn->commands.read_buffer, 1);
+                    selector_set_interest_key(key, OP_WRITE);
+                    return ERROR_STATE;
                 }
 
                 buffer_read_adv(&conn->commands.read_buffer, 1);

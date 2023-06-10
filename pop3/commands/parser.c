@@ -1,6 +1,7 @@
 
 #include "parser.h"
 #include "../pop3_states.h"
+
 #include "../../lib/parser/parser.h"
 #include "../../lib/selector/selector.h"
 
@@ -15,6 +16,7 @@ static void reset_buffers(struct commands_state * ctx) {
     ctx->cmd_length = ctx->arg1_length = ctx->arg2_length = 0;
 }
 
+
 enum pop3_parser_states {
     POP3_STATE_START,
     POP3_STATE_CMD,
@@ -26,7 +28,7 @@ enum pop3_parser_states {
 static void consume_space(struct parser_event *ret, const uint8_t c, struct commands_state * ctx){}
 
 static void consume_into_cmd(struct parser_event *ret, const uint8_t c, struct commands_state * ctx) {
-    ret->type = !IS_COMMAND;
+    ret->type = UNDEFINED;
     // append the character to the command
     if (ctx->cmd_length < POP3_MAX_CMD_LENGTH) {
         ctx->cmd[ctx->cmd_length++] = c;
@@ -61,8 +63,7 @@ static void process_command_handler(struct parser_event *ret, const uint8_t c, s
 
 
 static void invalid_arguments(struct parser_event *ret, const uint8_t c, struct commands_state * ctx) {
-    //notify invalid command
-
+    ret->type = INVALID_COMMAND;
     reset_buffers(ctx);
 }
 
