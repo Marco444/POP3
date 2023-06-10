@@ -5,10 +5,11 @@
 #include <sys/socket.h>
 #include <fcntl.h>
 typedef struct email_data {
-    int offset;
     int connection_fd;
     int email_fd;
-    bool  isDone;
+    // Esto mismo se utilizara para el byteStuffing  el valor 0 es un caracter cualquiera
+    // el valor 1 es el caracter \r y el valor 2 es el caracter \n
+    int character_flag;
     bool * isAllDone;
     uint8_t email_buffer[BUFFER_SIZE];
     buffer * connection_buffer;
@@ -24,7 +25,6 @@ void pop3_read_email_handler(struct selector_key *key){
     uint8_t * readPtr = buffer_write_ptr(write_buffer, &(capacity));
     sent = read(data->email_fd, readPtr, capacity);
     if (sent <= 0 && !buffer_can_read(write_buffer)) {
-        data->isDone = true;
         *(data->isAllDone) = true;
         selector_set_interest_key(key, OP_NOOP);
         selector_set_interest(key->s,data->connection_fd, OP_WRITE);
@@ -43,12 +43,36 @@ void pop3_read_email_handler(struct selector_key *key){
     while (buffer_can_read(write_buffer) && buffer_can_write(connection_buffer)) {
             uint8_t *readPtr = buffer_read_ptr(write_buffer, &(capacity));
             if (*(readPtr) == EOF) {
-                data->isDone = true;
                 *(data->isAllDone) = true;
                 break;
             }
-            buffer_write(connection_buffer, *readPtr);
-            buffer_read_adv(write_buffer, 1);
+            switch (data->character_flag){
+                case 0:
+                    if(*readPtr == '\r')
+                        data->character_flag = 1;
+                    break;
+                case 1:
+                    if(*readPtr == '\n')
+                        data->character_flag = 2;
+                    else
+                        data->character_flag = 0;
+                    break;
+                case 2:
+                    if(*readPtr == '.')
+                        data->character_flag = 3;
+                    else
+                        data->character_flag = 0;
+                    break;
+
+            }
+            if(data->character_flag == 3){
+                buffer_write(connection_buffer, '.');
+                data->character_flag = 0;
+            }else
+            {
+                buffer_write(connection_buffer, *readPtr);
+                buffer_read_adv(write_buffer, 1);
+            }
     }
 
     selector_set_interest_key(key, OP_NOOP);
@@ -93,7 +117,7 @@ enum pop3_states handle_retr(struct commands_state * ctx, struct selector_key * 
     buffer_init(&data->write_buffer,BUFFER_SIZE, data->email_buffer);
     data->email_fd = fd;
     data->connection_fd = key->fd;
-
+    data->character_flag = 2;
     ctx->pop3_current_command->retr_state.mail_fd = fd;
     data->isAllDone = &ctx->pop3_current_command->retr_state.mail_finished;
     selector_register(key->s,fd, &handler, OP_NOOP, data);
