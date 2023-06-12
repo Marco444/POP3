@@ -103,14 +103,14 @@ int main(int argc, char** argv) {
 
 
     // Parse command line arguments
-    // struct pop3args args = {
-    //     .pop3_port = 8113,
-    //     .pop3_addr = "127.0.0.1"
-    // };
-    struct pop3args args;
+  /*  struct pop3args args = {
+        .pop3_port = 8113,
+        .pop3_addr = "127.0.0.1"
+    };*/
+     struct pop3args args;
 
 
-    parse_args(argc, argv, &args);
+     parse_args(argc, argv, &args);
 
 
     //define the address to store the socket
