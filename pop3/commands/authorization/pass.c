@@ -29,8 +29,11 @@ enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *k
         return AUTHORIZATION_STATE;
     }
     state->auth_data.is_logged = true;
-
-    folder = opendir(PATH_DIR);
+    char * path = malloc(strlen(state->args->users[state->auth_data.user_index].name) + strlen(state->args->mail_dir) + 40);
+    strcpy(path, state->args->mail_dir);
+    strcat(path, state->args->users[state->auth_data.user_index].name);
+    strcat(path, "/curl/");
+    folder = opendir(path);
     if(folder == NULL)
     {
         ctx->pop3_current_command->has_error = true;
@@ -43,7 +46,7 @@ enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *k
         if(strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
             continue;
         strcpy(ctx->inbox_data.email_files[i].name, entry->d_name);
-        strcpy(ctx->inbox_data.email_files[i].path, PATH_DIR);
+        strcpy(ctx->inbox_data.email_files[i].path, path);
         strcat(ctx->inbox_data.email_files[i].path, entry->d_name);
         stat(ctx->inbox_data.email_files[i].path, &st);
         long size = (long)st.st_size;
