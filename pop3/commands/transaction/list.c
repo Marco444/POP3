@@ -7,7 +7,7 @@
 #define ERRORS_QUIT "-ERR Quit\r\n"
 #define OK_QUIT "+OK Quit\r\n"
 #define ERRORS_LIST "-ERR no such message\r\n"
-#define FINISH_LIST "\r\n.\r\n"
+#define FINISH_LIST ".\r\n"
 
 enum pop3_states handle_list(struct commands_state * ctx, struct selector_key *key) {
     ctx->pop3_current_command->cmd_id = LIST;
@@ -18,11 +18,17 @@ enum pop3_states handle_list(struct commands_state * ctx, struct selector_key *k
     ctx->pop3_current_command->list_state.argument = -1;
     if(strlen(ctx->arg1) != 0)
     {
-        if (atoi(ctx->arg1) - 1 >= ctx->inbox_data.email_files_length && atoi(ctx->arg1) <= 0){
+        if (atoi(ctx->arg1) - 1 >= ctx->inbox_data.email_files_length || atoi(ctx->arg1) <= 0){
+            ctx->pop3_current_command->has_error = true;
+            return TRANSACTION_STATE;
+        }
+        if (ctx->inbox_data.email_files[atoi(ctx->arg1) - 1].is_deleted) {
             ctx->pop3_current_command->has_error = true;
             return TRANSACTION_STATE;
         }
         ctx->pop3_current_command->list_state.argument = atoi(ctx->arg1) - 1;
+        ctx->pop3_current_command->has_error = false;
+        return TRANSACTION_STATE;
     }
 
     return TRANSACTION_STATE;
