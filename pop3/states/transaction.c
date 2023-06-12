@@ -16,6 +16,7 @@
 // State function declarations for TRANSACTION_STATE
 void on_arrival_trans(const unsigned state, struct selector_key *key){ return; }
 void on_departure_trans(const unsigned state, struct selector_key *key){ return; }
+
 enum pop3_states on_write_ready_trans(struct selector_key *key) {
     pop3_current_command *current_command = ((struct connection_state *) key->data)->commands.pop3_current_command;
     struct commands_state *commands = &((struct connection_state *) key->data)->commands;
@@ -113,7 +114,7 @@ enum pop3_states on_write_ready_trans(struct selector_key *key) {
             return TRANSACTION_STATE;
             case DELE: {
                 char buff[100] = "+OK DELE\r\n";
-                //write_in_buffer(elem,key,buff);
+                write_in_buffer(key,buff,strlen(buff), 0);
                 return TRANSACTION_STATE;
             }
             break;

@@ -12,7 +12,7 @@ enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *k
     if(folder == NULL)
     {
         puts("Unable to read directory");
-        return(1);
+        return ERROR_STATE;
     }
     struct stat st;
     int i = 0;

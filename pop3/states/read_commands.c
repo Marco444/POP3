@@ -6,7 +6,6 @@
 #include <sys/socket.h>
 enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_state, bool toRead) { 
     struct connection_state *conn = (struct connection_state*) key->data;
-    printf("read_commands\n");
     size_t received = 0;
 
     if(toRead) {

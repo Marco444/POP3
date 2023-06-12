@@ -19,8 +19,6 @@ enum pop3_states on_read_ready_auth(struct selector_key *key) {
 
 
 
-
-
 enum pop3_states on_write_ready_auth(struct selector_key *key){
     pop3_current_command * pop3_current =  ((struct connection_state *)key->data)->commands.pop3_current_command;
 
