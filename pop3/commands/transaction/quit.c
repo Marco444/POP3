@@ -10,5 +10,5 @@ enum pop3_states handle_transaction_quit(struct commands_state * ctx, struct sel
 }
 
 enum pop3_states handle_write_transaction_quit(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
-
+ return TRANSACTION_STATE;
 }

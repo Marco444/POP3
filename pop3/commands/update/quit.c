@@ -5,5 +5,5 @@ enum pop3_states handle_update_quit(struct commands_state * ctx, struct selector
 }
 
 enum pop3_states handle_write_update_quit(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
-
+  return UPDATE_STATE;
 }

@@ -10,5 +10,5 @@ enum pop3_states handle_stat(struct commands_state * ctx, struct selector_key *k
 }
 
 enum pop3_states handle_write_stat(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
-
+    return TRANSACTION_STATE;
 }
