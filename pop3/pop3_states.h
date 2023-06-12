@@ -16,8 +16,9 @@ struct connection_state {
     struct state_machine stm;
 };
 
+//common functionality to define the write/read of a command
 enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_state, bool toRead);
-
+enum pop3_states write_command(struct selector_key *key);
 
 // State function declarations
 void on_arrival_auth(const unsigned state, struct selector_key *key);

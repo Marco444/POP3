@@ -1,9 +1,16 @@
 
 #include "../command_service.h"
+#include "../../states/write_buffer_helpers.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <fcntl.h>
+
+#define OK_RETR "+OK message follows\r\n"
+#define ERRORS_RETR "-ERR no such mesage\r\n"
+#define FINISH_RETR "\r\n.\r\n"
+
 typedef struct email_data {
     int connection_fd;
     int email_fd;
@@ -44,38 +51,38 @@ void pop3_read_email_handler(struct selector_key *key){
     }
 
     while (buffer_can_read(write_buffer) && buffer_can_write(connection_buffer)) {
-            uint8_t *readPtr = buffer_read_ptr(write_buffer, &(capacity));
-            if (*(readPtr) == EOF) {
-                *(data->isAllDone) = true;
+        uint8_t *readPtr = buffer_read_ptr(write_buffer, &(capacity));
+        if (*(readPtr) == EOF) {
+            *(data->isAllDone) = true;
+            break;
+        }
+        switch (data->character_flag){
+            case 0:
+                if(*readPtr == '\r')
+                    data->character_flag = 1;
                 break;
-            }
-            switch (data->character_flag){
-                case 0:
-                    if(*readPtr == '\r')
-                        data->character_flag = 1;
-                    break;
-                case 1:
-                    if(*readPtr == '\n')
-                        data->character_flag = 2;
-                    else
-                        data->character_flag = 0;
-                    break;
-                case 2:
-                    if(*readPtr == '.')
-                        data->character_flag = 3;
-                    else
-                        data->character_flag = 0;
-                    break;
+            case 1:
+                if(*readPtr == '\n')
+                    data->character_flag = 2;
+                else
+                    data->character_flag = 0;
+                break;
+            case 2:
+                if(*readPtr == '.')
+                    data->character_flag = 3;
+                else
+                    data->character_flag = 0;
+                break;
 
-            }
-            if(data->character_flag == 3){
-                buffer_write(connection_buffer, '.');
-                data->character_flag = 0;
-            }else
-            {
-                buffer_write(connection_buffer, *readPtr);
-                buffer_read_adv(write_buffer, 1);
-            }
+        }
+        if(data->character_flag == 3){
+            buffer_write(connection_buffer, '.');
+            data->character_flag = 0;
+        }else
+        {
+            buffer_write(connection_buffer, *readPtr);
+            buffer_read_adv(write_buffer, 1);
+        }
     }
 
     selector_set_interest_key(key, OP_NOOP);
@@ -124,5 +131,38 @@ enum pop3_states handle_retr(struct commands_state * ctx, struct selector_key * 
     ctx->pop3_current_command->retr_state.mail_fd = fd;
     data->isAllDone = &ctx->pop3_current_command->retr_state.mail_finished;
     selector_register(key->s,fd, &handler, OP_NOOP, data);
+    return TRANSACTION_STATE;
+}
+
+
+enum pop3_states handle_write_retr(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
+    if (current_command->has_error) {
+        bool has_place = enters_the_buffer(key, ERRORS_RETR);
+        if (has_place) {
+            long offset = write_in_buffer(key, ERRORS_RETR, strlen(ERRORS_RETR), 0);
+            if (offset == -1) {
+                current_command->is_finished = true;
+            }
+        }
+    } else {
+        if (!current_command->retr_state.title_sent) {
+            bool has_place = enters_the_buffer(key, OK_RETR);
+            if (has_place) {
+                long offset = write_in_buffer(key, OK_RETR, strlen(OK_RETR), 0);
+                if (offset == -1) {
+                    current_command->retr_state.title_sent = true;
+                }
+            }
+        }
+        if (current_command->retr_state.mail_finished) {
+            bool has_place = enters_the_buffer(key, FINISH_RETR);
+            if (has_place) {
+                long offset = write_in_buffer(key, FINISH_RETR, strlen(FINISH_RETR), 0);
+                if (offset == -1) {
+                    current_command->is_finished = true;
+                }
+            }
+        }
+    }
     return TRANSACTION_STATE;
 }

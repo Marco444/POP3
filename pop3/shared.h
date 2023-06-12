@@ -18,19 +18,22 @@ enum pop3_states {
     ERROR_STATE,
     FORCED_QUIT_STATE,
     SERVER_STATE_COUNT, 
-} ;
+};
 
 enum CMD_ID {
     USER,
     PASS,
-    QUIT,
+    QUIT_AUTH,
+    QUIT_TRANSACTION,
+    QUIT_UPDATE,
     LIST,
     RETR,
     DELE,
     NOOP,
     RSET,
     STAT,
-    CAPA
+    CAPA,
+    CMD_ID_COUNT //siempre al final, mantiene la cantidad
 };
 
 typedef struct email_file{

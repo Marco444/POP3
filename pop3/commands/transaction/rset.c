@@ -9,3 +9,6 @@ enum pop3_states handle_rset(struct commands_state * ctx,struct selector_key *ke
     ctx->pop3_current_command->noop_state = true;
     return TRANSACTION_STATE;
 }
+enum pop3_states handle_write_rset(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
+
+}

@@ -9,3 +9,6 @@ enum pop3_states handle_capa(struct commands_state * ctx, struct selector_key *k
     return TRANSACTION_STATE;
 }
 
+enum pop3_states handle_write_capa(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
+
+}
