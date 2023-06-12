@@ -11,7 +11,7 @@ enum pop3_states on_read_ready_trans(struct selector_key *key) {
 }
 
 enum pop3_states on_write_ready_trans(struct selector_key *key) {
-    // return write_command(key);
+    return write_command(key);
     return TRANSACTION_STATE;
 }
 

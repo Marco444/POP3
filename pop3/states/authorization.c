@@ -13,8 +13,7 @@ enum pop3_states on_read_ready_auth(struct selector_key *key) {
 }
 
 enum pop3_states on_write_ready_auth(struct selector_key *key){
-    // return write_command(key);
-    return AUTHORIZATION_STATE;
+    return write_command(key);
 }
 
 enum pop3_states on_block_ready_auth(struct selector_key *key){ 

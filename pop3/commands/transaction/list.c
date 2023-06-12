@@ -49,7 +49,7 @@ enum pop3_states handle_write_list(struct selector_key *key, pop3_current_comman
         }
         if (current_command->list_state.argument != -1){
             char buff[30];
-            sprintf(buff, "%d %ld\r\n", current_command->list_state.argument + 1, commands->email_files[current_command->list_state.argument].size);
+            sprintf(buff, "%d %ld\r\n", current_command->list_state.argument + 1, commands->inbox_data.email_files[current_command->list_state.argument].size);
             bool has_place = enters_the_buffer(key, buff);
             if (has_place) {
                 long offset = write_in_buffer(key, buff, strlen(buff), 0);
@@ -58,10 +58,10 @@ enum pop3_states handle_write_list(struct selector_key *key, pop3_current_comman
                 }
             }
         }else {
-            for (int i = current_command->list_state.current_index; i < commands->email_files_length; ++i) {
-                if (!commands->email_files[i].is_deleted) {
+            for (int i = current_command->list_state.current_index; i < commands->inbox_data.email_files_length; ++i) {
+                if (!commands->inbox_data.email_files[i].is_deleted) {
                     char buff2[30];
-                    sprintf(buff2, "%d %ld\r\n", i + 1, commands->email_files[i].size);
+                    sprintf(buff2, "%d %ld\r\n", i + 1, commands->inbox_data.email_files[i].size);
                     bool has_place = enters_the_buffer(key, buff2);
                     if (has_place) {
                         long offset = write_in_buffer(key, buff2, strlen(buff2), 0);
@@ -75,7 +75,7 @@ enum pop3_states handle_write_list(struct selector_key *key, pop3_current_comman
                     }
                 }
             }
-            if (current_command->list_state.current_index == commands->email_files_length) {
+            if (current_command->list_state.current_index == commands->inbox_data.email_files_length) {
                 bool has_place = enters_the_buffer(key, FINISH_LIST);
                 if (has_place) {
                     long offset = write_in_buffer(key, FINISH_LIST, strlen(FINISH_LIST), 0);
