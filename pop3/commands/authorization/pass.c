@@ -5,7 +5,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-#define PATH_DIR "/foo/passwords"
+#define PATH_DIR "/foo/laucha/"
 #define ERRORS_PASS "-ERR unable to lock mailbox\r\n"
 #define OK_PASS "+OK mailbox locked and ready\r\n"
 
@@ -33,8 +33,8 @@ enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *k
     folder = opendir(PATH_DIR);
     if(folder == NULL)
     {
-        puts("Unable to read directory");
-        return ERROR_STATE;
+        ctx->pop3_current_command->has_error = true;
+        return AUTHORIZATION_STATE;
     }
     struct stat st;
     int i = 0;
@@ -53,8 +53,7 @@ enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *k
         i++;
     }
     ctx->inbox_data.email_files_length = i;
-
-        return AUTHORIZATION_STATE;
+    return AUTHORIZATION_STATE;
 }
 
 
