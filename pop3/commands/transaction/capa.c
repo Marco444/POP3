@@ -13,5 +13,6 @@ enum pop3_states handle_capa(struct commands_state * ctx, struct selector_key *k
 
 enum pop3_states handle_write_capa(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
     write_in_buffer(key, CAPA_MSG, strlen(CAPA_MSG), 0);
+    current_command->is_finished = true;
     return TRANSACTION_STATE;
 }

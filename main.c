@@ -115,16 +115,9 @@ int main(int argc, char** argv) {
     // no tenemos nada que leer de stdin
     close(STDIN_FILENO);
 
-
-    };*/
+    // Parse command line arguments
     struct pop3args args;
     parse_args(argc, argv, &args);
-  /*  struct pop3args args = {
-        .pop3_port = 8113,
-        .pop3_addr = "127.0.0.1"
-    // Parse command line arguments
-     struct pop3args args;
-
 
     //define the address to store the socket
     memset(&auxAddr, 0, sizeof(auxAddr));
@@ -156,8 +149,6 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Failed to create selector\n");
         return 1;
     }
-
-
 
     ss = selector_register(selector, server_socket, &server_handler, OP_READ, &args);
     if (ss != SELECTOR_SUCCESS) {
