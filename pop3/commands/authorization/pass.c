@@ -5,7 +5,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-#define PATH_DIR "foo/laucha/"
+#define PATH_DIR "/foo/laucha/"
 #define ERRORS_PASS "-ERR unable to lock mailbox\r\n"
 #define OK_PASS "+OK mailbox locked and ready\r\n"
 

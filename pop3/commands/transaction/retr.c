@@ -110,11 +110,14 @@ enum pop3_states handle_retr(struct commands_state * ctx, struct selector_key * 
     ctx->pop3_current_command->retr_state.title_sent = false;
     ctx->pop3_current_command->retr_state.mail_finished = false;
 
-    if (atoi(ctx->arg1) - 1 >= ctx->inbox_data.email_files_length) {
+    if (atoi(ctx->arg1) - 1 >= ctx->inbox_data.email_files_length || atoi(ctx->arg1) - 1 < 0) {
         ctx->pop3_current_command->has_error = true;
         return TRANSACTION_STATE;
     }
-
+    if (ctx->inbox_data.email_files[atoi(ctx->arg1) - 1].is_deleted) {
+        ctx->pop3_current_command->has_error = true;
+        return TRANSACTION_STATE;
+    }
 
     int fd = open(ctx->inbox_data.email_files[atoi(ctx->arg1) - 1].path, O_RDONLY);
     if(fd == -1){
