@@ -10,11 +10,29 @@ struct users {
     char *pass;
 };
 
-struct pop3args {
+typedef struct user {
+    char *name;
+    char *pass;
+} user;
+
+
+// struct pop3args {
+//     char           *pop3_addr;
+//     unsigned short  pop3_port;
+
+// };
+
+typedef struct pop3args {
+    // USERS (Array is null terminated)
+    struct user     users[MAX_USERS];
+    // POP3 server Address and port
     char           *pop3_addr;
     unsigned short  pop3_port;
+    // Monitor address and port
+    char            *monitor_addr;
+    unsigned short  monitor_port;
+} pop3args;
 
-};
 
 /**
  * Interpreta la linea de comandos (argc, argv) llenando
