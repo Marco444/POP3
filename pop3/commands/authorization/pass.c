@@ -3,7 +3,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-#define PATH_DIR "/home/lhernando/protos/foo/laucha/"
+#define PATH_DIR "/foo/passwords"
 
 enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *key) {
     DIR *folder;

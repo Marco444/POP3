@@ -21,6 +21,7 @@ enum pop3_states handle_authorization_quit(struct commands_state * ctx,struct se
 
 /* Lista de los comandos soportados por el servidor pop3 en el TRANSACTION state como definidos en RFC 1939*/
 enum pop3_states handle_stat(struct commands_state * ctx,struct selector_key *key);
+enum pop3_states handle_capa(struct commands_state * ctx,struct selector_key *key);
 enum pop3_states handle_list(struct commands_state * ctx,struct selector_key *key);
 enum pop3_states handle_retr(struct commands_state * ctx,struct selector_key *key);
 enum pop3_states handle_dele(struct commands_state * ctx,struct selector_key *key);
