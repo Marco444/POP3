@@ -12,6 +12,39 @@
 #define ERRORS_RETR "-ERR no such mesage\r\n"
 #define ERRORS_QUIT "-ERR Quit\r\n"
 #define FINISH_RETR "\r\n.\r\n"
+#define CAPA_MSG "+OK Capability list follows\nUSER\nPASS\nQUIT\nLIST\nRETR\nDELE\nNOOP\nRSET\nSTAT\nCAPA\r\n"
+
+/*
+ *  LA IDEA ES APLICAR ESTO PARA CADA COMANDO 
+// Define command handler functions
+void handle_list(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
+    // The logic from the LIST case in the original switch statement
+}
+
+void handle_retr(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
+    // The logic from the RETR case in the original switch statement
+}
+
+//... Define rest of the handlers for each command
+
+typedef void (*command_handler)(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands);
+
+command_handler command_handlers[] = {
+    [LIST] = handle_list,
+    [RETR] = handle_retr,
+    //...
+};
+
+enum pop3_states on_write_ready_trans(struct selector_key *key) {
+    pop3_current_command *current_command = ((struct connection_state *) key->data)->commands.pop3_current_command;
+    struct commands_state *commands = &((struct connection_state *) key->data)->commands;
+
+    if (current_command->cmd_id >= 0 && current_command->cmd_id < COMMANDS_COUNT) {
+        command_handlers[current_command->cmd_id](key, current_command, commands);
+    }
+    return TRANSACTION_STATE;
+}
+*/
 
 // State function declarations for TRANSACTION_STATE
 void on_arrival_trans(const unsigned state, struct selector_key *key){ return; }
@@ -139,6 +172,10 @@ enum pop3_states on_write_ready_trans(struct selector_key *key) {
             case STAT: {
                 char buff[100] = "+OK STAT\r\n";
                 //write_in_buffer(elem,key,buff);
+                return TRANSACTION_STATE;
+            }
+            case CAPA: {
+                write_in_buffer(key, CAPA_MSG, strlen(CAPA_MSG), 0);
                 return TRANSACTION_STATE;
             }
             break;

@@ -8,6 +8,7 @@ pop3_command transaction_commands[] = {
     { "DELE", handle_dele },
     { "NOOP", handle_noop },
     { "RSET", handle_rset },
+    { "CAPA", handle_capa},
     { "QUIT", handle_transaction_quit},
 };
 

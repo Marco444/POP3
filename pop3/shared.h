@@ -10,6 +10,7 @@
 #define POP3_MAX_EMAILS 500
 #define NAME_MAX 1024
 #define PATH_MAX 1024
+
 enum pop3_states {
     AUTHORIZATION_STATE = 0,
     TRANSACTION_STATE,
@@ -18,6 +19,7 @@ enum pop3_states {
     FORCED_QUIT_STATE,
     SERVER_STATE_COUNT, 
 } ;
+
 enum CMD_ID {
     USER,
     PASS,
@@ -28,24 +30,29 @@ enum CMD_ID {
     NOOP,
     RSET,
     STAT,
+    CAPA
 };
+
 typedef struct email_file{
     char name[NAME_MAX];
     char path[PATH_MAX];
     bool is_deleted;
     long size;
 } email_file;
+
 typedef struct retr_state{
     bool mail_finished;
     int mail_fd;
     bool title_sent;
 }retr_state;
+
 typedef struct list_state{
     bool title_sent;
     int current_index;
     int argument;
 
 }list_state;
+
 typedef struct pop3_current_command{
     union {
        retr_state retr_state;

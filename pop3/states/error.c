@@ -1,5 +1,6 @@
 #include "../pop3_states.h"
 #include "write_buffer_helpers.h"
+#include "../new_connection/pop3.h"
 
 #include <stdio.h>
 
@@ -12,7 +13,10 @@ void on_arrival_error(const unsigned state, struct selector_key *key){
 void on_departure_error(const unsigned state, struct selector_key *key){ return; }
 
 enum pop3_states on_read_ready_error(struct selector_key *key){
-     return ERROR_STATE;
+  // selector_unregister_fd(key->s, key->fd);
+  // close(key->fd);
+  // clean_user_data(key->data);
+  return ERROR_STATE;
 }
 
 enum pop3_states on_write_ready_error(struct selector_key *key){ return 0; }
