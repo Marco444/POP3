@@ -10,9 +10,6 @@
 // Define the state behavior
 extern struct state_definition pop3_server_states[];
 
-
-
-
 struct connection_state {
     struct commands_state commands;
     struct parser * parser;
