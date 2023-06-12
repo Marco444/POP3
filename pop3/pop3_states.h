@@ -6,14 +6,19 @@
 #include "../lib/parser/parser.h"
 #include "../lib/selector/selector.h"
 #include "shared.h"
-
+#include "../lib/args/args.h"
 // Define the state behavior
 extern struct state_definition pop3_server_states[];
+
+
+
 
 struct connection_state {
     struct commands_state commands;
     struct parser * parser;
     struct state_machine stm;
+    struct pop3args * args;
+    struct authorization_data auth_data;
 };
 
 enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_state, bool toRead);

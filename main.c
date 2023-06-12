@@ -112,8 +112,7 @@ int main(int argc, char** argv) {
     
     parse_args(argc, argv, &args);
 
-    printf(args.users[0].name);
-    printf(args.users[0].pass);
+
 
     //define the address to store the socket
     struct sockaddr_storage auxAddr;
@@ -162,7 +161,7 @@ int main(int argc, char** argv) {
         .handle_close = NULL
     };
 
-    ss = selector_register(selector, server_socket, &server_handler, OP_READ, NULL);
+    ss = selector_register(selector, server_socket, &server_handler, OP_READ, &args);
     if (ss != SELECTOR_SUCCESS) {
         fprintf(stderr, "Failed to register server socket to selector: %s\n", selector_error(ss));
         return 1;

@@ -10,7 +10,7 @@ enum pop3_states handle_list(struct commands_state * ctx, struct selector_key *k
     ctx->pop3_current_command->list_state.argument = -1;
     if(strlen(ctx->arg1) != 0)
     {
-        if (atoi(ctx->arg1) - 1 >= ctx->email_files_length && atoi(ctx->arg1) <= 0){
+        if (atoi(ctx->arg1) - 1 >= ctx->inbox_data.email_files_length && atoi(ctx->arg1) <= 0){
             ctx->pop3_current_command->has_error = true;
             return TRANSACTION_STATE;
         }
