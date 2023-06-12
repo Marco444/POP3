@@ -119,10 +119,6 @@ int main(int argc, char** argv) {
     struct pop3args args;
     parse_args(argc, argv, &args);
 
-
-     parse_args(argc, argv, &args);
-
-
     //define the address to store the socket
     memset(&auxAddr, 0, sizeof(auxAddr));
     socklen_t auxAddrLen = sizeof(auxAddr);
