@@ -18,8 +18,9 @@ enum pop3_states {
     ERROR_STATE,
     FORCED_QUIT_STATE,
     SERVER_STATE_COUNT, 
-};
-
+struct authorization_data{
+    int user_index;
+    bool is_logged;
 enum CMD_ID {
     USER,
     PASS,
@@ -42,6 +43,11 @@ typedef struct email_file{
     bool is_deleted;
     long size;
 } email_file;
+typedef struct inbox_data{
+    email_file email_files[POP3_MAX_EMAILS];
+    int email_files_length;
+    long total_size;
+} inbox_data;
 
 typedef struct retr_state{
     bool mail_finished;
@@ -85,8 +91,7 @@ struct commands_state {
     size_t cmd_length, arg1_length, arg2_length;
 
     // Aca va a tener la lista de los archivos que tiene en el file
-    email_file  email_files[POP3_MAX_EMAILS];
-    int email_files_length;
+    inbox_data inbox_data;
     int email_fd;
 };
 

@@ -103,17 +103,16 @@ int main(int argc, char** argv) {
 
 
     // Parse command line arguments
-    struct pop3args args = {
-        .pop3_port = 8113,
-        .pop3_addr = "127.0.0.1"
-    };
-   // struct pop3args args;
+    // struct pop3args args = {
+    //     .pop3_port = 8112,
+    //     .pop3_addr = "127.0.0.1"
+    // };
+    struct pop3args args;
 
     
-    // parse_args(argc, argv, &args);
-    //
-    // printf(args.users[0].name);
-    // printf(args.users[0].pass);
+    parse_args(argc, argv, &args);
+
+
 
     //define the address to store the socket
     struct sockaddr_storage auxAddr;
@@ -162,7 +161,7 @@ int main(int argc, char** argv) {
         .handle_close = NULL
     };
 
-    ss = selector_register(selector, server_socket, &server_handler, OP_READ, NULL);
+    ss = selector_register(selector, server_socket, &server_handler, OP_READ, &args);
     if (ss != SELECTOR_SUCCESS) {
         fprintf(stderr, "Failed to register server socket to selector: %s\n", selector_error(ss));
         return 1;

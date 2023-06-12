@@ -6,14 +6,19 @@
 #include "../lib/parser/parser.h"
 #include "../lib/selector/selector.h"
 #include "shared.h"
-
+#include "../lib/args/args.h"
 // Define the state behavior
 extern struct state_definition pop3_server_states[];
+
+
+
 
 struct connection_state {
     struct commands_state commands;
     struct parser * parser;
     struct state_machine stm;
+    struct pop3args * args;
+    struct authorization_data auth_data;
 };
 
 //common functionality to define the write/read of a command

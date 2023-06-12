@@ -8,11 +8,14 @@
 struct users {
     char *name;
     char *pass;
+    bool close;
+
 };
 
 typedef struct user {
-    char *name;
-    char *pass;
+    char * name;
+    char * pass;
+    bool close;
 } user;
 
 
@@ -24,9 +27,9 @@ typedef struct user {
 
 typedef struct pop3args {
     // USERS (Array is null terminated)
-    struct user     users[MAX_USERS];
+    struct user users[MAX_USERS];
     // POP3 server Address and port
-    char           *pop3_addr;
+    char           * pop3_addr;
     unsigned short  pop3_port;
     // Monitor address and port
     char            *monitor_addr;

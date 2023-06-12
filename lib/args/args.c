@@ -23,7 +23,7 @@ port(const char *s) {
 }
 
 static void
-write_user(char *s, struct users *user) {
+write_user(char *s, struct user *user) {
     char *p = strchr(s, ':');
     if(p == NULL) {
         fprintf(stderr, "password not found\n");
@@ -33,6 +33,7 @@ write_user(char *s, struct users *user) {
         p++;
         user->name = s;
         user->pass = p;
+        user->close = false;
     }
 
 }
@@ -75,8 +76,8 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
     memset(args, 0, sizeof(*args)); // sobre todo para setear en null los punteros de users
 
     // Default values for POP3 server address and port
-    args->pop3_addr = "0.0.0.0";
-    args->pop3_port = 1080;
+    args->pop3_addr = "127.0.0.1";
+    args->pop3_port = 8112;
 
     // Default values for monitor address and port
     args->monitor_addr   = "127.0.0.1";
