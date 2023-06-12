@@ -113,7 +113,6 @@ int main(int argc, char** argv) {
     parse_args(argc, argv, &args);
 
 
-
     //define the address to store the socket
     struct sockaddr_storage auxAddr;
     memset(&auxAddr, 0, sizeof(auxAddr));
