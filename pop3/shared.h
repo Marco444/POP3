@@ -17,10 +17,12 @@ enum pop3_states {
     UPDATE_STATE,
     ERROR_STATE,
     FORCED_QUIT_STATE,
-    SERVER_STATE_COUNT, 
+    SERVER_STATE_COUNT,
+};
 struct authorization_data{
     int user_index;
     bool is_logged;
+};
 enum CMD_ID {
     USER,
     PASS,
