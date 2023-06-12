@@ -86,6 +86,9 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
     char c;
     int nusers = 0;
 
+    // Flags for mandatory parameters
+    int mandatory_mail_dir = 0;
+
     while (true) {
         int option_index = 0;
         static struct option long_options[] = {
@@ -103,7 +106,7 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
             { 0,           0,                 0, 0 }
         };
         // TODO check if there flags that have to be removed
-        c = getopt_long(argc, argv, "hl:L:Np:P:u:v", long_options, &option_index);
+        c = getopt_long(argc, argv, "hl:L:Np:P:u:vd:", long_options, &option_index);
         
         if (c == -1)
             break;
@@ -140,6 +143,11 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
                 version();
                 exit(0);
                 break;
+            
+            case 'd':
+                mandatory_mail_dir = 1;
+                args->mail_dir = optarg;
+                break;
             // TODO check if we have to remove this
             // case 0xD001:
             //     args->doh.ip = optarg;
@@ -169,6 +177,11 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
             fprintf(stderr, "%s ", argv[optind++]);
         }
         fprintf(stderr, "\n");
+        exit(1);
+    }
+
+    if(!mandatory_mail_dir){
+        fprintf(stderr, "mandatory: -d <maildir>\n");
         exit(1);
     }
 }

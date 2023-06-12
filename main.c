@@ -20,8 +20,17 @@
 
 static bool terminationRequested = false;
 
+fd_handler server_handler = {
+    .handle_read = handleNewPOP3Connection,
+    .handle_write = NULL,
+    .handle_block = NULL,
+    .handle_close = NULL
+};
+
+struct sockaddr_storage auxAddr;
+
 static void sigterm_handler(const int signal) {
-   terminationRequested = true;
+    terminationRequested = true;
 }
 
 static int initializeServerSocket(char* addr, unsigned short port, void* res, socklen_t* socklenResult) {
@@ -85,9 +94,9 @@ static int setupSocket(struct pop3args args , struct sockaddr_storage auxAddr, s
         return -1;
     }
 
-    // if (selector_fd_set_nio(server) == -1) {
-    //     fprintf(stderr, "Getting server socket flags";
-    // }
+    if (selector_fd_set_nio(server) == -1) {
+        fprintf(stderr, "Getting server socket flags");
+    }
     return 0;
 }
 
@@ -95,27 +104,22 @@ static int setupSocket(struct pop3args args , struct sockaddr_storage auxAddr, s
 
 int main(int argc, char** argv) {
 
+    //seteo 
     setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
+
+    //registros las seniales para que termine con el server
+    signal(SIGTERM, sigterm_handler);
+    signal(SIGINT, sigterm_handler);
 
     // no tenemos nada que leer de stdin
     close(STDIN_FILENO);
 
-
     // Parse command line arguments
-  /*  struct pop3args args = {
-        .pop3_port = 8113,
-        .pop3_addr = "127.0.0.1"
-    };*/
-     struct pop3args args;
-
-
-     parse_args(argc, argv, &args);
-
-
+    struct pop3args args;
+    parse_args(argc, argv, &args);
 
     //define the address to store the socket
-    struct sockaddr_storage auxAddr;
     memset(&auxAddr, 0, sizeof(auxAddr));
     socklen_t auxAddrLen = sizeof(auxAddr);
     int server = -1;
@@ -145,21 +149,6 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Failed to create selector\n");
         return 1;
     }
-  
-    //Initialize logging for server
-
-
-    //registros las seniales para que termine con el server
-    signal(SIGTERM, sigterm_handler);
-    signal(SIGINT, sigterm_handler);
-
-    // Register the server socket to the selector
-    fd_handler server_handler = {
-        .handle_read = handleNewPOP3Connection,
-        .handle_write = NULL,
-        .handle_block = NULL,
-        .handle_close = NULL
-    };
 
     ss = selector_register(selector, server_socket, &server_handler, OP_READ, &args);
     if (ss != SELECTOR_SUCCESS) {

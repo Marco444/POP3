@@ -34,6 +34,8 @@ typedef struct pop3args {
     // Monitor address and port
     char            *monitor_addr;
     unsigned short  monitor_port;
+    // Directory
+    char            *mail_dir;
 } pop3args;
 
 
