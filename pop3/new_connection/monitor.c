@@ -17,12 +17,6 @@ void pop3_monitor_close(struct selector_key * key);
 void pop3_monitor_block(struct selector_key * key);
 void write_in_fd(struct selector_key *key);
 
-enum pop3_monitor_states {
-  AUTH_MONITOR,
-  TRANSACTION_MONITOR,
-  QUIT_MONITOR
-};
-
 void pop3_monitor_read(struct selector_key * key) {
     // struct state_machine* stm = &((struct connection_state *) key->data)->stm;
     // enum pop3_monitor_states st = stm_handler_read(stm, key);

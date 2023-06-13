@@ -11,6 +11,11 @@
 #define NAME_MAX 1024
 #define PATH_MAX 1024
 
+enum monitor_states {
+  AUTH_MONITOR,
+  TRANSACTION_MONITOR,
+  QUIT_MONITOR
+};
 enum pop3_states {
     AUTHORIZATION_STATE = 0,
     TRANSACTION_STATE,
