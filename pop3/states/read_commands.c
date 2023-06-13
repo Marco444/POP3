@@ -26,8 +26,6 @@ enum pop3_states write_command(struct selector_key *key) {
     pop3_current_command *current_command = ((struct connection_state *) key->data)->commands.pop3_current_command;
     struct commands_state *commands = &((struct connection_state *) key->data)->commands;
 
-    puts("llegue");
-
     if (current_command->cmd_id >= 0 && current_command->cmd_id < CMD_ID_COUNT)
         return command_handlers[current_command->cmd_id](key, current_command, commands);
 

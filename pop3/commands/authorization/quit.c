@@ -1,5 +1,10 @@
 #include "../command_service.h"
+#include "../../states/write_buffer_helpers.h"
+
 #include <stdio.h>
+
+#define QUIT_MSG_TRANSACTION "+OK server signing off\r\n"
+
 enum pop3_states handle_authorization_quit(struct commands_state * ctx, struct selector_key *key) {
     ctx->pop3_current_command->cmd_id = QUIT_AUTH;
     ctx->pop3_current_command->is_finished = false;
@@ -9,5 +14,8 @@ enum pop3_states handle_authorization_quit(struct commands_state * ctx, struct s
 }
 
 enum pop3_states handle_write_authorization_quit(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
-    return TRANSACTION_STATE;
+    puts("llegue");
+    write_in_buffer(key, QUIT_MSG_TRANSACTION, strlen(QUIT_MSG_TRANSACTION), 0);
+    current_command->is_finished = true;
+    return AUTHORIZATION_STATE;
 }
