@@ -15,14 +15,13 @@ void pop3_block(struct selector_key * key);
 void write_in_fd(struct selector_key *key);
 
 void pop3_read(struct selector_key * key) {
-    struct state_machine* stm = &((struct connection_state *) key->data)->stm;
+    struct state_machine * stm = &((struct connection_state *) key->data)->stm;
     enum pop3_states st = stm_handler_read(stm, key);
 }
 
 void pop3_write(struct selector_key * key) {
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;
     const unsigned st = stm_handler_write(stm, key);
-    write_in_fd(key);
     pop3_current_command *current_command = ((struct connection_state *) key->data)->commands.pop3_current_command;
     if(current_command->is_finished && !buffer_can_read(&((struct connection_state *) key->data)->commands.write_buffer)) {
         if(buffer_can_read(&((struct connection_state *) key->data)->commands.read_buffer)){
@@ -108,7 +107,7 @@ void handleNewPOP3Connection(struct selector_key * key) {
 
 }
 
-void clean_user_data(void *user_data){
+void clean_user_data(void * user_data){
     struct connection_state * clientData = (struct connection_state *)user_data;
     parser_destroy(clientData->parser);
     free(clientData->commands.pop3_current_command);

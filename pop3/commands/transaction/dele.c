@@ -4,6 +4,8 @@
 #include <stdio.h>
 #define DELE_TEXT "+OK message deleted\r\n"
 #define ERRORS_DELE "-ERR no such message\r\n"
+int write_in_fd(struct selector_key *key);
+
 enum pop3_states handle_dele(struct commands_state * ctx, struct selector_key *key) {
     ctx->pop3_current_command->cmd_id = DELE;
     ctx->pop3_current_command->is_finished = false;
@@ -33,7 +35,12 @@ enum pop3_states handle_write_dele(struct selector_key *key, pop3_current_comman
             if (offset == -1) {
                 current_command->is_finished = true;
             }
+
         }
     }
-    return TRANSACTION_STATE;
+    if(write_in_fd(key)) {
+        return TRANSACTION_STATE;
+    }else{
+        return FORCED_QUIT_STATE;
+    }
 }

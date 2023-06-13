@@ -3,7 +3,7 @@
 #include "../pop3_states.h"
 #include <stdio.h>
 #include <sys/socket.h>
-void write_in_fd(struct selector_key *key){
+int write_in_fd(struct selector_key *key){
     int targetFd = key->fd;
     buffer* targetBuffer = &((struct connection_state *) key->data)->commands.write_buffer;
 
@@ -16,10 +16,9 @@ void write_in_fd(struct selector_key *key){
     uint8_t * readPtr = buffer_read_ptr(targetBuffer, &(capacity));
     sent = send(targetFd, readPtr, capacity, MSG_NOSIGNAL);
     if (sent <= 0) {
-        // close conection
+        return 0 ;
     } else {
         buffer_read_adv(targetBuffer, sent);
+        return 1;
     }
-    
-    
 }

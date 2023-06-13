@@ -10,6 +10,7 @@
 #define OK_RETR "+OK message follows\r\n"
 #define ERRORS_RETR "-ERR no such mesage\r\n"
 #define FINISH_RETR "\r\n.\r\n"
+int write_in_fd(struct selector_key *key);
 
 typedef struct email_data {
     int connection_fd;
@@ -89,6 +90,7 @@ void pop3_read_email_handler(struct selector_key *key){
     selector_set_interest(key->s,data->connection_fd, OP_WRITE);
 }
 void pop3_close_email_handler(struct selector_key *key){
+    close(key->fd);
     email_data * data = (email_data *) key->data;
     free(data);
 }
@@ -166,6 +168,11 @@ enum pop3_states handle_write_retr(struct selector_key *key, pop3_current_comman
                 }
             }
         }
+
     }
-    return TRANSACTION_STATE;
+    if(write_in_fd(key)) {
+        return TRANSACTION_STATE;
+    }else{
+        return FORCED_QUIT_STATE;
+    }
 }
