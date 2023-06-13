@@ -18,6 +18,13 @@ enum monitor_states {
   ERROR_MONITOR,
   COUNT_STATES_MONITOR
 };
+
+enum MONITOR_CMD_ID {
+  USERNAME,
+  PASSWORD,
+  MONITOR_CMD_COUNT
+};
+
 enum pop3_states {
     AUTHORIZATION_STATE = 0,
     TRANSACTION_STATE,
@@ -26,10 +33,12 @@ enum pop3_states {
     FORCED_QUIT_STATE,
     SERVER_STATE_COUNT,
 };
+
 struct authorization_data{
     int user_index;
     bool is_logged;
 };
+
 enum CMD_ID {
     USER,
     PASS,

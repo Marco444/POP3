@@ -12,5 +12,8 @@ enum monitor_states on_read_ready_auth_monitor(struct selector_key *key){
   return read_commands_monitor(key, AUTH_MONITOR, true); 
 }
 
-enum monitor_states on_write_ready_auth_monitor(struct selector_key *key){ return AUTH_MONITOR; }
+enum monitor_states on_write_ready_auth_monitor(struct selector_key *key){ 
+  return write_command_monitor(key); 
+}
+
 enum monitor_states on_block_ready_auth_monitor(struct selector_key *key){ return AUTH_MONITOR; }

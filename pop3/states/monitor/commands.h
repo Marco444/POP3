@@ -10,4 +10,5 @@
 
 enum monitor_states read_commands_monitor(struct selector_key *key, enum monitor_states pop3_state, bool toRead);
 
+enum monitor_states write_command_monitor(struct selector_key *key);
 #endif
