@@ -25,6 +25,7 @@ static command_handler command_handlers[CMD_ID_COUNT] = {
 enum pop3_states write_command(struct selector_key *key) {
     pop3_current_command *current_command = ((struct connection_state *) key->data)->commands.pop3_current_command;
     struct commands_state *commands = &((struct connection_state *) key->data)->commands;
+
     // Chequear problema de que me llegue muchas veces aca
 
     if (current_command->cmd_id >= 0 && current_command->cmd_id < CMD_ID_COUNT)

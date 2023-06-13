@@ -1,10 +1,37 @@
 #include "../pop3_states.h"
-#include <stdio.h>
+#include "write_buffer_helpers.h"
+#include "../../lib/metrics/metrics.h"
 
-// State function declarations for UPDATE_STATE
-void on_arrival_update(const unsigned state, struct selector_key *key){
-   puts("arrived update");
-   return;
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIGNOFF_MSG "+OK POP3 server deleted the mails\r\n"
+
+void on_arrival_update(const unsigned state, struct selector_key *key) {
+    struct commands_state *commands = (struct commands_state *)key->data;
+    bool deletedEmail = false;
+
+    for(int i = 0; i < commands->inbox_data.email_files_length; i++) {
+        if(commands->inbox_data.email_files[i].is_deleted) {
+            int result = remove(commands->inbox_data.email_files[i].path);
+            metricsRegisterMailsDeleted();
+            deletedEmail = true;
+            // if(result == 0)
+            //     //log("Email file %s deleted successfully\n", commands->inbox_data.email_files[i].name);
+            // else
+            //     //log("Failed to delete email file %s\n", commands->inbox_data.email_files[i].name);
+        }
+    }
+
+    if(!deletedEmail) return;
+
+    bool has_place = enters_the_buffer(key, SIGNOFF_MSG);
+    if (has_place) {
+        int offset = write_in_buffer(key, SIGNOFF_MSG, strlen(SIGNOFF_MSG), 0);
+        if (offset == -1) {
+            commands->pop3_current_command->is_finished = true;
+        }
+    }
 }
 
 void on_departure_update(const unsigned state, struct selector_key *key){ return; }

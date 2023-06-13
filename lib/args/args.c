@@ -81,7 +81,7 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
 
     // Default values for monitor address and port
     args->monitor_addr   = "127.0.0.1";
-    args->monitor_port   = 8080;
+    args->monitor_port   = 8200;
 
     char c;
     int nusers = 0;
