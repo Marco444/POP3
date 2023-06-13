@@ -11,6 +11,10 @@ enum pop3_states handle_transaction_quit(struct commands_state * ctx, struct sel
     ctx->pop3_current_command->is_finished = false;
     ctx->pop3_current_command->has_error = false;
     ctx->pop3_current_command->noop_state = true;
+    struct connection_state * data = key->data;
+    if (data->auth_data.user_index != -1){
+        data->args->users[data->auth_data.user_index].close = false;
+    }
     return TRANSACTION_STATE;
 }
 

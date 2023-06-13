@@ -1,4 +1,5 @@
-
+#ifndef POP3_MONITOR_STATES_H
+#define POP3_MONITOR_STATES_H
 #include "../lib/stm/stm.h"
 #include "../lib/parser/parser.h"
 #include "../lib/selector/selector.h"
@@ -31,8 +32,10 @@ enum monitor_states on_write_ready_trans_monitor(struct selector_key *key);
 enum monitor_states on_block_ready_trans_monitor(struct selector_key *key);
 
 
+
 void on_arrival_quit_monitor(const unsigned state, struct selector_key *key);
 void on_departure_quit_monitor(const unsigned state, struct selector_key *key);
 enum monitor_states on_read_ready_quit_monitor(struct selector_key *key);
 enum monitor_states on_write_ready_quit_monitor(struct selector_key *key);
 enum monitor_states on_block_ready_quit_monitor(struct selector_key *key);
+#endif

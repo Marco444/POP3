@@ -8,7 +8,7 @@
 #define SIGNOFF_MSG "+OK POP3 server deleted the mails\r\n"
 
 void on_arrival_update(const unsigned state, struct selector_key *key) {
-    struct commands_state *commands = (struct commands_state *)key->data;
+    struct commands_state * commands = &((struct connection_state *)key->data)->commands;
     bool deletedEmail = false;
 
     for(int i = 0; i < commands->inbox_data.email_files_length; i++) {
@@ -32,6 +32,8 @@ void on_arrival_update(const unsigned state, struct selector_key *key) {
             commands->pop3_current_command->is_finished = true;
         }
     }
+
+
 }
 
 void on_departure_update(const unsigned state, struct selector_key *key){ return; }
