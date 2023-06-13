@@ -91,9 +91,11 @@ void handleNewPOP3Connection(struct selector_key * key) {
     buffer_init(&clientData->commands.write_buffer, BUFFER_SIZE, clientData->commands.out_buffer);
     clientData->parser = parser_init(parser_no_classes(), &pop3_parser_definition);
     clientData->commands.pop3_current_command = calloc(1,sizeof(struct pop3_current_command));
+    
     clientData->stm.initial = AUTHORIZATION_STATE;
     clientData->stm.states = pop3_server_states;
     clientData->stm.max_state = FORCED_QUIT_STATE;
+
     clientData->auth_data.user_index = -1;
     clientData->auth_data.is_logged = false;
     clientData->args = key->data;
