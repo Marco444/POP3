@@ -18,6 +18,8 @@ typedef struct {
 extern pop3_command commands[];
 enum pop3_states process_command(struct commands_state * ctx,struct selector_key *key,enum pop3_states pop3_state);
 
+enum monitor_states process_command_monitor(struct commands_state *ctx,struct selector_key *key, enum monitor_states pop3_state);
+
 /* Lista de los comandos soportados por el servidor pop3 en el AUTHORIZATION state como definidos en RFC 1939*/
 enum pop3_states handle_user(struct commands_state * ctx,struct selector_key *key);
 enum pop3_states handle_write_user(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands);

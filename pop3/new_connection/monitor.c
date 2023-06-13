@@ -98,9 +98,7 @@ void handleNewMonitorConnection(struct selector_key * key) {
     clientData->auth_data.is_logged = false;
     clientData->args = key->data;
 
-    puts("legue");
     stm_init(&clientData->stm);
-    puts("me rompi? inicialise todo pa");
 
 
     int status = selector_register(key->s, newClientSocket, pop3_monitorState(), OP_READ , clientData);
