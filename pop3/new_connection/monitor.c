@@ -1,6 +1,6 @@
 #include "../../lib/selector/selector.h"
 #include "../../lib/metrics/metrics.h"
-// #include "../pop3_monitor_states.h"
+#include "../monitor_states.h"
 #include "monitor.h"
 #include "../commands/parser.h"
 #include "../shared.h"
@@ -18,13 +18,13 @@ void pop3_monitor_block(struct selector_key * key);
 void write_in_fd(struct selector_key *key);
 
 void pop3_monitor_read(struct selector_key * key) {
-    // struct state_machine* stm = &((struct connection_state *) key->data)->stm;
-    // enum pop3_monitor_states st = stm_handler_read(stm, key);
+    struct state_machine* stm = &((struct monitor_connection_state *) key->data)->stm;
+    stm_handler_read(stm, key);
 }
 
 void pop3_monitor_write(struct selector_key * key) {
-    // struct state_machine* stm = &((struct connection_state *) key->data)->stm;
-    // const unsigned st = stm_handler_write(stm, key);
+    struct state_machine* stm = &((struct monitor_connection_state *) key->data)->stm;
+   stm_handler_write(stm, key);
     // write_in_fd(key);
     // pop3_monitor_current_command *current_command = ((struct connection_state *) key->data)->commands.pop3_current_command;
     // if(current_command->is_finished && !buffer_can_read(&((struct connection_state *) key->data)->commands.write_buffer)) {
@@ -46,12 +46,12 @@ void pop3_monitor_write(struct selector_key * key) {
     // }
 }
 void pop3_monitor_close(struct selector_key * key) {
-    // struct state_machine* stm = &((struct connection_state *) key->data)->stm;
-    // stm_handler_close(stm, key);
+    struct state_machine* stm = &((struct monitor_connection_state *) key->data)->stm;
+    stm_handler_close(stm, key);
 }
 void pop3_monitor_block(struct selector_key * key) {
-    // struct state_machine* stm = &((struct connection_state *) key->data)->stm;
-    // const enum pop3_monitor_states st = stm_handler_block(stm, key);
+    struct state_machine* stm = &((struct monitor_connection_state *) key->data)->stm;
+    stm_handler_block(stm, key);
 }
 
 static fd_handler handler = {
@@ -80,7 +80,7 @@ void handleNewMonitorConnection(struct selector_key * key) {
         return;
     }
 
-   struct connection_state * clientData; //= calloc(1, sizeof(struct connection_state));
+   struct monitor_connection_state * clientData = calloc(1, sizeof(struct monitor_connection_state));
     if (clientData == NULL) {
         close(newClientSocket);
         return;
@@ -91,13 +91,13 @@ void handleNewMonitorConnection(struct selector_key * key) {
     // buffer_init(&clientData->commands.write_buffer, BUFFER_SIZE, clientData->commands.out_buffer);
     // clientData->parser = parser_init(parser_no_classes(), &pop3_monitor_parser_definition);
     // clientData->commands.pop3_monitor_current_command = calloc(1,sizeof(struct pop3_current_command));
-    // clientData->stm.initial = AUTHORIZATION_STATE;
-    // clientData->stm.states = pop3_monitor_server_states;
-    // clientData->stm.max_state = FORCED_QUIT_STATE;
+    clientData->stm.initial = AUTH_MONITOR;
+    clientData->stm.states =  pop3_monitor_states;
+    clientData->stm.max_state = QUIT_MONITOR;
     // clientData->auth_data.user_index = -1;
     // clientData->auth_data.is_logged = false;
-    // clientData->args = key->data;
-    // stm_init(&clientData->stm);
+    clientData->args = key->data;
+    stm_init(&clientData->stm);
 
     int status = selector_register(key->s, newClientSocket, pop3_monitorState(), OP_READ , clientData);
 

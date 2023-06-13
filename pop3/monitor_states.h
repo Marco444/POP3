@@ -7,6 +7,13 @@
 
 extern struct state_definition pop3_monitor_states[];
 
+struct monitor_connection_state {
+    struct parser * parser;
+    struct state_machine stm;
+    struct pop3args * args;
+    struct authorization_data auth_data;
+};
+
 // State function declarations
 void on_arrival_auth_monitor(const unsigned state, struct selector_key *key);
 void on_departure_auth_monitor(const unsigned state, struct selector_key *key);

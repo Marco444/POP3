@@ -1,4 +1,5 @@
 #include "../command_service.h"
+#include "../../states/write_buffer_helpers.h"
 #include <stdio.h>
 
 #define MAX_OUTPUT 100
@@ -19,10 +20,10 @@ enum pop3_states handle_write_stat(struct selector_key *key, pop3_current_comman
     if(current_command->has_error){
         bool has_place = enters_the_buffer(key, ERRORS_STAT);
         if(has_place){
-            long offset = write_in_buffer(key, ERRORS_STAT);
-            if(offset == -1){
-                current_command->is_finished = true;
-            }
+            // long offset = write_in_buffer(key, ERRORS_STAT);
+            // if(offset == -1){
+            //     current_command->is_finished = true;
+            // }
         }
     }else{
         int emails_count = 0;
