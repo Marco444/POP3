@@ -25,7 +25,6 @@ enum pop3_states handle_write_stat(struct selector_key *key, pop3_current_comman
             }
         }
     }else{
-        // Contar mails e imprimirlo
         int emails_count = 0;
         int emails_total_size = 0;
 
