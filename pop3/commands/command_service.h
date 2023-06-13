@@ -10,6 +10,10 @@ typedef struct {
     enum pop3_states (*handler)(struct commands_state * ctx,struct selector_key *key);
 } pop3_command;
 
+typedef struct {
+    const char *name;
+    enum monitor_states (*handler)(struct commands_state * ctx,struct selector_key *key);
+} monitor_command;
 
 extern pop3_command commands[];
 enum pop3_states process_command(struct commands_state * ctx,struct selector_key *key,enum pop3_states pop3_state);
@@ -52,5 +56,12 @@ enum pop3_states handle_write_transaction_quit(struct selector_key *key, pop3_cu
 /* Lista de los comandos soportados por el servidor pop3 en el TRANSACTION state como definidos en RFC 1939*/
 enum pop3_states handle_update_quit(struct commands_state * ctx,struct selector_key *key);
 enum pop3_states handle_write_update_quit(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands);
+
+
+/*
+ * MONITOR
+ * */
+
+enum monitor_states handle_monitor_username(struct commands_state * ctx,struct selector_key *key);
 
 #endif

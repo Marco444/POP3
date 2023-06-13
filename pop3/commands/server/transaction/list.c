@@ -1,6 +1,6 @@
-#include "../command_service.h"
-#include "../../../lib/selector/selector.h"
-#include "../../states/write_buffer_helpers.h"
+#include "../../command_service.h"
+#include "../../../../lib/selector/selector.h"
+#include "../../../states/write_buffer_helpers.h"
 #include <stdio.h>
 
 #define OK_LIST "+OK scan list follows\r\n"

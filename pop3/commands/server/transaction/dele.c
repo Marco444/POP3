@@ -1,6 +1,6 @@
 
-#include "../command_service.h"
-#include "../../states/write_buffer_helpers.h"
+#include "../../command_service.h"
+#include "../../../states/write_buffer_helpers.h"
 #include <stdio.h>
 #define DELE_TEXT "+OK message deleted\r\n"
 #define ERRORS_DELE "-ERR no such message\r\n"

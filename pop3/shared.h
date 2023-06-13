@@ -14,6 +14,7 @@
 enum monitor_states {
   AUTH_MONITOR,
   TRANSACTION_MONITOR,
+  ERROR_MONITOR,
   QUIT_MONITOR
 };
 enum pop3_states {

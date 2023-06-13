@@ -1,6 +1,6 @@
-#include "../command_service.h"
-#include "../../states/write_buffer_helpers.h"
-#include "../../pop3_states.h"
+#include "../../command_service.h"
+#include "../../../states/write_buffer_helpers.h"
+#include "../../../pop3_states.h"
 #include <stdio.h>
 
 #define OK_USER "+OK is a valid mailbox\r\n"
