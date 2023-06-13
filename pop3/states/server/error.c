@@ -1,6 +1,6 @@
-#include "../pop3_states.h"
-#include "write_buffer_helpers.h"
-#include "../new_connection/pop3.h"
+#include "../../pop3_states.h"
+#include "../write_buffer_helpers.h"
+#include "../../new_connection/pop3.h"
 
 #include <stdio.h>
 

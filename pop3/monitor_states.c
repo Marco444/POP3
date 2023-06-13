@@ -2,6 +2,7 @@
 #include "shared.h"
 #include <stdio.h>
 
+
 struct state_definition pop3_monitor_states[]  = {
     {
         .state            =  AUTH_MONITOR,
@@ -19,5 +20,21 @@ struct state_definition pop3_monitor_states[]  = {
         .on_write_ready   = on_write_ready_trans_monitor,
         .on_block_ready   = on_block_ready_trans_monitor,
     },
+    {
+        .state            = QUIT_MONITOR,
+        .on_arrival       = on_arrival_quit_monitor,
+        .on_departure     = on_departure_quit_monitor,
+        .on_read_ready    = on_read_ready_quit_monitor,
+        .on_write_ready   = on_write_ready_quit_monitor,
+        .on_block_ready   = on_block_ready_quit_monitor,
+    },
+    {
+        .state            = ERROR_MONITOR,
+        .on_arrival       = on_arrival_quit_monitor,
+        .on_departure     = on_departure_quit_monitor,
+        .on_read_ready    = on_read_ready_quit_monitor,
+        .on_write_ready   = on_write_ready_quit_monitor,
+        .on_block_ready   = on_block_ready_quit_monitor,
+    }
 };
 

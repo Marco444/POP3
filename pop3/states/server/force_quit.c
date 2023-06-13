@@ -1,5 +1,5 @@
-#include "../pop3_states.h"
-#include "../new_connection/pop3.h"
+#include "../../pop3_states.h"
+#include "../../new_connection/pop3.h"
 #include <stdio.h>
 
 void on_arrival_force_quit(const unsigned state, struct selector_key *key){

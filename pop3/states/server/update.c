@@ -1,6 +1,6 @@
-#include "../pop3_states.h"
-#include "write_buffer_helpers.h"
-#include "../../lib/metrics/metrics.h"
+#include "../../pop3_states.h"
+#include "../write_buffer_helpers.h"
+#include "../../../lib/metrics/metrics.h"
 
 #include <stdio.h>
 #include <stdlib.h>

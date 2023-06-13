@@ -1,5 +1,5 @@
-#include "../pop3_states.h"
-#include "write_buffer_helpers.h"
+#include "../../pop3_states.h"
+#include "../write_buffer_helpers.h"
 #define GREATING "+OK POP3 server ready\r\n"
 int write_in_fd(struct selector_key *key);
 void on_arrival_auth(const unsigned state, struct selector_key *key){

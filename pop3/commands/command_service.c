@@ -1,6 +1,10 @@
 #include "./command_service.h"
 #include <stdio.h>
 
+monitor_command monitor_authorization_commands[] = {
+    {"USERNAME", handle_monitor_username }
+};
+
 pop3_command transaction_commands[] = {
     { "STAT", handle_stat },
     { "LIST", handle_list },
@@ -35,6 +39,18 @@ static enum pop3_states process_command_acc(pop3_command commands[], size_t num_
     return ERROR_STATE; 
 }
 
+static enum monitor_states process_command_acc_monitor(monitor_command commands[], size_t num_commands, struct commands_state * ctx,struct selector_key *key) {
+    size_t i = 0;
+    for (i = 0; i < num_commands; i++) {
+        if (strcmp(ctx->cmd, commands[i].name) == 0) {
+            printf("Command %s\n", commands[i].name);
+            return commands[i].handler(ctx,key);
+        }
+    }
+
+    return ERROR_MONITOR; 
+}
+
 enum pop3_states process_command(struct commands_state *ctx,struct selector_key *key, enum pop3_states pop3_state) {
     switch(pop3_state) {
         case AUTHORIZATION_STATE:
@@ -45,5 +61,16 @@ enum pop3_states process_command(struct commands_state *ctx,struct selector_key 
             return process_command_acc(update_commands, sizeof(update_commands) / sizeof(pop3_command) , ctx,key);
         default:
             return ERROR_STATE;
+    }
+}
+
+enum monitor_states process_command_monitor(struct commands_state *ctx,struct selector_key *key, enum monitor_states pop3_state) {
+    switch(pop3_state) {
+        case AUTH_MONITOR:
+            return process_command_acc_monitor(monitor_authorization_commands,sizeof(authorization_commands) / sizeof(pop3_command) , ctx,key);
+        case TRANSACTION_MONITOR:
+            // return process_command_acc_monitor(monitor_transaction_commands, sizeof(transaction_commands) / sizeof(pop3_command) , ctx,key);
+        default:
+            return ERROR_MONITOR;
     }
 }

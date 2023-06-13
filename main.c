@@ -23,6 +23,7 @@ void sigterm_handler(const int signal) {
     terminationRequested = true;
 }
 
+
 struct sockaddr_storage pop3_server_addr;
 fd_handler pop3_server_handler = {
     .handle_read = handleNewPOP3Connection,
@@ -47,7 +48,6 @@ struct selector_init init_data = {
     .signal = SIGALRM, 
     .select_timeout = { .tv_sec = 100, .tv_nsec = 0 }
 };
-
 
 
 int main(int argc, char** argv) {
@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
     }
 
     // Initialize the server socket to receive new pop3 connections and add it to the selector
-    int server_socket = setupServerSocket(args, pop3_server_addr);
+    int server_socket = setupServerSocket(args, &pop3_server_addr);
     if (server_socket < 0) {
         fprintf(stderr, "Failed to initialize server socket\n");
         return 1;
@@ -94,16 +94,17 @@ int main(int argc, char** argv) {
     }
 
     // Initialize the server socket to receive new pop3 connections and add it to the selector
-    // int monitor_socket = setupMonitorSocket(args, pop3_monitor_addr);
-    // if (server_socket < 0) {
-    //     fprintf(stderr, "Failed to initialize monitor socket\n");
-    //     return 1;
-    // }
-    // ss = selector_register(selector, monitor_socket, &pop3_monitor_handler, OP_READ, &args);
-    // if (ss != SELECTOR_SUCCESS) {
-    //     fprintf(stderr, "Failed to register pop3 monitor socket to selector: %s\n", selector_error(ss));
-    //     return 1;
-    // }
+    int monitor_socket = setupMonitorSocket(args, &pop3_monitor_addr);
+    if (monitor_socket < 0) {
+        fprintf(stderr, "Failed to initialize monitor socket\n");
+        return 1;
+    }
+
+    ss = selector_register(selector, monitor_socket, &pop3_monitor_handler, OP_READ, &args);
+    if (ss != SELECTOR_SUCCESS) {
+        fprintf(stderr, "Failed to register pop3 monitor socket to selector: %s\n", selector_error(ss));
+        return 1;
+    }
 
     metricsInit();
 
@@ -121,7 +122,7 @@ finally:
     // Clean up
     selector_destroy(selector);
     selector_close();
-    close(server_socket);
+    // close(server_socket);
 
     return 0;
 }
