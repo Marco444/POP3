@@ -101,8 +101,6 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    printf("fd server %d, fd monitor %d", server_socket, monitor_socket);
-
     ss = selector_register(selector, monitor_socket, &pop3_monitor_handler, OP_READ, &args);
     if (ss != SELECTOR_SUCCESS) {
         fprintf(stderr, "Failed to register pop3 monitor socket to selector: %s\n", selector_error(ss));
