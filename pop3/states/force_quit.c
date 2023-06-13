@@ -2,10 +2,17 @@
 #include "../new_connection/pop3.h"
 #include <stdio.h>
 
-void on_arrival_force_quit(const unsigned state, struct selector_key *key){ 
+void on_arrival_force_quit(const unsigned state, struct selector_key *key){
     selector_unregister_fd(key->s, key->fd);
-    close(key->fd);
+    struct connection_state * data = key->data;
+    if (data->auth_data.user_index != -1){
+        data->args->users[data->auth_data.user_index].close = false;
+    }
+    if (data->commands.pop3_current_command->cmd_id == RETR){
+        selector_unregister_fd(key->s, data->commands.pop3_current_command->retr_state.mail_fd);
+    }
     clean_user_data(key->data);
+    key->data = NULL;
 }
 void on_departure_force_quit(const unsigned state, struct selector_key *key){ return; }
 enum pop3_states on_read_ready_force_quit(struct selector_key *key){

@@ -23,6 +23,8 @@ void pop3_read(struct selector_key * key) {
 void pop3_write(struct selector_key * key) {
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;
     const unsigned st = stm_handler_write(stm, key);
+    if (key->data == NULL)
+        return;
     pop3_current_command *current_command = ((struct connection_state *) key->data)->commands.pop3_current_command;
     if(current_command->is_finished && !buffer_can_read(&((struct connection_state *) key->data)->commands.write_buffer)) {
         if(buffer_can_read(&((struct connection_state *) key->data)->commands.read_buffer)){
@@ -44,7 +46,7 @@ void pop3_write(struct selector_key * key) {
 }
 void pop3_close(struct selector_key * key) {
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;
-    stm_handler_close(stm, key);
+    //stm_handler_close(stm, key);
 }
 void pop3_block(struct selector_key * key) {
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;
@@ -90,6 +92,7 @@ void handleNewPOP3Connection(struct selector_key * key) {
     buffer_init(&clientData->commands.write_buffer, BUFFER_SIZE, clientData->commands.out_buffer);
     clientData->parser = parser_init(parser_no_classes(), &pop3_parser_definition);
     clientData->commands.pop3_current_command = calloc(1,sizeof(struct pop3_current_command));
+    clientData->commands.pop3_current_command->cmd_id = NOOP;
     clientData->stm.initial = AUTHORIZATION_STATE;
     clientData->stm.states = pop3_server_states;
     clientData->stm.max_state = FORCED_QUIT_STATE;
@@ -98,7 +101,7 @@ void handleNewPOP3Connection(struct selector_key * key) {
     clientData->args = key->data;
     stm_init(&clientData->stm);
 
-    int status = selector_register(key->s, newClientSocket, pop3State(), OP_READ , clientData);
+    int status = selector_register(key->s, newClientSocket, pop3State(), OP_WRITE , clientData);
 
     if (status != SELECTOR_SUCCESS) {
         close(newClientSocket);
@@ -114,5 +117,5 @@ void clean_user_data(void * user_data){
     struct connection_state * clientData = (struct connection_state *)user_data;
     parser_destroy(clientData->parser);
     free(clientData->commands.pop3_current_command);
-    free(clientData);
+   free(clientData);
 }

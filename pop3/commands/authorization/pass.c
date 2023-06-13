@@ -86,7 +86,10 @@ enum pop3_states handle_write_pass(struct selector_key *key, pop3_current_comman
         }
     }
     if(write_in_fd(key)) {
-        return TRANSACTION_STATE;
+        if(pop3_current->has_error)
+            return AUTHORIZATION_STATE;
+        else
+            return TRANSACTION_STATE;
     }else{
         return FORCED_QUIT_STATE;
     }
