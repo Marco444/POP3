@@ -4,6 +4,7 @@
 #include "./lib/args/args.h"
 #include "./lib/selector/selector.h"
 #include "./pop3/new_connection/pop3.h"
+#include "pop3/new_connection/monitor.h"
 #include "sockets.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -18,8 +19,16 @@
 
 static bool terminationRequested = false;
 
-fd_handler server_handler = {
+fd_handler pop3_server_handler = {
     .handle_read = handleNewPOP3Connection,
+    .handle_write = NULL,
+    .handle_block = NULL,
+    .handle_close = NULL
+};
+
+
+fd_handler pop3_monitor_handler = {
+    .handle_read = handleNewMonitorConnection,
     .handle_write = NULL,
     .handle_block = NULL,
     .handle_close = NULL
@@ -76,11 +85,17 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    ss = selector_register(selector, server_socket, &server_handler, OP_READ, &args);
+    ss = selector_register(selector, server_socket, &pop3_server_handler, OP_READ, &args);
     if (ss != SELECTOR_SUCCESS) {
-        fprintf(stderr, "Failed to register server socket to selector: %s\n", selector_error(ss));
+        fprintf(stderr, "Failed to register pop3 server socket to selector: %s\n", selector_error(ss));
         return 1;
     }
+
+    // ss = selector_register(selector, server_socket, &pop3_monitor_handler, OP_READ, &args);
+    // if (ss != SELECTOR_SUCCESS) {
+    //     fprintf(stderr, "Failed to register pop3 server socket to selector: %s\n", selector_error(ss));
+    //     return 1;
+    // }
 
     metricsInit();
 
@@ -91,7 +106,6 @@ int main(int argc, char** argv) {
             fprintf(stderr, "Failed to select: %s\n", selector_error(ss));
             break;
         }
-        //read_commands
     }
 
 
