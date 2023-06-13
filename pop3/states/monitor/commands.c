@@ -1,11 +1,11 @@
 #include "../../commands/command_service.h"
+#include "../../monitor_states.h"
 #include "../../commands/parser.h"
-#include "../../pop3_states.h"
 #include <stdio.h>
 #include <sys/socket.h>
 
 enum monitor_states read_commands_monitor(struct selector_key *key, enum monitor_states pop3_state, bool toRead) { 
-    struct connection_state *conn = (struct connection_state*) key->data;
+    struct monitor_connection_state *conn = (struct monitor_connection_state*) key->data;
     size_t received = 0;
 
     if(toRead) {
