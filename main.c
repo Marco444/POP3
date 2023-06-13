@@ -1,3 +1,4 @@
+#include "lib/metrics/metrics.h"
 #include "monitor/monitor_states.h"
 #include "lib/stm/stm.h"
 #include "./lib/args/args.h"
@@ -155,6 +156,8 @@ int main(int argc, char** argv) {
         fprintf(stderr, "Failed to register server socket to selector: %s\n", selector_error(ss));
         return 1;
     }
+
+    metricsInit();
 
     // Main server loop
     while (!terminationRequested) {

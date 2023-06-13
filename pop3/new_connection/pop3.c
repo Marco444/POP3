@@ -1,4 +1,5 @@
 #include "../../lib/selector/selector.h"
+#include "../../lib/metrics/metrics.h"
 #include "../pop3_states.h"
 #include "pop3.h"
 #include "../commands/parser.h"
@@ -105,6 +106,8 @@ void handleNewPOP3Connection(struct selector_key * key) {
         free(clientData);
         return;
     }
+
+    metricsRegisterNewClient();
 
 }
 

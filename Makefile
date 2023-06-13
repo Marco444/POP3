@@ -1,6 +1,6 @@
 include ./Makefile.inc
 
-LIB_SOURCES=$(wildcard lib/args/*.c lib/buffer/*.c lib/parser/*.c lib/selector/*.c lib/stm/*.c )
+LIB_SOURCES=$(wildcard lib/args/*.c lib/buffer/*.c lib/parser/*.c lib/selector/*.c lib/stm/*.c lib/metrics/*.c)
 MAIN_SOURCES=$(wildcard main.c pop3/*.c pop3/commands/*.c  pop3/commands/authorization/*.c  pop3/commands/update/*.c  pop3/commands/transaction/*.c pop3/states/*.c pop3/new_connection/*.c  )
 TEST_SOURCES=testingMain.c
 
