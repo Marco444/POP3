@@ -4,18 +4,15 @@
 #include "./lib/args/args.h"
 #include "./lib/selector/selector.h"
 #include "./pop3/new_connection/pop3.h"
+#include "sockets.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-#include <errno.h>
-#include <netinet/in.h>
 #include <signal.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/socket.h>
-#include <unistd.h>
 
 #define MAX_CONCURRENT_CONNECTIONS 1024 
 
@@ -28,80 +25,17 @@ fd_handler server_handler = {
     .handle_close = NULL
 };
 
-struct sockaddr_storage auxAddr;
+struct sockaddr_storage pop3_server_addr;
 
-static void sigterm_handler(const int signal) {
+// Initialize selector
+struct selector_init init_data = {
+    .signal = SIGALRM, 
+    .select_timeout = { .tv_sec = 100, .tv_nsec = 0 }
+};
+
+void sigterm_handler(const int signal) {
     terminationRequested = true;
 }
-
-static int initializeServerSocket(char* addr, unsigned short port, void* res, socklen_t* socklenResult) {
-    int ipv6 = strchr(addr, ':') != NULL;
-
-    if (ipv6) {
-        // Parse addr as IPv6
-        struct sockaddr_in6 sock6;
-        memset(&sock6, 0, sizeof(sock6));
-
-        sock6.sin6_family = AF_INET6;
-        sock6.sin6_addr = in6addr_any;
-        sock6.sin6_port = htons(port);
-        if (inet_pton(AF_INET6, addr, &sock6.sin6_addr) != 1) {
-            // log(LOG_ERROR, "Failed IP conversion for IPv6");
-            return 1;
-        }
-
-        *((struct sockaddr_in6*)res) = sock6;
-        *socklenResult = sizeof(struct sockaddr_in6);
-        return 0;
-    }
-
-    // Parse addr as IPv4
-    struct sockaddr_in sock4;
-    memset(&sock4, 0, sizeof(sock4));
-    sock4.sin_family = AF_INET;
-    sock4.sin_addr.s_addr = INADDR_ANY;
-    sock4.sin_port = htons(port);
-    if (inet_pton(AF_INET, addr, &sock4.sin_addr) != 1) {
-        // log(LOG_ERROR, "Failed IP conversion for IPv4");
-        return 1;
-    }
-
-    *((struct sockaddr_in*)res) = sock4;
-    *socklenResult = sizeof(struct sockaddr_in);
-    return 0;
-}
-
-static int setupSocket(struct pop3args args , struct sockaddr_storage auxAddr, socklen_t auxAddrLen) {
-
-    int server_socket = initializeServerSocket(args.pop3_addr, args.pop3_port, &auxAddr, &auxAddrLen);
-    int server = socket(auxAddr.ss_family, SOCK_STREAM, IPPROTO_TCP);
-
-    if (server < 0) {
-        fprintf(stderr, "Unable to create socket");
-        return -1;
-    }
-
-    // man 7 ip. no importa reportar nada si falla.
-    // esto le dice al SO que se puede reusar inmediatamente el socket 
-    setsockopt(server, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int));
-
-    if (bind(server, (struct sockaddr*)&auxAddr, auxAddrLen) < 0) {
-        fprintf(stderr, "Unable to bind socket");
-        return -1;
-    }
-
-    if (listen(server, 20) < 0) {
-        fprintf(stderr, "Unable to listen");
-        return -1;
-    }
-
-    if (selector_fd_set_nio(server) == -1) {
-        fprintf(stderr, "Getting server socket flags");
-    }
-    return 0;
-}
-
-
 
 int main(int argc, char** argv) {
 
@@ -120,24 +54,15 @@ int main(int argc, char** argv) {
     struct pop3args args;
     parse_args(argc, argv, &args);
 
-    //define the address to store the socket
-    memset(&auxAddr, 0, sizeof(auxAddr));
-    socklen_t auxAddrLen = sizeof(auxAddr);
-    int server = -1;
 
     // Initialize the server socket
-    int server_socket = setupSocket(args, auxAddr, auxAddrLen);
+    int server_socket = setupSocket(args, pop3_server_addr);
 
     if (server_socket < 0) {
         fprintf(stderr, "Failed to initialize server socket\n");
         return 1;
     }
 
-    // Initialize selector
-    struct selector_init init_data = {
-        .signal = SIGALRM, 
-        .select_timeout = { .tv_sec = 100, .tv_nsec = 0 }
-    };
 
     selector_status ss = selector_init(&init_data);
     if (ss != SELECTOR_SUCCESS) {
