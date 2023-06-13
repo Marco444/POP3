@@ -1,5 +1,6 @@
 #include "../pop3_states.h"
 #include "write_buffer_helpers.h"
+#include "../../lib/metrics/metrics.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +13,7 @@ void on_arrival_update(const unsigned state, struct selector_key *key) {
     for(int i = 0; i < commands->inbox_data.email_files_length; i++) {
         if(commands->inbox_data.email_files[i].is_deleted) {
             int result = remove(commands->inbox_data.email_files[i].path);
+            metricsRegisterMailsDeleted();
             // if(result == 0)
             //     //log("Email file %s deleted successfully\n", commands->inbox_data.email_files[i].name);
             // else

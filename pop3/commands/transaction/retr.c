@@ -1,4 +1,4 @@
-
+#include "../../../lib/metrics/metrics.h"
 #include "../command_service.h"
 #include "../../states/write_buffer_helpers.h"
 
@@ -90,6 +90,7 @@ void pop3_read_email_handler(struct selector_key *key){
 }
 void pop3_close_email_handler(struct selector_key *key){
     email_data * data = (email_data *) key->data;
+    metricsRegisterMailsRetrieved();
     free(data);
 }
 void pop3_close_block_handler(struct selector_key *key){

@@ -23,6 +23,10 @@ void metricsRegisterMailsRetrieved() {
     metrics.totalMailsRetrieved++;
 }
 
+void metricsRegisterMailsDeleted() {
+    metrics.totalMailsDeleted++;
+}
+
 void getMetricsSnapshot(MetricsSnapshot* snapshot) {
     memcpy(snapshot, &metrics, sizeof(MetricsSnapshot));
 }
