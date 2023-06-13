@@ -2,7 +2,7 @@
 #include "sockets.h"
 
 
-int initializeServerSocket(char* addr, unsigned short port, void* res, socklen_t* socklenResult) {
+static int initializeServerSocket(char* addr, unsigned short port, void* res, socklen_t* socklenResult) {
     int ipv6 = strchr(addr, ':') != NULL;
 
     if (ipv6) {
@@ -39,16 +39,31 @@ int initializeServerSocket(char* addr, unsigned short port, void* res, socklen_t
     return 0;
 }
 
-int setupSocket(struct pop3args args , struct sockaddr_storage pop3_server_addr) {
-
-    //define the address to store the socket
+int setupServerSocket(struct pop3args args , struct sockaddr_storage pop3_server_addr) {
+//define the address to store the socket
     memset(&pop3_server_addr, 0, sizeof(pop3_server_addr));
     socklen_t pop3_server_addrLen = sizeof(pop3_server_addr);
 
     int server_socket = initializeServerSocket(args.pop3_addr, args.pop3_port, &pop3_server_addr, &pop3_server_addrLen);
     int server = socket(pop3_server_addr.ss_family, SOCK_STREAM, IPPROTO_TCP);
 
-    if (server < 0) {
+    return setupSocket(args, pop3_server_addr, server_socket, server, pop3_server_addrLen);
+}
+
+int setupMonitorSocket(struct pop3args args , struct sockaddr_storage pop3_server_addr) {
+//define the address to store the socket
+    memset(&pop3_server_addr, 0, sizeof(pop3_server_addr));
+    socklen_t pop3_server_addrLen = sizeof(pop3_server_addr);
+
+    int server_socket = initializeServerSocket(args.monitor_addr, args.monitor_port, &pop3_server_addr, &pop3_server_addrLen);
+    int server = socket(pop3_server_addr.ss_family, SOCK_STREAM, IPPROTO_TCP);
+
+    return setupSocket(args, pop3_server_addr, server_socket, server, pop3_server_addrLen);
+
+}
+static int setupSocket(struct pop3args args , struct sockaddr_storage pop3_server_addr, int server_socket, int server, socklen_t pop3_server_addrLen) {
+
+        if (server < 0) {
         fprintf(stderr, "Unable to create socket");
         return -1;
     }

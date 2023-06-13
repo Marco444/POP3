@@ -18,9 +18,12 @@
 #include "./lib/args/args.h"
 
 
-int initializeServerSocket(char* addr, unsigned short port, void* res, socklen_t* socklenResult);
+int setupMonitorSocket(struct pop3args args , struct sockaddr_storage pop3_server_addr);
 
+int setupServerSocket(struct pop3args args , struct sockaddr_storage pop3_server_addr);
 
-int setupSocket(struct pop3args args , struct sockaddr_storage pop3_server_addr);
+static int initializeServerSocket(char* addr, unsigned short port, void* res, socklen_t* socklenResult);
+
+static int setupSocket(struct pop3args args , struct sockaddr_storage pop3_server_addr, int server_socket, int server, socklen_t pop3_server_addrLen);
 
 #endif
