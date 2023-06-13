@@ -24,34 +24,33 @@ void sigterm_handler(const int signal) {
 }
 
 
+struct sockaddr_storage pop3_server_addr;
+fd_handler pop3_server_handler = {
+    .handle_read = handleNewPOP3Connection,
+    .handle_write = NULL,
+    .handle_block = NULL,
+    .handle_close = NULL
+};
 
+
+struct sockaddr_storage pop3_monitor_addr;
+fd_handler pop3_monitor_handler = {
+    .handle_read = handleNewMonitorConnection,
+    .handle_write = NULL,
+    .handle_block = NULL,
+    .handle_close = NULL
+};
+
+
+
+// Initialize selector
+struct selector_init init_data = {
+    .signal = SIGALRM, 
+    .select_timeout = { .tv_sec = 100, .tv_nsec = 0 }
+};
 
 
 int main(int argc, char** argv) {
-    struct sockaddr_storage pop3_server_addr;
-    fd_handler pop3_server_handler = {
-        .handle_read = handleNewPOP3Connection,
-        .handle_write = NULL,
-        .handle_block = NULL,
-        .handle_close = NULL
-    };
-
-
-    struct sockaddr_storage pop3_monitor_addr;
-    fd_handler pop3_monitor_handler = {
-        .handle_read = handleNewMonitorConnection,
-        .handle_write = NULL,
-        .handle_block = NULL,
-        .handle_close = NULL
-    };
-
-
-
-    // Initialize selector
-    struct selector_init init_data = {
-        .signal = SIGALRM, 
-        .select_timeout = { .tv_sec = 100, .tv_nsec = 0 }
-    };
 
     //seteo 
     setvbuf(stdout, NULL, _IONBF, 0);
