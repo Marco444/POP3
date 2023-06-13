@@ -1,6 +1,6 @@
-#include "../commands/command_service.h"
-#include "../commands/parser.h"
-#include "../pop3_states.h"
+#include "../../commands/command_service.h"
+#include "../../commands/parser.h"
+#include "../../pop3_states.h"
 #include <stdio.h>
 #include <sys/socket.h>
 

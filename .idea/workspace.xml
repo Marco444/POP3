@@ -19,10 +19,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4d0b85c-302f-4a04-a88d-f71033f66859" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pop3/commands/command_service.c" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/commands/command_service.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pop3/commands/command_service.h" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/commands/command_service.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pop3/shared.h" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/shared.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pop3/monitor-states/authorization.c" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/states/monitor/authorization.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pop3/monitor-states/quit.c" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/states/monitor/quit.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pop3/monitor-states/transaction.c" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/states/monitor/transaction.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pop3/states/authorization.c" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/states/server/authorization.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pop3/states/error.c" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/states/server/error.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pop3/states/force_quit.c" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/states/server/force_quit.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pop3/states/read_commands.c" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/states/server/read_commands.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pop3/states/transaction.c" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/states/server/transaction.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pop3/states/update.c" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/states/server/update.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,11 +99,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pop3/states/server" />
+      <recent name="$PROJECT_DIR$/pop3/states/monitor" />
+      <recent name="$PROJECT_DIR$/pop3/commands/server" />
       <recent name="$PROJECT_DIR$/pop3/new_connection" />
       <recent name="$PROJECT_DIR$/pop3/commands" />
-      <recent name="$PROJECT_DIR$/pop3/commands_manager" />
-      <recent name="$PROJECT_DIR$/pop3/commands/implementations" />
-      <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="RunManager" selected="Makefile Target.main">
@@ -179,7 +185,7 @@
       <workItem from="1685656646147" duration="730000" />
       <workItem from="1685741432970" duration="1428000" />
       <workItem from="1686226858329" duration="30000" />
-      <workItem from="1686684232744" duration="4000" />
+      <workItem from="1686684232744" duration="929000" />
     </task>
     <servers />
   </component>

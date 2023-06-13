@@ -1,5 +1,5 @@
-#include "../pop3_states.h"
-#include "write_buffer_helpers.h"
+#include "../../pop3_states.h"
+#include "../write_buffer_helpers.h"
 
 
 void on_arrival_auth(const unsigned state, struct selector_key *key){ 
