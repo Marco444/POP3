@@ -23,34 +23,35 @@ void sigterm_handler(const int signal) {
     terminationRequested = true;
 }
 
-struct sockaddr_storage pop3_server_addr;
-fd_handler pop3_server_handler = {
-    .handle_read = handleNewPOP3Connection,
-    .handle_write = NULL,
-    .handle_block = NULL,
-    .handle_close = NULL
-};
 
-
-struct sockaddr_storage pop3_monitor_addr;
-fd_handler pop3_monitor_handler = {
-    .handle_read = handleNewMonitorConnection,
-    .handle_write = NULL,
-    .handle_block = NULL,
-    .handle_close = NULL
-};
-
-
-
-// Initialize selector
-struct selector_init init_data = {
-    .signal = SIGALRM, 
-    .select_timeout = { .tv_sec = 100, .tv_nsec = 0 }
-};
 
 
 
 int main(int argc, char** argv) {
+    struct sockaddr_storage pop3_server_addr;
+    fd_handler pop3_server_handler = {
+        .handle_read = handleNewPOP3Connection,
+        .handle_write = NULL,
+        .handle_block = NULL,
+        .handle_close = NULL
+    };
+
+
+    struct sockaddr_storage pop3_monitor_addr;
+    fd_handler pop3_monitor_handler = {
+        .handle_read = handleNewMonitorConnection,
+        .handle_write = NULL,
+        .handle_block = NULL,
+        .handle_close = NULL
+    };
+
+
+
+    // Initialize selector
+    struct selector_init init_data = {
+        .signal = SIGALRM, 
+        .select_timeout = { .tv_sec = 100, .tv_nsec = 0 }
+    };
 
     //seteo 
     setvbuf(stdout, NULL, _IONBF, 0);
@@ -94,16 +95,19 @@ int main(int argc, char** argv) {
     }
 
     // Initialize the server socket to receive new pop3 connections and add it to the selector
-    // int monitor_socket = setupMonitorSocket(args, pop3_monitor_addr);
-    // if (server_socket < 0) {
-    //     fprintf(stderr, "Failed to initialize monitor socket\n");
-    //     return 1;
-    // }
-    // ss = selector_register(selector, monitor_socket, &pop3_monitor_handler, OP_READ, &args);
-    // if (ss != SELECTOR_SUCCESS) {
-    //     fprintf(stderr, "Failed to register pop3 monitor socket to selector: %s\n", selector_error(ss));
-    //     return 1;
-    // }
+    int monitor_socket = setupMonitorSocket(args, pop3_monitor_addr);
+    if (monitor_socket < 0) {
+        fprintf(stderr, "Failed to initialize monitor socket\n");
+        return 1;
+    }
+
+    printf("fd server %d, fd monitor %d", server_socket, monitor_socket);
+
+    ss = selector_register(selector, monitor_socket, &pop3_monitor_handler, OP_READ, &args);
+    if (ss != SELECTOR_SUCCESS) {
+        fprintf(stderr, "Failed to register pop3 monitor socket to selector: %s\n", selector_error(ss));
+        return 1;
+    }
 
     metricsInit();
 
@@ -121,7 +125,7 @@ finally:
     // Clean up
     selector_destroy(selector);
     selector_close();
-    close(server_socket);
+    // close(server_socket);
 
     return 0;
 }

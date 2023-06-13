@@ -40,7 +40,7 @@ static int initializeServerSocket(char* addr, unsigned short port, void* res, so
 }
 
 int setupServerSocket(struct pop3args args , struct sockaddr_storage pop3_server_addr) {
-//define the address to store the socket
+    //define the address to store the socket
     memset(&pop3_server_addr, 0, sizeof(pop3_server_addr));
     socklen_t pop3_server_addrLen = sizeof(pop3_server_addr);
 
@@ -51,7 +51,7 @@ int setupServerSocket(struct pop3args args , struct sockaddr_storage pop3_server
 }
 
 int setupMonitorSocket(struct pop3args args , struct sockaddr_storage pop3_server_addr) {
-//define the address to store the socket
+    //define the address to store the socket
     memset(&pop3_server_addr, 0, sizeof(pop3_server_addr));
     socklen_t pop3_server_addrLen = sizeof(pop3_server_addr);
 

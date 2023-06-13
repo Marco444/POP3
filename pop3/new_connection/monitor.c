@@ -66,6 +66,8 @@ fd_handler * pop3_monitorState(void) {
 }
 void handleNewMonitorConnection(struct selector_key * key) {
 
+    puts("llegue");
+
     struct sockaddr_storage clientAddress;
     socklen_t clientAddressLen = sizeof(clientAddress);
 
