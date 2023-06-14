@@ -1,4 +1,5 @@
 #include "../../pop3_states.h"
+#include "../../../lib/metrics/metrics.h"
 #include "../../new_connection/pop3.h"
 #include <stdio.h>
 
@@ -11,7 +12,9 @@ void on_arrival_force_quit(const unsigned state, struct selector_key *key){
     if (data->commands.pop3_current_command->cmd_id == RETR){
         selector_unregister_fd(key->s, data->commands.pop3_current_command->retr_state.mail_fd);
     }
+    metricsRegisterClientDisconnected();
     clean_user_data(key->data);
+    close(key->fd);
     key->data = NULL;
 }
 void on_departure_force_quit(const unsigned state, struct selector_key *key){

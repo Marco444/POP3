@@ -65,7 +65,7 @@ fd_handler * pop3State(void) {
 }
 
 void handleNewPOP3Connection(struct selector_key * key) {
-
+    print_metric();
     struct sockaddr_storage clientAddress;
     socklen_t clientAddressLen = sizeof(clientAddress);
 

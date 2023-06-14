@@ -21,6 +21,8 @@ void metricsRegisterMailsRetrieved();
 
 void metricsRegisterMailsDeleted();
 
+void print_metric();
+
 void getMetricsSnapshot(MetricsSnapshot* snapshot);
 
 #endif

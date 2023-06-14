@@ -1,7 +1,7 @@
 
 #include "metrics.h"
 #include <string.h>
-
+#include <stdio.h>
 static MetricsSnapshot metrics;
 
 void metricsInit() {
@@ -26,7 +26,13 @@ void metricsRegisterMailsRetrieved() {
 void metricsRegisterMailsDeleted() {
     metrics.totalMailsDeleted++;
 }
-
+void print_metric(){
+    printf("Current connections: %ld\n", metrics.currentConnectionCount);
+    printf("Max concurrent connections: %ld\n", metrics.maxConcurrentConnections);
+    printf("Total connections: %ld\n", metrics.totalConnectionCount);
+    printf("Total mails retrieved: %ld\n", metrics.totalMailsRetrieved);
+    printf("Total mails deleted: %ld\n", metrics.totalMailsDeleted);
+}
 void getMetricsSnapshot(MetricsSnapshot* snapshot) {
     memcpy(snapshot, &metrics, sizeof(MetricsSnapshot));
 }
