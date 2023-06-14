@@ -7,13 +7,11 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-static void reset_buffers(struct commands_state * ctx) {
-    // this doesn't work, it erases the command
-    // for(int i = 0; ctx->cmd[i] != '\0'; i++) ctx->cmd[i] = '\0';
-    // for(int i = 0; ctx->arg1[i] != '\0'; i++) ctx->arg1[i] = '\0';
-    // for(int i = 0; ctx->arg2[i] != '\0'; i++) ctx->arg2[i] = '\0';
-
-    ctx->cmd_length = ctx->arg1_length = ctx->arg2_length = 0;
+void reset_buffers(struct commands_state * ctx){
+     ctx->cmd[0] = '\0';
+     ctx->arg1[0] = '\0';
+     ctx->arg2[0] = '\0';
+     ctx->cmd_length = ctx->arg1_length = ctx->arg2_length = 0;
 }
 
 
@@ -57,14 +55,12 @@ static void consume_into_arg2(struct parser_event *ret, const uint8_t c, struct 
 static void process_command_handler(struct parser_event *ret, const uint8_t c, struct commands_state * ctx) {
     //we store 1 to tell that we have a command and arguments ready to be parsed
     ret->type = IS_COMMAND;
-    reset_buffers(ctx);
 }
 
 
 
 static void invalid_arguments(struct parser_event *ret, const uint8_t c, struct commands_state * ctx) {
     ret->type = INVALID_COMMAND;
-    reset_buffers(ctx);
 }
 
 static const struct parser_state_transition st_start [] =  {

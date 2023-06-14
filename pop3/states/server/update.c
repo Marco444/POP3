@@ -5,37 +5,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SIGNOFF_MSG "+OK POP3 server deleted the mails\r\n"
 
 void on_arrival_update(const unsigned state, struct selector_key *key) {
-    struct commands_state *commands = (struct commands_state *)key->data;
-    bool deletedEmail = false;
-
+    struct commands_state * commands = &((struct connection_state *)key->data)->commands;
+    commands->pop3_current_command->cmd_id = QUIT_UPDATE;
+    commands->pop3_current_command->is_finished = false;
+    commands->pop3_current_command->quit_update_state.has_error = false;
+    commands->pop3_current_command->quit_update_state.has_deleted = false;
     for(int i = 0; i < commands->inbox_data.email_files_length; i++) {
         if(commands->inbox_data.email_files[i].is_deleted) {
             int result = remove(commands->inbox_data.email_files[i].path);
             metricsRegisterMailsDeleted();
-            deletedEmail = true;
-            // if(result == 0)
-            //     //log("Email file %s deleted successfully\n", commands->inbox_data.email_files[i].name);
-            // else
-            //     //log("Failed to delete email file %s\n", commands->inbox_data.email_files[i].name);
+            commands->pop3_current_command->quit_update_state.has_deleted  = true;
+            if(result < 0 ) {
+                commands->pop3_current_command->quit_update_state.has_error = true;
+                printf("Failed to delete email file %s\n", commands->inbox_data.email_files[i].name);
+            }
         }
     }
 
-    if(!deletedEmail) return;
-
-    bool has_place = enters_the_buffer(key, SIGNOFF_MSG);
-    if (has_place) {
-        int offset = write_in_buffer(key, SIGNOFF_MSG, strlen(SIGNOFF_MSG), 0);
-        if (offset == -1) {
-            commands->pop3_current_command->is_finished = true;
-        }
-    }
 }
 
-void on_departure_update(const unsigned state, struct selector_key *key){ return; }
+void on_departure_update(const unsigned state, struct selector_key *key){
+    ((struct connection_state *)key->data)->commands.last_state = UPDATE_STATE;
+    return; }
 enum pop3_states on_read_ready_update(struct selector_key *key){ return UPDATE_STATE; }
-enum pop3_states on_write_ready_update(struct selector_key *key){ return 0; }
+enum pop3_states on_write_ready_update(struct selector_key *key){
+    return write_command(key);
+}
 enum pop3_states on_block_ready_update(struct selector_key *key){ return 0; }
 

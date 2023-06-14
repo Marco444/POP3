@@ -8,7 +8,7 @@
 #define PATH_DIR "/foo/laucha/"
 #define ERRORS_PASS "-ERR unable to lock mailbox\r\n"
 #define OK_PASS "+OK mailbox locked and ready\r\n"
-
+int write_in_fd(struct selector_key *key);
 enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *key) {
     DIR *folder;
     struct dirent * entry;
@@ -28,8 +28,11 @@ enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *k
         ctx->pop3_current_command->has_error = true;
         return AUTHORIZATION_STATE;
     }
-    state->auth_data.is_logged = true;
-    char * path = malloc(strlen(state->args->users[state->auth_data.user_index].name) + strlen(state->args->mail_dir) + 40);
+    if (state->args->users[state->auth_data.user_index].close == true){
+        ctx->pop3_current_command->has_error = true;
+        return AUTHORIZATION_STATE;
+    }
+    char path[PATH_MAX];
     strcpy(path, state->args->mail_dir);
     strcat(path, state->args->users[state->auth_data.user_index].name);
     strcat(path, "/curl/");
@@ -39,6 +42,8 @@ enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *k
         ctx->pop3_current_command->has_error = true;
         return AUTHORIZATION_STATE;
     }
+    state->args->users[state->auth_data.user_index].close = true;
+    state->auth_data.is_logged = true;
     struct stat st;
     int i = 0;
     while( (entry=readdir(folder)) && i < POP3_MAX_EMAILS)
@@ -55,6 +60,12 @@ enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *k
         ctx->inbox_data.total_size += size;
         i++;
     }
+    if(closedir(folder) < 0){
+        state->args->users[state->auth_data.user_index].close = false;
+        state->auth_data.is_logged = false;
+        ctx->pop3_current_command->has_error = true;
+        return AUTHORIZATION_STATE;
+    }
     ctx->inbox_data.email_files_length = i;
     return AUTHORIZATION_STATE;
 }
@@ -68,6 +79,7 @@ enum pop3_states handle_write_pass(struct selector_key *key, pop3_current_comman
             if (offset == -1) {
                 pop3_current->is_finished = true;
             }
+
         }
     } else {
         bool has_place = enters_the_buffer(key, ERRORS_PASS);
@@ -76,7 +88,15 @@ enum pop3_states handle_write_pass(struct selector_key *key, pop3_current_comman
             if (offset == -1) {
                 pop3_current->is_finished = true;
             }
+
         }
     }
-    return TRANSACTION_STATE;
+    if(write_in_fd(key)) {
+        if(pop3_current->has_error)
+            return AUTHORIZATION_STATE;
+        else
+            return TRANSACTION_STATE;
+    }else{
+        return FORCED_QUIT_STATE;
+    }
 }

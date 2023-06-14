@@ -8,6 +8,7 @@
 #define OK_QUIT "+OK Quit\r\n"
 #define ERRORS_LIST "-ERR no such message\r\n"
 #define FINISH_LIST ".\r\n"
+int write_in_fd(struct selector_key *key);
 
 enum pop3_states handle_list(struct commands_state * ctx, struct selector_key *key) {
     ctx->pop3_current_command->cmd_id = LIST;
@@ -92,5 +93,9 @@ enum pop3_states handle_write_list(struct selector_key *key, pop3_current_comman
             }
         }
     }
-    return TRANSACTION_STATE;
+    if(write_in_fd(key)) {
+        return TRANSACTION_STATE;
+    }else{
+        return FORCED_QUIT_STATE;
+    }
 }

@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <sys/socket.h>
 
-
+ void reset_buffers(struct commands_state * ctx);
 typedef enum pop3_states (*command_handler)(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands);
 
 static command_handler command_handlers[CMD_ID_COUNT] = {
@@ -26,6 +26,8 @@ enum pop3_states write_command(struct selector_key *key) {
     pop3_current_command *current_command = ((struct connection_state *) key->data)->commands.pop3_current_command;
     struct commands_state *commands = &((struct connection_state *) key->data)->commands;
 
+    // Chequear problema de que me llegue muchas veces aca
+
     if (current_command->cmd_id >= 0 && current_command->cmd_id < CMD_ID_COUNT)
         return command_handlers[current_command->cmd_id](key, current_command, commands);
 
@@ -35,7 +37,6 @@ enum pop3_states write_command(struct selector_key *key) {
 enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_state, bool toRead) { 
     struct connection_state *conn = (struct connection_state*) key->data;
     size_t received = 0;
-
     if(toRead) {
         // get write pointer and available size
         size_t nbyte;
@@ -70,13 +71,13 @@ enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_s
                 if(ret->type == IS_COMMAND) {
                     buffer_read_adv(&conn->commands.read_buffer, 1);
                     enum pop3_states state = process_command(&conn->commands,key,pop3_state);
-                    conn->commands.arg1[0] = '\0';
-                    conn->commands.arg2[0] = '\0';
+                    reset_buffers(&conn->commands);
                     selector_set_interest_key(key, OP_WRITE);
                     return state;
                 }
 
                 if(ret->type == INVALID_COMMAND) {
+                    reset_buffers(&conn->commands);
                     buffer_read_adv(&conn->commands.read_buffer, 1);
                     selector_set_interest_key(key, OP_WRITE);
                     return ERROR_STATE;
