@@ -15,14 +15,12 @@ enum monitor_states handle_monitor_username(struct commands_state * ctx,struct s
 
 enum monitor_states handle_write_username_monitor(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
   // puts("llegue a escribir paa");
-  // write_in_buffer(key, CAPA_MSG, strlen(CAPA_MSG), 0);
-  // current_command->is_finished = true;
-  // if(write_in_fd(key)) {
-  //     return AUTH_MONITOR;
-  // }else{
-  //     return ERROR_MONITOR;
-  // }
   write_in_buffer_monitor(key, CAPA_MSG, strlen(CAPA_MSG), 0);
   current_command->is_finished = true;
+  if(write_in_fd_monitor(key)) {
+      return AUTH_MONITOR;
+  }else{
+      return ERROR_MONITOR;
+  }
   return AUTH_MONITOR;
 }
