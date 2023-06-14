@@ -37,7 +37,6 @@ enum pop3_states write_command(struct selector_key *key) {
 enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_state, bool toRead) { 
     struct connection_state *conn = (struct connection_state*) key->data;
     size_t received = 0;
-
     if(toRead) {
         // get write pointer and available size
         size_t nbyte;

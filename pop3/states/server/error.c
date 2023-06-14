@@ -5,12 +5,10 @@
 #include <stdio.h>
 
 #define ERROR_MSG "-ERR Invalid command \n"
-
+int write_in_fd(struct selector_key *key);
 void on_arrival_error(const unsigned state, struct selector_key *key){ 
-  write_in_buffer(key, ERROR_MSG, strlen(ERROR_MSG), 0);
 }
 void on_departure_error(const unsigned state, struct selector_key *key){
-    ((struct connection_state *)key->data)->commands.last_state = AUTHORIZATION_STATE;
     return;
 }
 
@@ -22,6 +20,8 @@ enum pop3_states on_read_ready_error(struct selector_key *key){
 }
 
 enum pop3_states on_write_ready_error(struct selector_key *key){
+    write_in_buffer(key, ERROR_MSG, strlen(ERROR_MSG), 0);
+    write_in_fd(key);
     return ((struct connection_state *)key->data)->commands.last_state;
 }
 enum pop3_states on_block_ready_error(struct selector_key *key){ return 0; }
