@@ -19,6 +19,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4d0b85c-302f-4a04-a88d-f71033f66859" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pop3/monitor-states/authorization.c" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/states/monitor/authorization.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pop3/monitor-states/quit.c" beforeDir="false" afterPath="$PROJECT_DIR$/pop3/states/monitor/quit.c" afterDir="false" />
@@ -185,7 +186,7 @@
       <workItem from="1685656646147" duration="730000" />
       <workItem from="1685741432970" duration="1428000" />
       <workItem from="1686226858329" duration="30000" />
-      <workItem from="1686684232744" duration="929000" />
+      <workItem from="1686684232744" duration="1593000" />
     </task>
     <servers />
   </component>

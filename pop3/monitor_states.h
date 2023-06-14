@@ -9,12 +9,19 @@
 
 extern struct state_definition pop3_monitor_states[];
 
+// typedef struct monitor_current_command{
+//     enum MONITOR_CMD_ID cmd_id;
+//     bool is_finished;
+//     bool has_error;
+// }monitor_current_command;
+
 struct monitor_connection_state {
     struct parser * parser;
     struct state_machine stm;
     struct pop3args * args;
     struct authorization_data auth_data;
     struct commands_state commands;
+    // monitor_current_command * monitor_current_command;
 };
 
 // State function declarations
