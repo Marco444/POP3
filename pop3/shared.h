@@ -22,6 +22,9 @@ enum monitor_states {
 enum MONITOR_CMD_ID {
   USERNAME,
   PASSWORD,
+  METRICS,
+  EXIT,
+  ADD_USER,
   MONITOR_CMD_COUNT
 };
 

@@ -2,7 +2,14 @@
 #include <stdio.h>
 
 monitor_command monitor_authorization_commands[] = {
-    {"USERNAME", handle_monitor_username }
+    {"USERNAME", handle_monitor_username },
+    {"PASSWORD", handle_monitor_password }
+};
+
+monitor_command monitor_transaction_commands[] = {
+    {"METRICS", handle_monitor_metrics },
+    {"EXIT", handle_monitor_exit },
+    {"ADD_USER", handle_monitor_add_user }
 };
 
 pop3_command transaction_commands[] = {
@@ -69,7 +76,7 @@ enum monitor_states process_command_monitor(struct commands_state *ctx,struct se
         case AUTH_MONITOR:
             return process_command_acc_monitor(monitor_authorization_commands,sizeof(authorization_commands) / sizeof(pop3_command) , ctx,key);
         case TRANSACTION_MONITOR:
-            // return process_command_acc_monitor(monitor_transaction_commands, sizeof(transaction_commands) / sizeof(pop3_command) , ctx,key);
+             return process_command_acc_monitor(monitor_transaction_commands, sizeof(transaction_commands) / sizeof(pop3_command) , ctx,key);
         default:
             return ERROR_MONITOR;
     }

@@ -8,7 +8,10 @@ typedef enum monitor_states (*command_handler)(struct selector_key *key, pop3_cu
 
 static command_handler monitor_command_handlers[MONITOR_CMD_COUNT] = {
     [USERNAME] = handle_write_username_monitor,
-    [PASSWORD] = handle_write_username_monitor,
+    [PASSWORD] = handle_write_password_monitor,
+    [METRICS] = handle_write_metrics_monitor,
+    [EXIT] = handle_write_exit_monitor,
+    [ADD_USER] = handle_write_add_user_monitor,
 };
 
 enum monitor_states write_command_monitor(struct selector_key *key) {
