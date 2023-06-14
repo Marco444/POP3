@@ -8,17 +8,19 @@ typedef enum monitor_states (*command_handler)(struct selector_key *key, pop3_cu
 
 static command_handler monitor_command_handlers[MONITOR_CMD_COUNT] = {
     [USERNAME] = handle_write_username_monitor,
+    [PASSWORD] = handle_write_username_monitor,
 };
 
 enum monitor_states write_command_monitor(struct selector_key *key) {
     pop3_current_command *current_command = ((struct monitor_connection_state *) key->data)->commands.pop3_current_command;
     struct commands_state *commands = &((struct monitor_connection_state *) key->data)->commands;
 
-    if (current_command->cmd_id >= 0 && current_command->cmd_id < CMD_ID_COUNT)
+    if (current_command->cmd_id >= 0 && current_command->cmd_id < MONITOR_CMD_COUNT)
         return monitor_command_handlers[current_command->cmd_id](key, current_command, commands);
 
     return ERROR_MONITOR;
 }
+
 enum monitor_states read_commands_monitor(struct selector_key *key, enum monitor_states pop3_state, bool toRead) { 
     struct monitor_connection_state *conn = (struct monitor_connection_state*) key->data;
     size_t received = 0;
