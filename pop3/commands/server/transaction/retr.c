@@ -37,8 +37,8 @@ void pop3_read_email_handler(struct selector_key *key){
     if (sent <= 0 && !buffer_can_read(write_buffer)) {
         *(data->isAllDone) = true;
         // Me tengo que desregristrar
-        selector_set_interest_key(key, OP_NOOP);
         selector_set_interest(key->s,data->connection_fd, OP_WRITE);
+        selector_unregister_fd(key->s, data->email_fd);
         return;
     } else {
         buffer_write_adv(write_buffer, sent);
@@ -53,10 +53,6 @@ void pop3_read_email_handler(struct selector_key *key){
 
     while (buffer_can_read(write_buffer) && buffer_can_write(connection_buffer)) {
         uint8_t *readPtr = buffer_read_ptr(write_buffer, &(capacity));
-        if (*(readPtr) == EOF) {
-            *(data->isAllDone) = true;
-            break;
-        }
         switch (data->character_flag){
             case 0:
                 if(*readPtr == '\r')
