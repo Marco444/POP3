@@ -16,6 +16,9 @@ extern pop3_command commands[];
 enum pop3_states handle_user(struct commands_state * ctx,struct selector_key *key);
 enum pop3_states handle_write_user(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands);
 
+enum pop3_states handle_authorization_capa(struct commands_state * ctx, struct selector_key *key);
+enum pop3_states handle_write_authorization_capa(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands);
+
 enum pop3_states handle_pass(struct commands_state * ctx,struct selector_key *key);
 enum pop3_states handle_write_pass(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands);
 

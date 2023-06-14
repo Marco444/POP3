@@ -46,6 +46,7 @@ struct authorization_data{
 enum CMD_ID {
     USER,
     PASS,
+    CAPA_AUTH,
     QUIT_AUTH,
     QUIT_TRANSACTION,
     QUIT_UPDATE,

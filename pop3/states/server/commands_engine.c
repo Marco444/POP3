@@ -10,6 +10,7 @@ typedef enum pop3_states (*command_handler)(struct selector_key *key, pop3_curre
 static command_handler command_handlers[CMD_ID_COUNT] = {
     [USER] = handle_write_user,
     [PASS] = handle_write_pass,
+    [CAPA_AUTH] = handle_write_authorization_capa,
     [QUIT_AUTH] = handle_write_authorization_quit,
     [QUIT_TRANSACTION] = handle_write_transaction_quit,
     [QUIT_UPDATE] = handle_write_update_quit,

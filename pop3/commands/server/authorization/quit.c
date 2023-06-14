@@ -14,8 +14,8 @@ enum pop3_states handle_authorization_quit(struct commands_state * ctx, struct s
 }
 
 enum pop3_states handle_write_authorization_quit(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
-    puts("llegue");
     write_in_buffer(key, QUIT_MSG_TRANSACTION, strlen(QUIT_MSG_TRANSACTION), 0);
     current_command->is_finished = true;
-    return AUTHORIZATION_STATE;
+    write_in_fd(key);
+    return FORCED_QUIT_STATE;
 }

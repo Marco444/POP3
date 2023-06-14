@@ -26,6 +26,8 @@ pop3_command transaction_commands[] = {
 pop3_command authorization_commands[] = {
     {"USER", handle_user},
     {"PASS", handle_pass},
+    {"CAPA", handle_authorization_capa},
+
     {"QUIT", handle_authorization_quit}
 };
 
