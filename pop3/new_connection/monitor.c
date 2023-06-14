@@ -1,5 +1,6 @@
 #include "../../lib/selector/selector.h"
 #include "../../lib/metrics/metrics.h"
+#include "../states/write_buffer_helpers.h"
 #include "../monitor_states.h"
 #include "monitor.h"
 #include "../states/monitor/commands.h"
@@ -16,7 +17,6 @@ void pop3_monitor_read(struct selector_key * key);
 void pop3_monitor_write(struct selector_key * key);
 void pop3_monitor_close(struct selector_key * key);
 void pop3_monitor_block(struct selector_key * key);
-void write_in_fd(struct selector_key *key);
 
 void pop3_monitor_read(struct selector_key * key) {
     struct state_machine* stm = &((struct monitor_connection_state *) key->data)->stm;
@@ -26,7 +26,7 @@ void pop3_monitor_read(struct selector_key * key) {
 void pop3_monitor_write(struct selector_key * key) {
     struct state_machine* stm = &((struct monitor_connection_state *) key->data)->stm;
    enum monitor_states st = stm_handler_write(stm, key);
-    write_in_fd(key);
+    write_in_fd_monitor(key);
     pop3_current_command *current_command = ((struct connection_state *) key->data)->commands.pop3_current_command;
     if(current_command->is_finished && !buffer_can_read(&((struct connection_state *) key->data)->commands.write_buffer)) {
         if(buffer_can_read(&((struct connection_state *) key->data)->commands.read_buffer)){
