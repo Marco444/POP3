@@ -91,7 +91,7 @@ typedef struct pop3_current_command{
        quit_update_state quit_update_state;
        bool noop_state;
     };
-    enum CMD_ID cmd_id;
+    unsigned int cmd_id;
     bool is_finished;
     bool has_error;
 }pop3_current_command;

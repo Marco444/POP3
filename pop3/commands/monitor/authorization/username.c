@@ -10,7 +10,6 @@ enum monitor_states handle_monitor_username(struct commands_state * ctx,struct s
   ctx->pop3_current_command->is_finished = false;
   ctx->pop3_current_command->has_error = false;
   ctx->pop3_current_command->noop_state = true;
-  puts("sali");
   return AUTH_MONITOR;
 }
 
