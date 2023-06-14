@@ -2,7 +2,7 @@
 #include "../../../states/write_buffer_helpers.h"
 #include <stdio.h>
 
-#define CAPA_MSG "arrived"
+#define OK_MSG "+ OK\r\n"
 
 enum monitor_states handle_monitor_username(struct commands_state * ctx,struct selector_key *key) {
   puts("USERNAME");
@@ -14,13 +14,9 @@ enum monitor_states handle_monitor_username(struct commands_state * ctx,struct s
 }
 
 enum monitor_states handle_write_username_monitor(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
-  // puts("llegue a escribir paa");
-  write_in_buffer_monitor(key, CAPA_MSG, strlen(CAPA_MSG), 0);
+  write_in_buffer_monitor(key, OK_MSG, strlen(OK_MSG), 0);
   current_command->is_finished = true;
-  if(write_in_fd_monitor(key)) {
+  if(write_in_fd_monitor(key))
       return AUTH_MONITOR;
-  }else{
-      return ERROR_MONITOR;
-  }
-  return AUTH_MONITOR;
+  return ERROR_MONITOR;
 }

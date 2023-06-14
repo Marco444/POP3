@@ -29,6 +29,14 @@ struct state_definition pop3_monitor_states[]  = {
         .on_block_ready   = on_block_ready_quit_monitor,
     },
     {
+        .state            = FORCED_QUIT_MONITOR,
+        .on_arrival       = on_arrival_forced_quit_monitor,
+        .on_departure     = on_departure_forced_quit_monitor,
+        .on_read_ready    = on_read_ready_forced_quit_monitor,
+        .on_write_ready   = on_write_ready_forced_quit_monitor,
+        .on_block_ready   = on_block_ready_forced_quit_monitor,
+    },
+    {
         .state            = ERROR_MONITOR,
         .on_arrival       = on_arrival_quit_monitor,
         .on_departure     = on_departure_quit_monitor,
