@@ -8,9 +8,11 @@
 
 void on_arrival_error(const unsigned state, struct selector_key *key){ 
   write_in_buffer(key, ERROR_MSG, strlen(ERROR_MSG), 0);
-  return;
 }
-void on_departure_error(const unsigned state, struct selector_key *key){ return; }
+void on_departure_error(const unsigned state, struct selector_key *key){
+    ((struct connection_state *)key->data)->commands.last_state = AUTHORIZATION_STATE;
+    return;
+}
 
 enum pop3_states on_read_ready_error(struct selector_key *key){
   // selector_unregister_fd(key->s, key->fd);
@@ -19,5 +21,7 @@ enum pop3_states on_read_ready_error(struct selector_key *key){
   return ERROR_STATE;
 }
 
-enum pop3_states on_write_ready_error(struct selector_key *key){ return 0; }
+enum pop3_states on_write_ready_error(struct selector_key *key){
+    return ((struct connection_state *)key->data)->commands.last_state;
+}
 enum pop3_states on_block_ready_error(struct selector_key *key){ return 0; }

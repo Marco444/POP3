@@ -16,6 +16,9 @@ enum pop3_states on_write_ready_trans(struct selector_key *key) {
 
 // State function declarations for TRANSACTION_STATE
 void on_arrival_trans(const unsigned state, struct selector_key *key){ return; }
-void on_departure_trans(const unsigned state, struct selector_key *key){ return; }
+void on_departure_trans(const unsigned state, struct selector_key *key){
+    ((struct connection_state *)key->data)->commands.last_state = TRANSACTION_STATE;
+    return;
+}
 enum pop3_states on_block_ready_trans(struct selector_key *key) { return 0; }
 

@@ -17,7 +17,7 @@ void write_in_fd(struct selector_key *key);
 
 void pop3_read(struct selector_key * key) {
     struct state_machine * stm = &((struct connection_state *) key->data)->stm;
-    enum pop3_states st = stm_handler_read(stm, key);
+    stm_handler_read(stm, key);
 }
 
 void pop3_write(struct selector_key * key) {
@@ -45,12 +45,11 @@ void pop3_write(struct selector_key * key) {
     }
 }
 void pop3_close(struct selector_key * key) {
-    struct state_machine* stm = &((struct connection_state *) key->data)->stm;
-    //stm_handler_close(stm, key);
+
 }
 void pop3_block(struct selector_key * key) {
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;
-    const enum pop3_states st = stm_handler_block(stm, key);
+    stm_handler_block(stm, key);
 }
 
 static fd_handler handler = {
@@ -93,6 +92,7 @@ void handleNewPOP3Connection(struct selector_key * key) {
     clientData->parser = parser_init(parser_no_classes(), &pop3_parser_definition);
     clientData->commands.pop3_current_command = calloc(1,sizeof(struct pop3_current_command));
     clientData->commands.pop3_current_command->cmd_id = NOOP;
+    clientData->commands.last_state= NONE_STATE;
     clientData->stm.initial = AUTHORIZATION_STATE;
     clientData->stm.states = pop3_server_states;
     clientData->stm.max_state = FORCED_QUIT_STATE;
@@ -118,5 +118,5 @@ void clean_user_data(void * user_data){
     struct connection_state * clientData = (struct connection_state *)user_data;
     parser_destroy(clientData->parser);
     free(clientData->commands.pop3_current_command);
-   free(clientData);
+    free(clientData);
 }

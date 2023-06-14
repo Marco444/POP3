@@ -9,7 +9,7 @@
 #define POP3_MAX_ARG_LENGTH 512 
 #define POP3_MAX_EMAILS 500
 #define NAME_MAX 1024
-#define PATH_MAX 1024
+#define PATH_MAX 4096
 
 enum monitor_states {
   AUTH_MONITOR,
@@ -31,6 +31,7 @@ enum pop3_states {
     UPDATE_STATE,
     ERROR_STATE,
     FORCED_QUIT_STATE,
+    NONE_STATE,
     SERVER_STATE_COUNT,
 };
 
@@ -79,11 +80,15 @@ typedef struct list_state{
     int argument;
 
 }list_state;
-
+typedef struct quit_update_state{
+    bool has_deleted;
+    bool has_error;
+}quit_update_state;
 typedef struct pop3_current_command{
     union {
        retr_state retr_state;
        list_state list_state;
+       quit_update_state quit_update_state;
        bool noop_state;
     };
     enum CMD_ID cmd_id;
@@ -111,6 +116,8 @@ struct commands_state {
     // Aca va a tener la lista de los archivos que tiene en el file
     inbox_data inbox_data;
     int email_fd;
+
+    enum pop3_states last_state;
 };
 
 #endif

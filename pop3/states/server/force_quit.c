@@ -14,7 +14,9 @@ void on_arrival_force_quit(const unsigned state, struct selector_key *key){
     clean_user_data(key->data);
     key->data = NULL;
 }
-void on_departure_force_quit(const unsigned state, struct selector_key *key){ return; }
+void on_departure_force_quit(const unsigned state, struct selector_key *key){
+    ((struct connection_state *)key->data)->commands.last_state = FORCED_QUIT_STATE;
+}
 enum pop3_states on_read_ready_force_quit(struct selector_key *key){
      return AUTHORIZATION_STATE;
 }
