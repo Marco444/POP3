@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../../command_service.h"
 #include "../../../states/write_buffer_helpers.h"
 #define SIGNOFF_MSG "+OK POP3 server deleted the mails\r\n"

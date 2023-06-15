@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "lib/metrics/metrics.h"
 #include "monitor/monitor_states.h"
 #include "lib/stm/stm.h"
@@ -118,7 +120,6 @@ int main(int argc, char** argv) {
     }
 
 
-finally:
     // Clean up
     selector_destroy(selector);
     selector_close();
