@@ -45,6 +45,9 @@ void pop3_write(struct selector_key * key) {
     }
 }
 void pop3_close(struct selector_key * key) {
+    clean_user_data(key->data);
+    close(key->fd);
+    key->data = NULL;
 
 }
 void pop3_block(struct selector_key * key) {

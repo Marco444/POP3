@@ -28,6 +28,7 @@ typedef struct user {
 typedef struct pop3args {
     // USERS (Array is null terminated)
     struct user users[MAX_USERS];
+    struct user users_admin[MAX_USERS];
     // POP3 server Address and port
     char           * pop3_addr;
     unsigned short  pop3_port;

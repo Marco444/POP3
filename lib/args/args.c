@@ -85,9 +85,10 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
 
     char c;
     int nusers = 0;
+    int nusers_admin = 0;
 
     // Flags for mandatory parameters
-    int mandatory_mail_dir = 0;
+    bool mandatory_mail_dir = false;
 
     while (true) {
         int option_index = 0;
@@ -106,7 +107,7 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
             { 0,           0,                 0, 0 }
         };
         // TODO check if there flags that have to be removed
-        c = getopt_long(argc, argv, "hl:L:Np:P:u:vd:", long_options, &option_index);
+        c = getopt_long(argc, argv, "hl:L:Np:P:u:vd:a:", long_options, &option_index);
         
         if (c == -1)
             break;
@@ -145,8 +146,18 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
                 break;
             
             case 'd':
-                mandatory_mail_dir = 1;
+                mandatory_mail_dir = true;
                 args->mail_dir = optarg;
+                break;
+
+            case 'a':
+                if(nusers_admin >= MAX_USERS) {
+                    fprintf(stderr, "maximun number of admin command line users reached: %d.\n", MAX_USERS);
+                    exit(1);
+                } else {
+                    write_user(optarg, args->users_admin + nusers_admin);
+                    nusers_admin++;
+                }
                 break;
             // TODO check if we have to remove this
             // case 0xD001:
