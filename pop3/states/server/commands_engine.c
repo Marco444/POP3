@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../../commands/command_service.h"
 #include "../../commands/parser.h"
 #include "../../pop3_states.h"
@@ -29,7 +31,7 @@ enum pop3_states write_command(struct selector_key *key) {
 
     // Chequear problema de que me llegue muchas veces aca
 
-    if (current_command->cmd_id >= 0 && current_command->cmd_id < CMD_ID_COUNT)
+    if ( current_command->cmd_id < CMD_ID_COUNT)
         return command_handlers[current_command->cmd_id](key, current_command, commands);
 
     return ERROR_STATE;
@@ -49,7 +51,6 @@ enum pop3_states read_commands(struct selector_key *key, enum pop3_states pop3_s
 
     enum pop3_states next_state = pop3_state;
 
-    bool read_command = false;
 
     if (!toRead || received > 0) {
        

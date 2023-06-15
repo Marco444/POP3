@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../../commands/command_service.h"
 #include "../../monitor_states.h"
 #include "../../commands/parser.h"
@@ -18,7 +20,7 @@ enum monitor_states write_command_monitor(struct selector_key *key) {
     pop3_current_command *current_command = ((struct monitor_connection_state *) key->data)->commands.pop3_current_command;
     struct commands_state *commands = &((struct monitor_connection_state *) key->data)->commands;
 
-    if (current_command->cmd_id >= 0 && current_command->cmd_id < MONITOR_CMD_COUNT)
+    if ( current_command->cmd_id < MONITOR_CMD_COUNT)
         return monitor_command_handlers[current_command->cmd_id](key, current_command, commands);
 
     return ERROR_MONITOR;
@@ -39,7 +41,6 @@ enum monitor_states read_commands_monitor(struct selector_key *key, enum monitor
 
     enum monitor_states  next_state = pop3_state;
 
-    bool read_command = false;
 
     if (!toRead || received > 0) {
        

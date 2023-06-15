@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../../lib/selector/selector.h"
 #include "../../lib/metrics/metrics.h"
 #include "../pop3_states.h"
@@ -21,6 +23,7 @@ void pop3_read(struct selector_key * key) {
 }
 
 void pop3_write(struct selector_key * key) {
+    
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;
     const unsigned st = stm_handler_write(stm, key);
     if (key->data == NULL)
@@ -48,7 +51,6 @@ void pop3_close(struct selector_key * key) {
     clean_user_data(key->data);
     close(key->fd);
     key->data = NULL;
-
 }
 void pop3_block(struct selector_key * key) {
     struct state_machine* stm = &((struct connection_state *) key->data)->stm;
