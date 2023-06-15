@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../pop3_states.h"
+#include "../monitor_states.h"
 #include "server/server.h"
 #include "monitor/monitor.h"
 
