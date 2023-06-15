@@ -60,7 +60,6 @@ static enum monitor_states process_command_acc_monitor(monitor_command commands[
         }
     }
  
-    puts("parsed them incorrectyl");
     return ERROR_MONITOR; 
 }
 
@@ -82,8 +81,6 @@ enum monitor_states process_command_monitor(struct commands_state *ctx,struct se
         case AUTH_MONITOR:
             return process_command_acc_monitor(monitor_authorization_commands,sizeof(monitor_authorization_commands) / sizeof(monitor_command) , ctx,key);
         case TRANSACTION_MONITOR:
-            printf("%s", ctx->cmd);
-            puts("parsing metrics");
              return process_command_acc_monitor(monitor_transaction_commands, sizeof(monitor_transaction_commands) / sizeof(monitor_command) , ctx,key);
         default:
             return ERROR_MONITOR;
