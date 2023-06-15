@@ -1,4 +1,5 @@
 #include "./command_service.h"
+#include "monitor/monitor.h"
 #include <stdio.h>
 #include <strings.h>
 monitor_command monitor_authorization_commands[] = {
@@ -56,7 +57,8 @@ static enum monitor_states process_command_acc_monitor(monitor_command commands[
             return commands[i].handler(ctx,key);
         }
     }
-
+ 
+    puts("parsed them incorrectyl");
     return ERROR_MONITOR; 
 }
 
@@ -76,9 +78,11 @@ enum pop3_states process_command(struct commands_state *ctx,struct selector_key 
 enum monitor_states process_command_monitor(struct commands_state *ctx,struct selector_key *key, enum monitor_states pop3_state) {
     switch(pop3_state) {
         case AUTH_MONITOR:
-            return process_command_acc_monitor(monitor_authorization_commands,sizeof(monitor_authorization_commands) / sizeof(pop3_command) , ctx,key);
+            return process_command_acc_monitor(monitor_authorization_commands,sizeof(monitor_authorization_commands) / sizeof(monitor_command) , ctx,key);
         case TRANSACTION_MONITOR:
-             return process_command_acc_monitor(monitor_transaction_commands, sizeof(monitor_transaction_commands) / sizeof(pop3_command) , ctx,key);
+            printf("%s", ctx->cmd);
+            puts("parsing metrics");
+             return process_command_acc_monitor(monitor_transaction_commands, sizeof(monitor_transaction_commands) / sizeof(monitor_command) , ctx,key);
         default:
             return ERROR_MONITOR;
     }

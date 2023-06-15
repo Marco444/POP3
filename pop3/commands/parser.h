@@ -10,5 +10,6 @@ enum pop3_cmd_states {
     INVALID_COMMAND
 };
 
+
 extern const struct parser_definition pop3_parser_definition;
 #endif

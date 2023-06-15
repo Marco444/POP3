@@ -12,11 +12,11 @@
 #define PATH_MAX 4096
 
 enum monitor_states {
-  AUTH_MONITOR = 0,
+  AUTH_MONITOR,
   TRANSACTION_MONITOR,
   QUIT_MONITOR,
-  ERROR_MONITOR,
   FORCED_QUIT_MONITOR,
+  ERROR_MONITOR,
   COUNT_STATES_MONITOR
 };
 
@@ -45,7 +45,7 @@ struct authorization_data{
 };
 
 enum CMD_ID {
-    USER,
+    USER = 0,
     PASS,
     CAPA_AUTH,
     QUIT_AUTH,

@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+
 void reset_buffers(struct commands_state * ctx){
      ctx->cmd[0] = '\0';
      ctx->arg1[0] = '\0';
