@@ -21,6 +21,16 @@ long write_in_buffer(struct selector_key * key,char * buff,size_t size,size_t of
     }
     return -1;
 }
+
+bool enters_the_buffer_monitor(struct selector_key *key, char * buff){
+    size_t size;
+    size_t capacity;
+    buffer_write_ptr(&((struct monitor_connection_state *)key->data)->commands.write_buffer, &capacity);
+    size = strlen(buff);
+
+    return capacity >= size;
+}
+
 bool enters_the_buffer(struct selector_key *key, char * buff){
     size_t size;
     size_t capacity;
