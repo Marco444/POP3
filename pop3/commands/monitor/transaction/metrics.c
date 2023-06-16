@@ -46,22 +46,28 @@ enum monitor_states handle_write_metrics_monitor(struct selector_key *key, pop3_
   MetricsSnapshot metrics;
   getMetricsSnapshot(&metrics);
 
+  printf("arg1: %s \n", commands->arg1);
+
   if(current_command->has_error)
     return write_str_buffer(key, ERROR_MSG, current_command);
 
-  if(strcmp(TOTAL_USERS, commands->arg1))
+  if(strcmp(TOTAL_USERS, commands->arg1) == 0) {
+    puts("TOTAL_USERS");
     return write_metric(metrics.totalConnectionCount, key, message, current_command, commands);
+  }
 
-  if(strcmp(CURRENT_USERS, commands->arg1)) 
+  if(strcmp(CURRENT_USERS, commands->arg1) == 0) 
     return write_metric(metrics.currentConnectionCount, key, message, current_command, commands);
 
-  if(strcmp(MAX_USERS_HISTORY, commands->arg1))
+  if(strcmp(MAX_USERS_HISTORY, commands->arg1) == 0)
     return write_metric(metrics.maxConcurrentConnections, key, message, current_command, commands);
 
-  if(strcmp(TOTAL_DELETED, commands->arg1))
+  if(strcmp(TOTAL_DELETED, commands->arg1) == 0) {
+    puts("TOTAL_DELETED");
     return write_metric(metrics.totalMailsDeleted, key, message, current_command, commands);
+  }
 
-  if(strcmp(TOTAL_RETRIEVED, commands->arg1))
+  if(strcmp(TOTAL_RETRIEVED, commands->arg1) == 0)
     return write_metric(metrics.totalMailsRetrieved, key, message, current_command, commands);
 
   return TRANSACTION_MONITOR;

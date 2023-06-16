@@ -135,7 +135,6 @@ enum pop3_states handle_retr(struct commands_state * ctx, struct selector_key * 
     ctx->pop3_current_command->retr_state.mail_fd = fd;
     data->isAllDone = &ctx->pop3_current_command->retr_state.mail_finished;
     selector_register(key->s,fd, &handler, OP_NOOP, data);
-    metricsRegisterMailsRetrieved();
     return TRANSACTION_STATE;
 }
 
