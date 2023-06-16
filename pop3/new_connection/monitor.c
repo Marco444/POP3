@@ -88,7 +88,7 @@ void handleNewMonitorConnection(struct selector_key * key) {
     clientData->commands.pop3_current_command= calloc(1,sizeof(struct pop3_current_command));
     clientData->stm.initial = AUTH_MONITOR;
     clientData->stm.states = pop3_monitor_states;
-    clientData->stm.max_state = QUIT_MONITOR;
+    clientData->stm.max_state = ERROR_MONITOR;
     clientData->auth_data.user_index = -1;
     clientData->auth_data.is_logged = false;
     clientData->args = key->data;

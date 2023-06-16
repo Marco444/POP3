@@ -6,6 +6,12 @@
 #include "../monitor_states.h"
 #include <stdio.h>
 #include <sys/socket.h>
+
+//for mac OS
+#ifndef MSG_NOSIGNAL
+#define MSG_NOSIGNAL 0
+#endif
+
 int write_in_fd(struct selector_key *key){
     int targetFd = key->fd;
     buffer* targetBuffer = &((struct connection_state *) key->data)->commands.write_buffer;
