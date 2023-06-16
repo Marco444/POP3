@@ -51,7 +51,7 @@ void add_user_hanlder(int socket,char * buffer,int size,char * args){
 int main(int argc, char** argv) {
     struct client_args args;
     parse_args(argc, argv, &args);
-    handler handler []= {metrics_handler,add_user_hanlder};
+    handler handler []= {add_user_hanlder,metrics_handler};
     int status, valread, client_fd;
     struct sockaddr_in serv_addr;
 
