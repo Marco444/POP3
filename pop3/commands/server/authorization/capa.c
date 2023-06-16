@@ -8,6 +8,10 @@
 #define CAPA_MESSAGE "+OK Capability list follows\r\nUSER\r\nPIPELINING\r\n.\r\n"
 
 enum pop3_states handle_authorization_capa(struct commands_state * ctx, struct selector_key *key) {
+    if (ctx->arg1_length != 0) {
+        ctx->pop3_current_command->has_error = true;
+        return AUTHORIZATION_STATE;
+    }
     ctx->pop3_current_command->cmd_id = CAPA_AUTH;
     ctx->pop3_current_command->is_finished = false;
     ctx->pop3_current_command->has_error = false;

@@ -8,7 +8,6 @@
 int write_in_fd(struct selector_key *key);
 
 enum pop3_states handle_transaction_quit(struct commands_state * ctx, struct selector_key *key) {
-    printf("QUIT\n");
     ctx->pop3_current_command->cmd_id = QUIT_TRANSACTION;
     ctx->pop3_current_command->is_finished = false;
     ctx->pop3_current_command->has_error = false;
