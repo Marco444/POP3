@@ -14,6 +14,9 @@ void reset_buffers(struct commands_state * ctx){
      ctx->cmd[0] = '\0';
      ctx->arg1[0] = '\0';
      ctx->arg2[0] = '\0';
+
+     // for(int i = 0; i < ctx->)
+
      ctx->cmd_length = ctx->arg1_length = ctx->arg2_length = 0;
 }
 

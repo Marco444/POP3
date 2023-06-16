@@ -35,17 +35,14 @@ enum monitor_states handle_monitor_metrics(struct commands_state * ctx,struct se
 
   ctx->pop3_current_command->cmd_id = METRICS;
   ctx->pop3_current_command->is_finished = false;
-  ctx->pop3_current_command->has_error = false;
+  ctx->pop3_current_command->has_error = ctx->arg1_length == 0 || ctx->arg2_length > 0;
   ctx->pop3_current_command->noop_state = true;
 
-  if(ctx->arg1_length == 0 || ctx->arg2_length != 0) 
-   ctx->pop3_current_command->has_error = true;
- 
   return TRANSACTION_MONITOR;
 }
 enum monitor_states handle_write_metrics_monitor(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
 
-  char message[MAX_SIZE_METRIC_RESP];
+  char message[MAX_SIZE_METRIC_RESP] = {0};
   MetricsSnapshot metrics;
   getMetricsSnapshot(&metrics);
 
