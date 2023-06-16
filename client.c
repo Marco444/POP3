@@ -4,6 +4,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+typedef void (*handler)(int socket, char* buffer, int size,char * args);
 
 void flush_buffer(char* buffer, int size) {
     for (int i = 0; i < size; i++) {
@@ -34,12 +35,23 @@ void flus_socket(int socket, char* buffer,int size){
         count += rec;
     }
 }
-
-
+void metrics_handler(int socket, char* buffer, int size,char * args){
+    char* metrics = "METRICS\r\n";
+    send(socket, metrics, strlen(metrics), 0);
+    flus_socket(socket, buffer, size);
+    printf(buffer);
+}
+void add_user_hanlder(int socket,char * buffer,int size,char * args){
+    char add_user[255];
+    sprintf(add_user,"ADDUSER %s\r\n",args);
+    send(socket, add_user, strlen(add_user), 0);
+    flus_socket(socket, buffer, size);
+    printf(buffer);
+}
 int main(int argc, char** argv) {
     struct client_args args;
     parse_args(argc, argv, &args);
-
+    handler handler []= {metrics_handler,add_user_hanlder};
     int status, valread, client_fd;
     struct sockaddr_in serv_addr;
 
@@ -76,7 +88,6 @@ int main(int argc, char** argv) {
     send(client_fd, username, strlen(username), 0);
     flus_socket(client_fd, buffer, 1024);
     if(buffer[0] != '+') {
-        printf("LLEGUE Al username\n", buffer);
         printf("Error: %s\n", buffer);
         return 1;
     }
@@ -90,6 +101,6 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-
+    handler[args.command.index](client_fd,buffer,1024,args.command.arg);
 
 }
