@@ -33,13 +33,10 @@ enum monitor_states handle_monitor_add_user(struct commands_state * ctx,struct s
   } else {
     *p = 0;
     p++;
-    //state->args->users[state->args->users_count].name = ctx->arg1;
+    
     strcpy(state->args->users[state->args->users_count].name, ctx->arg1);
     strcpy(state->args->users[state->args->users_count].pass, p);
-    puts(ctx->arg1);
-    puts(p);
-    //state->args->users[state->args->users_count].pass = p;
-    printf("adde user %s with pass %s", ctx->arg1, p);
+    
     state->args->users[state->args->users_count].close = false;
   }
 

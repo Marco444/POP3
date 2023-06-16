@@ -33,8 +33,8 @@ write_user(char *s, struct user *user) {
     } else {
         *p = 0;
         p++;
-        user->name = s;
-        user->pass = p;
+        strcpy(user->name, s);
+        strcpy(user->pass, p);
         user->close = false;
     }
 
