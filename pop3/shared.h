@@ -122,7 +122,7 @@ struct commands_state {
     inbox_data inbox_data;
     int email_fd;
 
-    enum pop3_states last_state;
+    unsigned int last_state;
 };
 
 #endif

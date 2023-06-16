@@ -100,7 +100,7 @@ void handleNewPOP3Connection(struct selector_key * key) {
     clientData->commands.last_state= NONE_STATE;
     clientData->stm.initial = AUTHORIZATION_STATE;
     clientData->stm.states = pop3_server_states;
-    clientData->stm.max_state = ERROR_MONITOR;
+    clientData->stm.max_state = FORCED_QUIT_STATE;
 
     clientData->auth_data.user_index = -1;
     clientData->auth_data.is_logged = false;

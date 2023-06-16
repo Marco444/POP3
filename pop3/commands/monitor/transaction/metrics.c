@@ -12,7 +12,7 @@
 #define MAX_USERS_HISTORY "MAX_USERS"
 
 #define OK "+"
-#define ERROR_MSG "- Invalid arguments "
+#define ERROR_MSG "- \r\n"
 
 #define MAX_SIZE_METRIC_RESP 50
 
@@ -45,7 +45,7 @@ enum monitor_states handle_write_metrics_monitor(struct selector_key *key, pop3_
   getMetricsSnapshot(&metrics);
 
   if(current_command->has_error)
-    return write_str_buffer(key, ERROR_MSG, current_command);
+    return ERROR_MONITOR;
 
   if(strcmp(TOTAL_USERS, commands->arg1) == 0)
     return write_metric(metrics.totalConnectionCount, key, message, current_command, commands);
