@@ -4,18 +4,23 @@
 #include "../../../states/write_buffer_helpers.h"
 #include <stdio.h>
 
+#define QUIT_MSG_TRANSACTION "+OK server signing off\r\n"
+
 enum monitor_states handle_monitor_exit(struct commands_state * ctx,struct selector_key *key) {
-    puts("EXIT");
     ctx->pop3_current_command->cmd_id = EXIT;
     ctx->pop3_current_command->is_finished = false;
     ctx->pop3_current_command->has_error = false;
     ctx->pop3_current_command->noop_state = true;
-    struct connection_state * data = key->data;
+    struct monitor_connection_state * data = key->data;
     if (data->auth_data.user_index != -1){
         data->args->users[data->auth_data.user_index].close = false;
     }
-  return AUTH_MONITOR;
+  return TRANSACTION_MONITOR;
 }
 enum monitor_states handle_write_exit_monitor(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
-  return AUTH_MONITOR;
+  write_in_buffer_monitor(key, QUIT_MSG_TRANSACTION, strlen(QUIT_MSG_TRANSACTION), 0);
+  current_command->is_finished = true;    
+  if(write_in_fd_monitor(key))
+      return QUIT_MONITOR;
+  return ERROR_MONITOR;
 }
