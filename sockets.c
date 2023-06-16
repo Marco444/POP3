@@ -1,7 +1,7 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "sockets.h"
-
+#include "lib/selector/selector.h"
 static int initializeServerSocket(char* addr, unsigned short port, struct sockaddr_storage* res, socklen_t* socklenResult);
 static int setupSocket(struct pop3args args, struct sockaddr_storage *pop3_server_addr, int server_socket, int server, socklen_t pop3_server_addrLen);
 
@@ -90,8 +90,8 @@ static int setupSocket(struct pop3args args, struct sockaddr_storage* pop3_serve
         return -1;
     }
 
-    // if (selector_fd_set_nio(server) == -1) {
-    //     fprintf(stderr, "Getting server socket flags");
-    // }
+    if (selector_fd_set_nio(server) == -1) {
+        fprintf(stderr, "Getting server socket flags");
+    }
     return 0;
 }

@@ -78,11 +78,11 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
     memset(args, 0, sizeof(*args)); // sobre todo para setear en null los punteros de users
 
     // Default values for POP3 server address and port
-    args->pop3_addr = "127.0.0.1";
+    args->pop3_addr = "::1";
     args->pop3_port = 8114;
 
     // Default values for monitor address and port
-    args->monitor_addr   = "127.0.0.1";
+    args->monitor_addr   = "::1";
     args->monitor_port   = 8200;
 
     char c;
