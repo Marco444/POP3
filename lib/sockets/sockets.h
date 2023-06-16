@@ -15,7 +15,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include "./lib/args/args.h"
+#include "../args/args.h"
 
 
 int setupMonitorSocket(struct pop3args args , struct sockaddr_storage * pop3_server_addr);

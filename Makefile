@@ -4,7 +4,7 @@ LDFLAGS=
 
 LIB_HEADERS=$(wildcard lib/*/*.h)
 
-SERVER_SOURCES=$(wildcard *.c pop3/*.c pop3/commands/*.c pop3/commands/monitor/transaction/*.c    pop3/commands/monitor/authorization/*.c   pop3/commands/server/authorization/*.c  pop3/commands/server/update/*.c  pop3/commands/server/transaction/*.c pop3/states/monitor/*.c pop3/states/*.c pop3/states/server/*.c pop3/new_connection/*.c  ) $(wildcard lib/args/*.c lib/buffer/*.c lib/parser/*.c lib/selector/*.c lib/stm/*.c lib/metrics/*.c) 
+SERVER_SOURCES=$(wildcard lib/sockets/*.c *.c pop3/*.c pop3/commands/*.c pop3/commands/monitor/transaction/*.c    pop3/commands/monitor/authorization/*.c   pop3/commands/server/authorization/*.c  pop3/commands/server/update/*.c  pop3/commands/server/transaction/*.c pop3/states/monitor/*.c pop3/states/*.c pop3/states/server/*.c pop3/new_connection/*.c  ) $(wildcard lib/args/*.c lib/buffer/*.c lib/parser/*.c lib/selector/*.c lib/stm/*.c lib/metrics/*.c) 
 
 CLIENT_SOURCES=$(wildcard client/*.c clientLibs/*.c)
 

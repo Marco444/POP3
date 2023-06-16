@@ -5,6 +5,7 @@
 
 #include <stdbool.h>
 
+#define MAX_ARG_LENGTH 255
 
 typedef struct user {
     char *name;
@@ -13,7 +14,7 @@ typedef struct user {
 
 typedef struct command{
     int index;
-    char arg[255];
+    char arg[MAX_ARG_LENGTH];
 }command;
 typedef struct server_data{
     char *server_addr;
