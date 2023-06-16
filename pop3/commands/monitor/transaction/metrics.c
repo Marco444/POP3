@@ -12,7 +12,7 @@
 #define MAX_USERS_HISTORY "MAX_USERS"
 
 #define OK "+"
-#define ERROR_MSG "- \r\n"
+#define ERROR_MSG "- "
 
 #define MAX_SIZE_METRIC_RESP 50
 
@@ -43,9 +43,10 @@ enum monitor_states handle_write_metrics_monitor(struct selector_key *key, pop3_
   char message[MAX_SIZE_METRIC_RESP] = {0};
   MetricsSnapshot metrics;
   getMetricsSnapshot(&metrics);
+  printf("%s \n", commands->arg1);
 
   if(current_command->has_error)
-    return ERROR_MONITOR;
+    return write_str_buffer(key, ERROR_MSG, current_command);
 
   if(strcmp(TOTAL_USERS, commands->arg1) == 0)
     return write_metric(metrics.totalConnectionCount, key, message, current_command, commands);
