@@ -16,9 +16,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f4d0b85c-302f-4a04-a88d-f71033f66859" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/clientLibs/args.h" beforeDir="false" afterPath="$PROJECT_DIR$/clientLibs/args.h" afterDir="false" />
-    </list>
+    <list default="true" id="f4d0b85c-302f-4a04-a88d-f71033f66859" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,11 +86,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib/sockets" />
       <recent name="$PROJECT_DIR$/client" />
       <recent name="$PROJECT_DIR$/pop3" />
       <recent name="$PROJECT_DIR$/pop3/states/server" />
       <recent name="$PROJECT_DIR$/pop3/states/monitor" />
-      <recent name="$PROJECT_DIR$/pop3/commands/server" />
     </key>
   </component>
   <component name="RunManager" selected="Makefile Target.main">
