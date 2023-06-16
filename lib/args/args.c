@@ -86,8 +86,8 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
     args->monitor_port   = 8200;
 
     char c;
-    int nusers = 0;
-    int nusers_admin = 0;
+    args->users_count = 0;
+    args->users_admin_count = 0;
 
     // Flags for mandatory parameters
     bool mandatory_mail_dir = false;
@@ -134,12 +134,12 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
                 args->monitor_port   = port(optarg);
                 break;
             case 'u':
-                if(nusers >= MAX_USERS) {
+                if(args->users_count >= MAX_USERS) {
                     fprintf(stderr, "maximun number of command line users reached: %d.\n", MAX_USERS);
                     exit(1);
                 } else {
-                    write_user(optarg, args->users + nusers);
-                    nusers++;
+                    write_user(optarg, args->users + args->users_count);
+                    args->users_count += 1;
                 }
                 break;
             case 'v':
@@ -153,12 +153,12 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
                 break;
 
             case 'a':
-                if(nusers_admin >= MAX_USERS) {
+                if(args->users_admin_count >= MAX_USERS) {
                     fprintf(stderr, "maximun number of admin command line users reached: %d.\n", MAX_USERS);
                     exit(1);
                 } else {
-                    write_user(optarg, args->users_admin + nusers_admin);
-                    nusers_admin++;
+                    write_user(optarg, args->users_admin + args->users_admin_count);
+                    args->users_admin_count += 1;
                 }
                 break;
             // TODO check if we have to remove this
