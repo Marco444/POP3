@@ -14,7 +14,7 @@
 #define OK "+"
 #define ERROR_MSG "- "
 
-#define MAX_SIZE_METRIC_RESP 50
+#define MAX_SIZE_METRIC_RESP 200
 
 
 static enum monitor_states write_str_buffer(struct selector_key * key, char * message, pop3_current_command * current_command) {
@@ -30,10 +30,17 @@ static enum monitor_states write_metric(size_t metric, struct selector_key * key
     return write_str_buffer(key, message, current_command);
 } 
 
+
+static enum monitor_states write_metrics(MetricsSnapshot metric, struct selector_key * key, char * message, pop3_current_command * current_command, struct commands_state * commands) {
+  sprintf(message, "+ total users: %zu \ncurrent users: %zu\nmax concurrent users handled: %zu\ntotal mails deleted: %zu\ntotal mails retrieved: %zu\r\n",
+         metric.totalConnectionCount, metric.currentConnectionCount, metric.maxConcurrentConnections, metric.totalMailsDeleted, metric.totalMailsRetrieved );
+  return write_str_buffer(key, message, current_command);
+}
+
 enum monitor_states handle_monitor_metrics(struct commands_state * ctx,struct selector_key *key) {
   ctx->pop3_current_command->cmd_id = METRICS;
   ctx->pop3_current_command->is_finished = false;
-  ctx->pop3_current_command->has_error = ctx->arg1_length == 0 || ctx->arg2_length > 0;
+  ctx->pop3_current_command->has_error = ctx->arg2_length > 0;
   ctx->pop3_current_command->noop_state = true;
 
   return TRANSACTION_MONITOR;
@@ -63,5 +70,5 @@ enum monitor_states handle_write_metrics_monitor(struct selector_key *key, pop3_
   if(strcmp(TOTAL_RETRIEVED, commands->arg1) == 0)
     return write_metric(metrics.totalMailsRetrieved, key, message, current_command, commands);
 
-  return TRANSACTION_MONITOR;
+  return write_metrics(metrics, key, message, current_command, commands);
 }
