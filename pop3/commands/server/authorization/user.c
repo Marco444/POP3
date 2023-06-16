@@ -16,7 +16,7 @@ enum pop3_states handle_user(struct commands_state * ctx, struct selector_key *k
     ctx->pop3_current_command->has_error = false;
     ctx->pop3_current_command->noop_state = true;
     struct connection_state * state = (struct connection_state *) key->data;
-    for (int i = 0; state->args->users[i].name != NULL; ++i) {
+    for (int i = 0; state->args->users[i].name != NULL && i < state->args->users_count; ++i) {
         puts(state->args->users[i].name);
         if (strcmp(state->args->users[i].name,ctx->arg1) == 0){
             state->auth_data.user_index = i;

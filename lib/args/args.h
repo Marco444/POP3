@@ -4,17 +4,19 @@
 #include <stdbool.h>
 
 #define MAX_USERS 10
+#define MAX_USERS_NAME_LENGHT 10
+#define MAX_USERS_PASS_LENGHT 10
 
 struct users {
-    char *name;
-    char *pass;
+    char name[MAX_USERS_NAME_LENGHT];
+    char pass[MAX_USERS_PASS_LENGHT];
     bool close;
 
 };
 
 typedef struct user {
-    char * name;
-    char * pass;
+    char name[MAX_USERS_NAME_LENGHT];
+    char pass[MAX_USERS_PASS_LENGHT];
     bool close;
 } user;
 
