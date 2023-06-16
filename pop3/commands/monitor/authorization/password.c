@@ -23,16 +23,16 @@ enum monitor_states handle_monitor_password(struct commands_state * ctx,struct s
     return AUTH_MONITOR;
   }
 
-  if(strcmp(state->args->users[state->auth_data.user_index].pass, ctx->arg1) != 0){
+  if(strcmp(state->args->users_admin[state->auth_data.user_index].pass, ctx->arg1) != 0){
     ctx->pop3_current_command->has_error = true;
     return AUTH_MONITOR;
   }
   
-  if(state->args->users[state->auth_data.user_index].close == true){
+  if(state->args->users_admin[state->auth_data.user_index].close == true){
     ctx->pop3_current_command->has_error = true;
     return AUTH_MONITOR;
   }
-
+  puts("~~~~~~~OK");
   return AUTH_MONITOR;
 }
 
