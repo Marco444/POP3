@@ -1,13 +1,13 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
-#include "lib/metrics/metrics.h"
-#include "pop3/monitor_states.h"
-#include "lib/stm/stm.h"
-#include "./lib/args/args.h"
-#include "./lib/selector/selector.h"
-#include "./pop3/new_connection/pop3.h"
-#include "pop3/new_connection/monitor.h"
-#include "sockets.h"
+#include "../lib/metrics/metrics.h"
+#include "monitor_states.h"
+#include "../lib/stm/stm.h"
+#include "../lib/args/args.h"
+#include "../lib/selector/selector.h"
+#include "new_connection/pop3.h"
+#include "new_connection/monitor.h"
+#include "../sockets.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
