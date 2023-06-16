@@ -85,7 +85,7 @@ enum monitor_states read_commands_monitor(struct selector_key *key, enum monitor
 
     } else if (received == 0) {
       // Client closed connection
-      return  ERROR_MONITOR;
+      return  FORCED_QUIT_MONITOR;
     } else {
       // Handle error
       return ERROR_MONITOR;

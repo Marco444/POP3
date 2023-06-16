@@ -8,7 +8,9 @@
 void on_arrival_auth_monitor(const unsigned state, struct selector_key *key){ 
   return; 
 }
-void on_departure_auth_monitor(const unsigned state, struct selector_key *key){ return; }
+void on_departure_auth_monitor(const unsigned state, struct selector_key *key){
+    ((struct monitor_connection_state *)key->data)->commands.last_state = AUTH_MONITOR;
+}
 
 enum monitor_states on_read_ready_auth_monitor(struct selector_key *key){ 
   return read_commands_monitor(key, AUTH_MONITOR, true); 
