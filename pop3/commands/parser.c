@@ -10,13 +10,13 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+// asi tiene que quedar el reset_buffer
+// for(int i = 0; i < POP3_MAX_CMD_LENGTH; i++) ctx->cmd[i] = '\0';
+// ctx->cmd_length = ctx->arg1_length = ctx->arg2_length = 0;
+
 void reset_buffers(struct commands_state * ctx){
     for(int i = 0; i < POP3_MAX_CMD_LENGTH; i++) ctx->cmd[i] = '\0';
-
-     ctx->cmd[0] = '\0';
-     ctx->arg1[0] = '\0';
-     ctx->arg2[0] = '\0';
-     ctx->cmd_length = ctx->arg1_length = ctx->arg2_length = 0;
+    ctx->cmd_length = ctx->arg1_length = ctx->arg2_length = 0;
 }
 
 
