@@ -43,7 +43,8 @@ void metrics_handler(int socket, char* buffer, int size,char * args){
 }
 void add_user_hanlder(int socket,char * buffer,int size,char * args){
     char add_user[255];
-    sprintf(add_user,"ADDUSER %s\r\n",args);
+    printf(args);
+    sprintf(add_user,"ADD_USER %s\r\n",args);
     send(socket, add_user, strlen(add_user), 0);
     flus_socket(socket, buffer, size);
     printf(buffer);

@@ -13,7 +13,7 @@ typedef struct user {
 
 typedef struct command{
     int index;
-    char * arg;
+    char arg[255];
 }command;
 typedef struct server_data{
     char *server_addr;

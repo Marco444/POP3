@@ -133,7 +133,7 @@ parse_args(const int argc, char **argv, struct client_args *args) {
                     fprintf(stderr, "cannot use -n with -m\n");
                     exit(1);
                 }
-
+                strcpy(args->command.arg, optarg);
                 args->command.index = 0;
                 break;
             case 'm':
