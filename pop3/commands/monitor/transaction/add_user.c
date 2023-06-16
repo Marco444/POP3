@@ -8,7 +8,7 @@
 #define ERRORS_ADD_USERS "-ERR could not add user\r\n"
 
 enum monitor_states handle_monitor_add_user(struct commands_state * ctx,struct selector_key *key) {
-  puts("ADDUSER");
+  puts("ADD_USER");
   ctx->pop3_current_command->cmd_id = ADD_USER;
   ctx->pop3_current_command->is_finished = false;
   ctx->pop3_current_command->has_error = false;
@@ -33,12 +33,18 @@ enum monitor_states handle_monitor_add_user(struct commands_state * ctx,struct s
   } else {
     *p = 0;
     p++;
-    state->args->users[state->args->users_count].name = ctx->arg1;
-    state->args->users[state->args->users_count].pass = p;
+    //state->args->users[state->args->users_count].name = ctx->arg1;
+    strcpy(state->args->users[state->args->users_count].name, ctx->arg1);
+    strcpy(state->args->users[state->args->users_count].pass, p);
+    puts(ctx->arg1);
+    puts(p);
+    //state->args->users[state->args->users_count].pass = p;
+    printf("adde user %s with pass %s", ctx->arg1, p);
     state->args->users[state->args->users_count].close = false;
   }
 
-  ctx->pop3_current_command->has_error = true;
+  state->args->users_count += 1;
+  ctx->pop3_current_command->has_error = false;
   return TRANSACTION_MONITOR;
 }
 

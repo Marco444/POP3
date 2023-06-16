@@ -32,7 +32,7 @@ enum monitor_states handle_monitor_password(struct commands_state * ctx,struct s
     ctx->pop3_current_command->has_error = true;
     return AUTH_MONITOR;
   }
-  puts("~~~~~~~OK");
+
   return AUTH_MONITOR;
 }
 
