@@ -53,6 +53,6 @@ enum monitor_states handle_write_username_monitor(struct selector_key *key, pop3
   }
   
   if(write_in_fd_monitor(key))
-      return TRANSACTION_MONITOR;
+      return AUTH_MONITOR;
   return ERROR_MONITOR;
 }
