@@ -2,7 +2,7 @@
 #include "../../../states/write_buffer_helpers.h"
 #include <stdio.h>
 
-#define OK_CAPA_MONITOR "+OK Capability list TBD\r\n"
+#define OK_CAPA_MONITOR "+OK Capability list follows\n\rMETRICS\nEXIT\nLIST_USERS\nADD_USER\nCAPA\r\n"
 #define ERRORS_CAPA_MONITOR "-ERR\r\n"
 
 enum monitor_states handle_monitor_capa(struct commands_state * ctx,struct selector_key *key){
@@ -11,8 +11,6 @@ enum monitor_states handle_monitor_capa(struct commands_state * ctx,struct selec
     ctx->pop3_current_command->is_finished = false;
     ctx->pop3_current_command->has_error = false;
     ctx->pop3_current_command->noop_state = true;
-
-    struct monitor_connection_state * state = (struct monitor_connection_state *) key->data;
 
     if(ctx->arg1_length != 0){
         ctx->pop3_current_command->has_error = true;
