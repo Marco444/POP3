@@ -24,14 +24,14 @@ static enum monitor_states write_str_buffer(struct selector_key * key, char * me
 }
 
 static enum monitor_states write_metric(size_t metric, struct selector_key * key, char * message, pop3_current_command * current_command, struct commands_state * commands) {
-    sprintf(message, "+ %zu \r\n", metric);
+    sprintf(message, "+ %zu\r\n", metric);
     return write_str_buffer(key, message, current_command);
 } 
 
 
 static enum monitor_states write_metrics(MetricsSnapshot metric, struct selector_key * key, char * message, pop3_current_command * current_command, struct commands_state * commands) {
-  sprintf(message, "+ total users: %zu \ncurrent users: %zu\nmax concurrent users handled: %zu\ntotal mails deleted: %zu\ntotal mails retrieved: %zu\r\n",
-         metric.totalConnectionCount, metric.currentConnectionCount, metric.maxConcurrentConnections, metric.totalMailsDeleted, metric.totalMailsRetrieved );
+  sprintf(message, "+ 1 %zu\n2 %zu\n3 %zu\n4 %zu\n5 %zu\r\n",
+         metric.totalConnectionCount, metric.totalMailsRetrieved, metric.totalMailsDeleted, metric.currentConnectionCount, metric.maxConcurrentConnections);
   return write_str_buffer(key, message, current_command);
 }
 
@@ -48,15 +48,11 @@ enum monitor_states handle_write_metrics_monitor(struct selector_key *key, pop3_
   char message[MAX_SIZE_METRIC_RESP] = {0};
   MetricsSnapshot metrics;
   getMetricsSnapshot(&metrics);
-  printf("%s \n", commands->arg1);
 
   if(current_command->has_error)
     return write_str_buffer(key, ERROR_MSG, current_command);
 
   int arg = atoi(commands->arg1);
-
-  printf("%d \n", arg);
-  printf("%d \n", CURRENT_USERS);
 
   if(arg == TOTAL_USERS)
     return write_metric(metrics.totalConnectionCount, key, message, current_command, commands);
