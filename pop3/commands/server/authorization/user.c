@@ -2,6 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../../command_service.h"
 #include "../../../states/write_buffer_helpers.h"
+#include "../../../../lib/logger/logger.h"
 #include "../../../pop3_states.h"
 #include <stdio.h>
 
@@ -17,7 +18,7 @@ enum pop3_states handle_user(struct commands_state * ctx, struct selector_key *k
     ctx->pop3_current_command->noop_state = true;
     struct connection_state * state = (struct connection_state *) key->data;
     for (int i = 0; state->args->users[i].name != NULL && i < state->args->users_count; ++i) {
-        puts(state->args->users[i].name);
+        log_debug(state->args->users[i].name);
         if (strcmp(state->args->users[i].name,ctx->arg1) == 0){
             state->auth_data.user_index = i;
             state->auth_data.is_logged = false;

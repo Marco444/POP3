@@ -4,25 +4,28 @@
 #include <stdlib.h>
 
 typedef struct {
-    size_t currentConnectionCount;
-    size_t totalConnectionCount;   //conections handled through the server lifetime
-    size_t maxConcurrentConnections; //maximum number of connections handled
-    size_t totalMailsRetrieved;
-    size_t totalMailsDeleted; 
-} MetricsSnapshot;
+    size_t current_connection_count;
+    size_t total_connection_count;   //conections handled through the server lifetime
+    size_t max_concurrent_connections; //maximum number of connections handled
+    size_t total_mails_retrieved;
+    size_t total_mails_deleted; 
+    size_t total_bytes_transferred;
+} Metrics_snapshot;
 
-void metricsInit();
+void metrics_init();
 
-void metricsRegisterNewClient();
+void metrics_register_new_client();
 
-void metricsRegisterClientDisconnected();
+void metrics_register_client_disconnected();
 
-void metricsRegisterMailsRetrieved();
+void metrics_register_mails_retrieved();
 
-void metricsRegisterMailsDeleted();
+void metrics_register_mails_deleted();
+
+void metrics_register_bytes_transferred(size_t byte );
 
 void print_metric();
 
-void getMetricsSnapshot(MetricsSnapshot* snapshot);
+void get_metrics_snapshot(Metrics_snapshot* snapshot);
 
 #endif

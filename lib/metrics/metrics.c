@@ -4,37 +4,40 @@
 #include "metrics.h"
 #include <string.h>
 #include <stdio.h>
-static MetricsSnapshot metrics;
+static Metrics_snapshot metrics;
 
-void metricsInit() {
+void metrics_init() {
     memset(&metrics, 0, sizeof(metrics));
 }
 
-void metricsRegisterNewClient() {
-    metrics.currentConnectionCount++;
-    metrics.totalConnectionCount++;
-    if (metrics.currentConnectionCount > metrics.maxConcurrentConnections)
-        metrics.maxConcurrentConnections = metrics.currentConnectionCount;
+void metrics_register_new_client() {
+    metrics.current_connection_count++;
+    metrics.total_connection_count++;
+    if (metrics.current_connection_count > metrics.max_concurrent_connections)
+        metrics.max_concurrent_connections = metrics.current_connection_count;
 }
 
-void metricsRegisterClientDisconnected() {
-    metrics.currentConnectionCount--;
+void metrics_register_bytes_transferred(size_t bytes) {
+  metrics.total_bytes_transferred += bytes;
+}
+void metrics_register_client_disconnected() {
+    metrics.current_connection_count--;
 }
 
-void metricsRegisterMailsRetrieved() {
-    metrics.totalMailsRetrieved++;
+void metrics_register_mails_retrieved() {
+    metrics.total_mails_retrieved++;
 }
 
-void metricsRegisterMailsDeleted() {
-    metrics.totalMailsDeleted++;
+void metrics_register_mails_deleted() {
+    metrics.total_mails_deleted++;
 }
 void print_metric(){
-    printf("Current connections: %ld\n", metrics.currentConnectionCount);
-    printf("Max concurrent connections: %ld\n", metrics.maxConcurrentConnections);
-    printf("Total connections: %ld\n", metrics.totalConnectionCount);
-    printf("Total mails retrieved: %ld\n", metrics.totalMailsRetrieved);
-    printf("Total mails deleted: %ld\n", metrics.totalMailsDeleted);
+    printf("Current connections: %ld\n", metrics.current_connection_count);
+    printf("Max concurrent connections: %ld\n", metrics.max_concurrent_connections);
+    printf("Total connections: %ld\n", metrics.total_connection_count);
+    printf("Total mails retrieved: %ld\n", metrics.total_mails_retrieved);
+    printf("Total mails deleted: %ld\n", metrics.total_mails_deleted);
 }
-void getMetricsSnapshot(MetricsSnapshot* snapshot) {
-    memcpy(snapshot, &metrics, sizeof(MetricsSnapshot));
+void get_metrics_snapshot(Metrics_snapshot* snapshot) {
+    memcpy(snapshot, &metrics, sizeof(Metrics_snapshot));
 }

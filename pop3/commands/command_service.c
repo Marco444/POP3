@@ -13,6 +13,7 @@ monitor_command monitor_transaction_commands[] = {
     {"METRICS", handle_monitor_metrics },
     {"EXIT", handle_monitor_exit },
     {"ADD_USER", handle_monitor_add_user },
+    {"LIST_USERS", handle_monitor_list_users},
     {"CAPA", handle_monitor_capa}
 };
 

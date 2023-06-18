@@ -2,11 +2,12 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../../command_service.h"
 #include "../../../states/write_buffer_helpers.h"
-#include <stdio.h>
+#include "../../../../lib/logger/logger.h"
 
 #define QUIT_MSG_TRANSACTION "+OK server signing off\r\n"
 
 enum monitor_states handle_monitor_exit(struct commands_state * ctx,struct selector_key *key) {
+  log_debug("EXIT read");
     ctx->pop3_current_command->cmd_id = EXIT;
     ctx->pop3_current_command->is_finished = false;
     ctx->pop3_current_command->has_error = false;

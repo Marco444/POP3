@@ -1,6 +1,7 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
+#include "../../lib/metrics/metrics.h"
 #include "../commands/command_service.h"
 #include "../pop3_states.h"
 #include "../monitor_states.h"
@@ -23,10 +24,13 @@ int write_in_fd(struct selector_key *key){
        // return COPY;
     }
     uint8_t * readPtr = buffer_read_ptr(targetBuffer, &(capacity));
+
     sent = send(targetFd, readPtr, capacity, MSG_NOSIGNAL);
+
     if (sent <= 0) {
         return 0 ;
     } else {
+        metrics_register_bytes_transferred(sent);
         buffer_read_adv(targetBuffer, sent);
         return 1;
     }
@@ -47,6 +51,7 @@ int write_in_fd_monitor(struct selector_key *key){
     if (sent <= 0) {
         return 0 ;
     } else {
+        metrics_register_bytes_transferred(sent);
         buffer_read_adv(targetBuffer, sent);
         return 1;
     }

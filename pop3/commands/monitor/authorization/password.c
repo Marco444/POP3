@@ -1,5 +1,6 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+#include "../../../../lib/logger/logger.h"
 #include "../../command_service.h"
 #include "../../../states/write_buffer_helpers.h"
 #include <stdio.h>
@@ -8,7 +9,7 @@
 #define ERROR_MSG "- ERR\r\n"
 
 enum monitor_states handle_monitor_password(struct commands_state * ctx,struct selector_key *key) {
-  puts("PASSWORD");
+  log_debug("PASSWORD");
 
   struct monitor_connection_state * state = (struct monitor_connection_state *) key->data;
 
@@ -37,7 +38,7 @@ enum monitor_states handle_monitor_password(struct commands_state * ctx,struct s
 }
 
 enum monitor_states handle_write_password_monitor(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
-  puts("PASSWORD write answer");
+  log_debug("PASSWORD write answer");
   
   if(!current_command->has_error){
     bool has_place = enters_the_buffer_monitor(key, OK_MSG);

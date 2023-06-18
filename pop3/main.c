@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
     }
 
     log_info("Registered the monitor server socket to attend new connection");
-    metricsInit();
+    metrics_init();
 
     // Main server loop
     while (!terminationRequested) {

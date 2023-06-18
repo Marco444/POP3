@@ -1,5 +1,6 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+#include "../../../../lib/logger/logger.h"
 #include "../../command_service.h"
 #include "../../../states/write_buffer_helpers.h"
 #include <stdio.h>
@@ -8,7 +9,7 @@
 #define ERRORS_ADMIN_USER "-ERR never heard of admin name\r\n"
 
 enum monitor_states handle_monitor_username(struct commands_state * ctx,struct selector_key *key) {
-  puts("USERNAME");
+  log_debug("USERNAME");
   ctx->pop3_current_command->cmd_id = USERNAME;
   ctx->pop3_current_command->is_finished = false;
   ctx->pop3_current_command->has_error = false;

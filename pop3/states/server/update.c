@@ -17,7 +17,7 @@ void on_arrival_update(const unsigned state, struct selector_key *key) {
     for(int i = 0; i < commands->inbox_data.email_files_length; i++) {
         if(commands->inbox_data.email_files[i].is_deleted) {
             int result = remove(commands->inbox_data.email_files[i].path);
-            metricsRegisterMailsDeleted();
+            metrics_register_mails_deleted();
             commands->pop3_current_command->quit_update_state.has_deleted  = true;
             if(result < 0 ) {
                 commands->pop3_current_command->quit_update_state.has_error = true;

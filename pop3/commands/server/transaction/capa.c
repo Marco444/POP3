@@ -3,7 +3,7 @@
 #include "../../command_service.h"
 #include "../../../states/write_buffer_helpers.h"
 
-#define CAPA_MESSAGE "+OK Capability list follows\r\nUSER\r\nPIPELINING\r\n.\r\n"
+#define CAPA_MESSAGE "+OK Capability list follows\r\nCAPA\r\nDELE\r\nLIST\r\nNOOP\r\nQUIT\r\nRETR\r\nRSET\r\nSTAT\r\n.\r\n"
 #define ERRORS_CAPA "-ERR\r\n"
 int write_in_fd(struct selector_key *key);
 
