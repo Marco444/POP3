@@ -29,9 +29,9 @@ static enum monitor_states write_metric(size_t metric, struct selector_key * key
 } 
 
 
-static enum monitor_states write_metrics(MetricsSnapshot metric, struct selector_key * key, char * message, pop3_current_command * current_command, struct commands_state * commands) {
+static enum monitor_states write_metrics(Metrics_snapshot metric, struct selector_key * key, char * message, pop3_current_command * current_command, struct commands_state * commands) {
   sprintf(message, "+ 1 %zu\n2 %zu\n3 %zu\n4 %zu\n5 %zu\r\n",
-         metric.totalConnectionCount, metric.totalMailsRetrieved, metric.totalMailsDeleted, metric.currentConnectionCount, metric.maxConcurrentConnections);
+         metric.total_connection_count, metric.total_mails_retrieved, metric.total_mails_deleted, metric.current_connection_count, metric.max_concurrent_connections);
   return write_str_buffer(key, message, current_command);
 }
 
@@ -46,8 +46,8 @@ enum monitor_states handle_monitor_metrics(struct commands_state * ctx,struct se
 enum monitor_states handle_write_metrics_monitor(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands) {
 
   char message[MAX_SIZE_METRIC_RESP] = {0};
-  MetricsSnapshot metrics;
-  getMetricsSnapshot(&metrics);
+  Metrics_snapshot metrics;
+  get_metrics_snapshot(&metrics);
 
   if(current_command->has_error)
     return write_str_buffer(key, ERROR_MSG, current_command);
@@ -55,19 +55,19 @@ enum monitor_states handle_write_metrics_monitor(struct selector_key *key, pop3_
   int arg = atoi(commands->arg1);
 
   if(arg == TOTAL_USERS)
-    return write_metric(metrics.totalConnectionCount, key, message, current_command, commands);
+    return write_metric(metrics.total_connection_count, key, message, current_command, commands);
 
   if(arg == CURRENT_USERS) 
-    return write_metric(metrics.currentConnectionCount, key, message, current_command, commands);
+    return write_metric(metrics.current_connection_count, key, message, current_command, commands);
 
   if(arg == MAX_USERS_HISTORY) 
-    return write_metric(metrics.maxConcurrentConnections, key, message, current_command, commands);
+    return write_metric(metrics.max_concurrent_connections, key, message, current_command, commands);
 
   if(arg == TOTAL_DELETED) 
-    return write_metric(metrics.totalMailsDeleted, key, message, current_command, commands);
+    return write_metric(metrics.total_mails_deleted, key, message, current_command, commands);
 
   if(arg == TOTAL_RETRIEVED) 
-    return write_metric(metrics.totalMailsRetrieved, key, message, current_command, commands);
+    return write_metric(metrics.total_mails_retrieved, key, message, current_command, commands);
 
   return write_metrics(metrics, key, message, current_command, commands);
 }

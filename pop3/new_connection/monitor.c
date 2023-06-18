@@ -114,6 +114,6 @@ void handleNewMonitorConnection(struct selector_key * key) {
         return;
     }
 
-    metricsRegisterNewClient();
+    metrics_register_new_client();
 
 }

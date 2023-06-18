@@ -13,7 +13,7 @@ void on_arrival_force_quit(const unsigned state, struct selector_key *key){
     if (data->commands.pop3_current_command->cmd_id == RETR ){
         selector_unregister_fd(key->s, data->commands.pop3_current_command->retr_state.mail_fd);
     }
-    metricsRegisterClientDisconnected();
+    metrics_register_client_disconnected();
     selector_unregister_fd(key->s, key->fd);
     key->data = NULL;
 

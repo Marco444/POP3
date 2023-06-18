@@ -115,7 +115,7 @@ void handleNewPOP3Connection(struct selector_key * key) {
         return;
     }
 
-    metricsRegisterNewClient();
+    metrics_register_new_client();
 
 }
 

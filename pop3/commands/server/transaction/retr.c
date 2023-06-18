@@ -17,10 +17,10 @@ int write_in_fd(struct selector_key *key);
 typedef struct email_data {
     int connection_fd;
     int email_fd;
-    // Esto mismo se utilizara para el byteStuffing  el valor 0 es un caracter cualquiera
+    // Esto mismo se utilizara para el byte_stuffing  el valor 0 es un caracter cualquiera
     // el valor 1 es el caracter \r y el valor 2 es el caracter \n
     int character_flag;
-    bool * isAllDone;
+    bool * is_all_done;
     uint8_t email_buffer[BUFFER_SIZE];
     buffer * connection_buffer;
     buffer  write_buffer;
@@ -32,12 +32,12 @@ void pop3_read_email_handler(struct selector_key *key){
     buffer * write_buffer = &data->write_buffer;
     size_t capacity;
     ssize_t sent;
-    uint8_t * readPtr = buffer_write_ptr(write_buffer, &(capacity));
+    uint8_t * read_ptr = buffer_write_ptr(write_buffer, &(capacity));
 
-    sent = read(data->email_fd, readPtr, capacity);
+    sent = read(data->email_fd, read_ptr, capacity);
 
     if (sent <= 0 && !buffer_can_read(write_buffer)) {
-        *(data->isAllDone) = true;
+        *(data->is_all_done) = true;
         // Me tengo que desregristrar
         selector_set_interest(key->s,data->connection_fd, OP_WRITE);
         selector_unregister_fd(key->s, data->email_fd);
@@ -54,20 +54,20 @@ void pop3_read_email_handler(struct selector_key *key){
     }
 
     while (buffer_can_read(write_buffer) && buffer_can_write(connection_buffer)) {
-        uint8_t *readPtr = buffer_read_ptr(write_buffer, &(capacity));
+        uint8_t *read_ptr = buffer_read_ptr(write_buffer, &(capacity));
         switch (data->character_flag){
             case 0:
-                if(*readPtr == '\r')
+                if(*read_ptr == '\r')
                     data->character_flag = 1;
                 break;
             case 1:
-                if(*readPtr == '\n')
+                if(*read_ptr == '\n')
                     data->character_flag = 2;
                 else
                     data->character_flag = 0;
                 break;
             case 2:
-                if(*readPtr == '.')
+                if(*read_ptr == '.')
                     data->character_flag = 3;
                 else
                     data->character_flag = 0;
@@ -79,7 +79,7 @@ void pop3_read_email_handler(struct selector_key *key){
             data->character_flag = 0;
         }else
         {
-            buffer_write(connection_buffer, *readPtr);
+            buffer_write(connection_buffer, *read_ptr);
             buffer_read_adv(write_buffer, 1);
         }
     }
@@ -90,7 +90,7 @@ void pop3_read_email_handler(struct selector_key *key){
 void pop3_close_email_handler(struct selector_key *key){
     close(key->fd);
     email_data * data = (email_data *) key->data;
-    metricsRegisterMailsRetrieved();
+    metrics_register_mails_retrieved();
     free(data);
 }
 void pop3_close_block_handler(struct selector_key *key){
@@ -133,7 +133,7 @@ enum pop3_states handle_retr(struct commands_state * ctx, struct selector_key * 
     data->connection_fd = key->fd;
     data->character_flag = 2;
     ctx->pop3_current_command->retr_state.mail_fd = fd;
-    data->isAllDone = &ctx->pop3_current_command->retr_state.mail_finished;
+    data->is_all_done = &ctx->pop3_current_command->retr_state.mail_finished;
     selector_register(key->s,fd, &handler, OP_NOOP, data);
     return TRANSACTION_STATE;
 }
