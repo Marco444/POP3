@@ -1,13 +1,16 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../lib/metrics/metrics.h"
-#include "monitor_states.h"
 #include "../lib/stm/stm.h"
 #include "../lib/args/args.h"
 #include "../lib/selector/selector.h"
+#include "../lib/sockets/sockets.h"
+#include "../lib/logger/logger.h"
+
 #include "new_connection/pop3.h"
 #include "new_connection/monitor.h"
-#include "../lib/sockets/sockets.h"
+#include "monitor_states.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -83,17 +86,24 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    //Initialize logger
+    log_info("Starting the server");
+
     // Initialize the server socket to receive new pop3 connections and add it to the selector
     int server_socket = setupServerSocket(args, &pop3_server_addr);
     if (server_socket < 0) {
         fprintf(stderr, "Failed to initialize server socket\n");
         return 1;
     }
+
+
     ss = selector_register(selector, server_socket, &pop3_server_handler, OP_READ, &args);
     if (ss != SELECTOR_SUCCESS) {
         fprintf(stderr, "Failed to register pop3 server socket to selector: %s\n", selector_error(ss));
         return 1;
     }
+
+    log_info("Registered the pop3 server socket to attend new connection");
 
     // Initialize the server socket to receive new pop3 connections and add it to the selector
     int monitor_socket = setupMonitorSocket(args, &pop3_monitor_addr);
@@ -108,6 +118,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    log_info("Registered the monitor server socket to attend new connection");
     metricsInit();
 
     // Main server loop
