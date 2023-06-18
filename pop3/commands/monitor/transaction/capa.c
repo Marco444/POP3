@@ -2,7 +2,7 @@
 #include "../../../states/write_buffer_helpers.h"
 #include <stdio.h>
 
-#define OK_ADD_USER "+OK Capability list follows\r\nUSER\r\nPIPELINING\r\n.\r\n"
+#define OK_CAPA_MONITOR "+OK Capability list TBD\r\n"
 #define ERRORS_CAPA_MONITOR "-ERR\r\n"
 
 enum monitor_states handle_monitor_capa(struct commands_state * ctx,struct selector_key *key){
@@ -23,7 +23,7 @@ enum monitor_states handle_monitor_capa(struct commands_state * ctx,struct selec
 }
 
 enum monitor_states handle_write_capa_monitor(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands){
-
+    puts("CAPA - MONITOR - WRITE");
     if(current_command->has_error){
         bool has_place = enters_the_buffer_monitor(key, ERRORS_CAPA_MONITOR);
         if(has_place){
@@ -34,12 +34,13 @@ enum monitor_states handle_write_capa_monitor(struct selector_key *key, pop3_cur
         }
     }
     else{
-        write_in_buffer_monitor(key, ERRORS_CAPA_MONITOR, strlen(ERRORS_CAPA_MONITOR), 0);
+        write_in_buffer_monitor(key, OK_CAPA_MONITOR, strlen(OK_CAPA_MONITOR), 0);
         current_command->is_finished = true;
     }
-    if(write_in_fd(key)){
+    if(write_in_fd_monitor(key)){
         return TRANSACTION_MONITOR;
     }else{
+        puts("FORCED_QUIT_MONITOR");
         return FORCED_QUIT_MONITOR;
     }
 
