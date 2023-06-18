@@ -40,5 +40,5 @@ enum monitor_states handle_write_capa_monitor(struct selector_key *key, pop3_cur
     if(write_in_fd_monitor(key)){
         return TRANSACTION_MONITOR;
     }
-        return FORCED_QUIT_MONITOR;
+        return QUIT_MONITOR;
 }
