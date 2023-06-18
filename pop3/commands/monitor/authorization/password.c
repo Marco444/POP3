@@ -65,7 +65,7 @@ enum monitor_states handle_write_password_monitor(struct selector_key *key, pop3
       return TRANSACTION_MONITOR;
     
   }else
-      return FORCED_QUIT_MONITOR;
+      return QUIT_MONITOR;
     
 
 }
