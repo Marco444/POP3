@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 static enum METRICS_ARGS {
-  TOTAL_USERS = 0, TOTAL_RETRIEVED = 1, TOTAL_DELETED = 2, CURRENT_USERS = 3, MAX_USERS_HISTORY = 4
+  TOTAL_USERS = 1, TOTAL_RETRIEVED = 2, TOTAL_DELETED = 3, CURRENT_USERS = 4, MAX_USERS_HISTORY = 5, TOTAL_BYTES_TRANSFERED = 6
 } args;
 
 #define OK "+"
@@ -30,8 +30,8 @@ static enum monitor_states write_metric(size_t metric, struct selector_key * key
 
 
 static enum monitor_states write_metrics(Metrics_snapshot metric, struct selector_key * key, char * message, pop3_current_command * current_command, struct commands_state * commands) {
-  sprintf(message, "+ 1 %zu\n2 %zu\n3 %zu\n4 %zu\n5 %zu\r\n",
-         metric.total_connection_count, metric.total_mails_retrieved, metric.total_mails_deleted, metric.current_connection_count, metric.max_concurrent_connections);
+  sprintf(message, "+ 1 %zu\n2 %zu\n3 %zu\n4 %zu\n5 %zu\n6 %zu\r\n",
+         metric.total_connection_count, metric.total_mails_retrieved, metric.total_mails_deleted, metric.current_connection_count, metric.max_concurrent_connections, metric.total_bytes_transferred);
   return write_str_buffer(key, message, current_command);
 }
 
@@ -68,6 +68,9 @@ enum monitor_states handle_write_metrics_monitor(struct selector_key *key, pop3_
 
   if(arg == TOTAL_RETRIEVED) 
     return write_metric(metrics.total_mails_retrieved, key, message, current_command, commands);
+
+  if(arg == TOTAL_BYTES_TRANSFERED) 
+    return write_metric(metrics.total_bytes_transferred, key, message, current_command, commands);
 
   return write_metrics(metrics, key, message, current_command, commands);
 }

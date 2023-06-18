@@ -26,9 +26,11 @@ int write_in_fd(struct selector_key *key){
     uint8_t * readPtr = buffer_read_ptr(targetBuffer, &(capacity));
 
     sent = send(targetFd, readPtr, capacity, MSG_NOSIGNAL);
+
     if (sent <= 0) {
         return 0 ;
     } else {
+        metrics_register_bytes_transferred(sent);
         buffer_read_adv(targetBuffer, sent);
         return 1;
     }
@@ -49,6 +51,7 @@ int write_in_fd_monitor(struct selector_key *key){
     if (sent <= 0) {
         return 0 ;
     } else {
+        metrics_register_bytes_transferred(sent);
         buffer_read_adv(targetBuffer, sent);
         return 1;
     }
