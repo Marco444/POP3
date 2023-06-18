@@ -6,6 +6,12 @@
 #include <unistd.h>
 typedef void (*handler)(int socket, char* buffer, int size,char * args);
 
+#define TOTAL_USERS "TOTAL_USERS"
+#define TOTAL_RETRIEVED "TOTAL_RETRIEVED_MAILS"
+#define TOTAL_DELETED "TOTAL_DELETED_MAILS"
+#define CURRENT_USERS "CURRENT_USERS"
+#define MAX_USERS_HISTORY "MAX_USERS"
+
 void flush_buffer(char* buffer, int size) {
     for (int i = 0; i < size; i++) {
         buffer[i] = 0;

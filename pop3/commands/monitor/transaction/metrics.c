@@ -5,11 +5,9 @@
 #include "../../../states/write_buffer_helpers.h"
 #include <stdio.h>
 
-#define TOTAL_USERS "TOTAL_USERS"
-#define TOTAL_RETRIEVED "TOTAL_RETRIEVED_MAILS"
-#define TOTAL_DELETED "TOTAL_DELETED_MAILS"
-#define CURRENT_USERS "CURRENT_USERS"
-#define MAX_USERS_HISTORY "MAX_USERS"
+static enum METRICS_ARGS {
+  TOTAL_USERS = 0, TOTAL_RETRIEVED = 1, TOTAL_DELETED = 2, CURRENT_USERS = 3, MAX_USERS_HISTORY = 4
+} args;
 
 #define OK "+"
 #define ERROR_MSG "- "
@@ -55,19 +53,24 @@ enum monitor_states handle_write_metrics_monitor(struct selector_key *key, pop3_
   if(current_command->has_error)
     return write_str_buffer(key, ERROR_MSG, current_command);
 
-  if(strcmp(TOTAL_USERS, commands->arg1) == 0)
+  int arg = atoi(commands->arg1);
+
+  printf("%d \n", arg);
+  printf("%d \n", CURRENT_USERS);
+
+  if(arg == TOTAL_USERS)
     return write_metric(metrics.totalConnectionCount, key, message, current_command, commands);
 
-  if(strcmp(CURRENT_USERS, commands->arg1) == 0) 
+  if(arg == CURRENT_USERS) 
     return write_metric(metrics.currentConnectionCount, key, message, current_command, commands);
 
-  if(strcmp(MAX_USERS_HISTORY, commands->arg1) == 0)
+  if(arg == MAX_USERS_HISTORY) 
     return write_metric(metrics.maxConcurrentConnections, key, message, current_command, commands);
 
-  if(strcmp(TOTAL_DELETED, commands->arg1) == 0)
+  if(arg == TOTAL_DELETED) 
     return write_metric(metrics.totalMailsDeleted, key, message, current_command, commands);
 
-  if(strcmp(TOTAL_RETRIEVED, commands->arg1) == 0)
+  if(arg == TOTAL_RETRIEVED) 
     return write_metric(metrics.totalMailsRetrieved, key, message, current_command, commands);
 
   return write_metrics(metrics, key, message, current_command, commands);
