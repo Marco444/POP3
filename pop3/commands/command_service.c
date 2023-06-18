@@ -12,7 +12,8 @@ monitor_command monitor_authorization_commands[] = {
 monitor_command monitor_transaction_commands[] = {
     {"METRICS", handle_monitor_metrics },
     {"EXIT", handle_monitor_exit },
-    {"ADD_USER", handle_monitor_add_user }
+    {"ADD_USER", handle_monitor_add_user },
+    {"CAPA", handle_monitor_capa}
 };
 
 pop3_command transaction_commands[] = {

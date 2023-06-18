@@ -17,6 +17,9 @@ enum monitor_states handle_write_username_monitor(struct selector_key *key, pop3
 enum monitor_states handle_monitor_add_user(struct commands_state * ctx,struct selector_key *key);
 enum monitor_states handle_write_add_user_monitor(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands);
 
+enum monitor_states handle_monitor_capa(struct commands_state * ctx,struct selector_key *key);
+enum monitor_states handle_write_capa_monitor(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands);
+
 enum monitor_states handle_monitor_password(struct commands_state * ctx,struct selector_key *key);
 enum monitor_states handle_write_password_monitor(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands);
 

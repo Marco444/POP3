@@ -15,8 +15,6 @@ enum monitor_states handle_monitor_add_user(struct commands_state * ctx,struct s
   ctx->pop3_current_command->noop_state = true;
 
   struct monitor_connection_state * state = (struct monitor_connection_state *) key->data;
-
-  int i;
   
   // Cannot add more users, maximun size reached
   if(state->args->users_count >= MAX_USERS){
