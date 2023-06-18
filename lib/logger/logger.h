@@ -16,7 +16,7 @@
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
-void log(FILE * const stream, const char * color, const char * prefix, const char * const format, const char * suffix, va_list arguments);
+void log_(FILE * const stream, const char * color, const char * prefix, const char * const format, const char * suffix, va_list arguments);
 
 void log_debug(const char * const format, ...);
 

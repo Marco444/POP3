@@ -39,15 +39,15 @@ void metrics_handler(int socket, char* buffer, int size,char * args){
     char* metrics = "METRICS\r\n";
     send(socket, metrics, strlen(metrics), 0);
     flus_socket(socket, buffer, size);
-    printf(buffer);
+    printf("%s", buffer);
 }
 void add_user_hanlder(int socket,char * buffer,int size,char * args){
     char add_user[255];
-    printf(args);
+    printf("%s", args);
     sprintf(add_user,"ADD_USER %s\r\n",args);
     send(socket, add_user, strlen(add_user), 0);
     flus_socket(socket, buffer, size);
-    printf(buffer);
+    printf("%s", buffer);
 }
 int main(int argc, char** argv) {
     struct client_args args;
@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
 
     char buffer[1024] = { 0 };
     if ((client_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        printf("\n Socket creation error \n");
+        printf("%s", "\n Socket creation error \n");
         return -1;
     }
 
@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
     // form
     if (inet_pton(AF_INET, args.server_data.server_addr, &serv_addr.sin_addr)
         <= 0) {
-        printf(
+        printf("%s", 
                 "\nInvalid address/ Address not supported \n");
         return -1;
     }
@@ -78,14 +78,14 @@ int main(int argc, char** argv) {
                  = connect(client_fd, (struct sockaddr*)&serv_addr,
                            sizeof(serv_addr)))
         < 0) {
-        printf("\nConnection Failed \n");
+        printf("%s", "\nConnection Failed \n");
         return -1;
     }
 
     char  username [255];
     char  password [255];
     sprintf(username, "USERNAME %s\r\n", args.user.name);
-    printf(username);
+    printf("%s", username);
     send(client_fd, username, strlen(username), 0);
     flus_socket(client_fd, buffer, 1024);
     if(buffer[0] != '+') {
@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
     send(client_fd, password, strlen(password), 0);
     flush_buffer(buffer, 1024);
     flus_socket(client_fd, buffer, 1024);
-    printf(buffer);
+    printf("%s", buffer);
     if(buffer[0] != '+') {
         printf("Error: %s\n", buffer);
         return 1;
