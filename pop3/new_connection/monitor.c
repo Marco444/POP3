@@ -28,6 +28,10 @@ void pop3_monitor_read(struct selector_key * key) {
 void pop3_monitor_write(struct selector_key * key) {
     struct state_machine* stm = &((struct monitor_connection_state *) key->data)->stm;
     enum monitor_states st = stm_handler_write(stm, key);
+
+    if (key->data == NULL)
+        return;
+
     write_in_fd_monitor(key);
     pop3_current_command *current_command = ((struct monitor_connection_state *) key->data)->commands.pop3_current_command;
     if(current_command->is_finished && !buffer_can_read(&((struct monitor_connection_state *) key->data)->commands.write_buffer)) {
@@ -40,9 +44,15 @@ void pop3_monitor_write(struct selector_key * key) {
         return;
     }
 }
+
 void pop3_monitor_close(struct selector_key * key) {
     struct state_machine* stm = &((struct monitor_connection_state *) key->data)->stm;
     stm_handler_close(stm, key);
+    struct monitor_connection_state * state = (struct monitor_connection_state *) key->data;
+    parser_destroy(state->parser);
+    free(state->commands.pop3_current_command);
+    free(key->data);
+    key->data = NULL;
 }
 void pop3_monitor_block(struct selector_key * key) {
     struct state_machine* stm = &((struct monitor_connection_state *) key->data)->stm;

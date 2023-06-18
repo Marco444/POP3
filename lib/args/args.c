@@ -59,14 +59,8 @@ usage(const char *progname) {
         "   -p <POP3 port>  Puerto entrante conexiones POP3.\n"
         "   -P <conf port>   Puerto entrante conexiones configuracion\n"
         "   -u <name>:<pass> Usuario y contraseña de usuario que puede usar el servidor. Hasta 10.\n"
+        "   -a <name>:<pass> Usuario y contraseña de administrador que puede usar el monitor del servidor. Hasta 10.\n"
         "   -v               Imprime información sobre la versión versión y termina.\n"
-        "\n"
-        "   --doh-ip    <ip>    \n"
-        "   --doh-port  <port>  XXX\n"
-        "   --doh-host  <host>  XXX\n"
-        "   --doh-path  <host>  XXX\n"
-        "   --doh-query <host>  XXX\n"
-
         "\n",
         progname);
     exit(1);
@@ -95,6 +89,7 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
     while (true) {
         int option_index = 0;
         static struct option long_options[] = {
+            //TODO, long term options for our args
             // { "doh-ip",    required_argument, 0, 0xD001 },
             // { "doh-port",  required_argument, 0, 0xD002 },
             // { "doh-host",  required_argument, 0, 0xD003 },
@@ -109,7 +104,7 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
             { 0,           0,                 0, 0 }
         };
         // TODO check if there flags that have to be removed
-        c = getopt_long(argc, argv, "hl:L:Np:P:u:vd:a:", long_options, &option_index);
+        c = getopt_long(argc, argv, "hl:L:p:P:u:vd:a:", long_options, &option_index);
         
         if (c == -1)
             break;
@@ -124,9 +119,6 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
             case 'L':
                 args->monitor_addr = optarg;
                 break;
-            // case 'N':
-            //     args->disectors_enabled = false;
-            //     break;
             case 'p':
                 args->pop3_port = port(optarg);
                 break;
