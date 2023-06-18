@@ -344,7 +344,6 @@ selector_register(fd_selector        s,
     // 0. validación de argumentos
     if(s == NULL || INVALID_FD(fd) || handler == NULL) {
         ret = SELECTOR_IARGS;
-        puts("0");
         goto finally;
     }
     // 1. tenemos espacio?
@@ -352,7 +351,6 @@ selector_register(fd_selector        s,
     if(ufd > s->fd_size) {
         ret = ensure_capacity(s, ufd);
         if(SELECTOR_SUCCESS != ret) {
-        puts("1");
             goto finally;
         }
     }
@@ -361,7 +359,6 @@ selector_register(fd_selector        s,
     struct item * item = s->fds + ufd;
     if(ITEM_USED(item)) {
         ret = SELECTOR_FDINUSE;
-        puts("2");
         goto finally;
     } else {
         item->fd       = fd;

@@ -2,13 +2,14 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../../command_service.h"
 #include "../../../states/write_buffer_helpers.h"
+#include "../../../../lib/logger/logger.h"
 #include <stdio.h>
 
 #define OK_ADD_USER "+OK user added\r\n"
 #define ERRORS_ADD_USERS "-ERR could not add user\r\n"
 
 enum monitor_states handle_monitor_add_user(struct commands_state * ctx,struct selector_key *key) {
-  puts("ADD_USER");
+  log_debug("ADD_USER");
   ctx->pop3_current_command->cmd_id = ADD_USER;
   ctx->pop3_current_command->is_finished = false;
   ctx->pop3_current_command->has_error = false;
