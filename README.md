@@ -1,7 +1,6 @@
 # POP3
 Este repositorio implementa un servidor de mails POP3 que sigue el RFC 1939. Al mismo tiempo, incluye y define un cliente que puede monitorear el servidor. El protocolo de monitoreo es definido por nosotros, su definicion se encuentra en el archivo monitor-rfc.txt
 
-## Documentacion
 Para mas informacion sobre la implementacion del servidor y del cliente, asi como la performance con diferentes configuraciones, se puede referir al directorio `/docs` donde se encuentra el informe de este proyecto `informe.pdf` y el RFC del protocolo monitor.
 
 ## Generacion de binarios
