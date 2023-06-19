@@ -16,7 +16,7 @@ Asimismo se pueden eliminar todos los binarios con el comando
 make clean
 ```
 
-##Ejecucion del cliente
+## Ejecucion del cliente
 
 Parado en la raiz del repositorio se puede compilar el cliente con el comando
 
@@ -30,7 +30,7 @@ Luego para ejecutar el cliente simplemente es correr el comando
 bin/client -
 ```
 
-##Ejecucion del servidor
+## Ejecucion del servidor
 Parado en la raiz del repositorio se puede compilar el servidor con el comando
 
 ```
@@ -44,4 +44,4 @@ bin/server -u user:pass -a admin:admin-pass -d mails/
 
 ```
 
-donde el `-u user/pass` define el usuario con nombre 'user' y contrasenia 'pass', y `-a admin:admin-pass` define el usuario administrador con nombre 'admin' y contrasenia 'admin-pass'. Por ultimo el argumento `-d mails/` viene a ser el path donde se encuentran los mails que va a administrar el servidor.
+donde el `-u user/pass` define el usuario con nombre '_user_' y contrasenia '_pass_', y `-a admin:admin-pass` define el usuario administrador con nombre '_admin_' y contrasenia '_admin-pass_'. Por ultimo el argumento `-d mails/` viene a ser el path donde se encuentran los mails que va a administrar el servidor. Como lo estipula el RFC 1939 dentro del directorio _mails_ por cada usuario del servidor se debe crear un subdirectorio con el nombre de usuario y dentro de este otro directorio con nombre curl, es decir: para cada **user** dentro de mails  _mails/**user**/curl_. 
