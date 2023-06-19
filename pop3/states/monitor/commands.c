@@ -14,7 +14,8 @@ static command_handler monitor_command_handlers[MONITOR_CMD_COUNT] = {
     [METRICS] = handle_write_metrics_monitor,
     [EXIT] = handle_write_exit_monitor,
     [ADD_USER] = handle_write_add_user_monitor,
-    [CAPA_MONITOR] = handle_write_capa_monitor
+    [CAPA_MONITOR] = handle_write_capa_monitor,
+    [LIST_USERS] = handle_write_list_users_monitor
 };
 
 enum monitor_states write_command_monitor(struct selector_key *key) {

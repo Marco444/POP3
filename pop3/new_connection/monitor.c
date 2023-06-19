@@ -51,6 +51,7 @@ void pop3_monitor_close(struct selector_key * key) {
     struct monitor_connection_state * state = (struct monitor_connection_state *) key->data;
     parser_destroy(state->parser);
     free(state->commands.pop3_current_command);
+    close(key->fd);
     free(key->data);
     key->data = NULL;
 }

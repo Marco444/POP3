@@ -13,6 +13,7 @@ monitor_command monitor_transaction_commands[] = {
     {"METRICS", handle_monitor_metrics },
     {"EXIT", handle_monitor_exit },
     {"ADD_USER", handle_monitor_add_user },
+    {"LIST_USERS", handle_monitor_list_users},
     {"CAPA", handle_monitor_capa}
 };
 
@@ -44,7 +45,6 @@ static enum pop3_states process_command_acc(pop3_command commands[], size_t num_
     size_t i = 0;
     for (i = 0; i < num_commands; i++) {
         if (strcasecmp(ctx->cmd, commands[i].name) == 0) {
-            printf("Command %s\n", commands[i].name);
             return commands[i].handler(ctx,key);
         }
     }
@@ -56,7 +56,6 @@ static enum monitor_states process_command_acc_monitor(monitor_command commands[
     size_t i = 0;
     for (i = 0; i < num_commands; i++) {
         if (strcasecmp(ctx->cmd, commands[i].name) == 0) {
-            printf("Command %s\n", commands[i].name);
             return commands[i].handler(ctx,key);
         }
     }

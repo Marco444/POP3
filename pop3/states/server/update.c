@@ -31,9 +31,12 @@ void on_arrival_update(const unsigned state, struct selector_key *key) {
 void on_departure_update(const unsigned state, struct selector_key *key){
     ((struct connection_state *)key->data)->commands.last_state = UPDATE_STATE;
     return; }
+
 enum pop3_states on_read_ready_update(struct selector_key *key){ return UPDATE_STATE; }
+
 enum pop3_states on_write_ready_update(struct selector_key *key){
     return write_command(key);
 }
+
 enum pop3_states on_block_ready_update(struct selector_key *key){ return 0; }
 
