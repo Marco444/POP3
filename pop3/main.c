@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
 
 
     // Initialize the server socket to receive new pop3 connections and add it to the selector
-    int monitor_socket = setupMonitorSocket(args.conection_data[0], &pop3_monitor_addr);
+    int monitor_socket = setupMonitorSocket(args.conection_data_monitor[0], &pop3_monitor_addr);
     if (monitor_socket < 0) {
         fprintf(stderr, "Failed to initialize monitor socket\n");
         goto finnaly;
@@ -144,7 +144,7 @@ int main(int argc, char** argv) {
     log_info("Registered the monitor server socket ipv4 to attend new connection");
 
     // Initialize the server socket to receive new pop3 connections and add it to the selector
-    int monitor_socket_ipv6 = setupMonitorSocket(args.conection_data[1], &pop3_monitor_addr);
+    int monitor_socket_ipv6 = setupMonitorSocket(args.conection_data_monitor[1], &pop3_monitor_addr);
     if (monitor_socket_ipv6 < 0) {
         fprintf(stderr, "Failed to initialize monitor socket\n");
         goto finnaly;
