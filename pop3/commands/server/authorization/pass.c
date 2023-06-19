@@ -2,7 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../../command_service.h"
 #include "../../../states/write_buffer_helpers.h"
-
+#include "../../../../lib/logger/logger.h"
 #include <stdio.h>
 #include <dirent.h>
 #include <sys/stat.h>
@@ -69,6 +69,8 @@ enum pop3_states handle_pass(struct commands_state * ctx, struct selector_key *k
         return AUTHORIZATION_STATE;
     }
     ctx->inbox_data.email_files_length = i;
+    
+    log_info("Registered a new user %s", state->args->users[state->auth_data.user_index].name);
     return AUTHORIZATION_STATE;
 }
 

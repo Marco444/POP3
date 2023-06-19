@@ -3,6 +3,8 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <time.h>
+
 
 // Uncomment to log in DEBUG mode (with more details).
 #define DEBUG true

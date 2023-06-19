@@ -4,8 +4,8 @@
 #include <stdbool.h>
 
 #define MAX_USERS 10
-#define MAX_USERS_NAME_LENGHT 10
-#define MAX_USERS_PASS_LENGHT 10
+#define MAX_USERS_NAME_LENGHT 40
+#define MAX_USERS_PASS_LENGHT 40
 #define SOCKETS_DATA 2
 
 struct users {

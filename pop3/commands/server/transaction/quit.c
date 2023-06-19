@@ -2,6 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../../command_service.h"
 #include "../../../states/write_buffer_helpers.h"
+#include "../../../../lib/logger/logger.h"
 #include <stdio.h>
 
 #define QUIT_MSG_TRANSACTION "+OK server signing off\r\n"
@@ -14,6 +15,7 @@ enum pop3_states handle_transaction_quit(struct commands_state * ctx, struct sel
     ctx->pop3_current_command->noop_state = true;
     struct connection_state * data = key->data;
     if (data->auth_data.user_index != -1){
+        log_info( "User %s disconnected", data->args->users[data->auth_data.user_index].name);
         data->args->users[data->auth_data.user_index].close = false;
     }
     return TRANSACTION_STATE;
