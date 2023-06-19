@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
     log_info("Starting the server");
 
     // Initialize the server socket to receive new pop3 connections and add it to the selector
-    int server_socket = setupServerSocket(args, &pop3_server_addr);
+    int server_socket = setupServerSocket(args.conection_data[0], &pop3_server_addr);
     if (server_socket < 0) {
         fprintf(stderr, "Failed to initialize server socket\n");
         return 1;
@@ -103,7 +103,24 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    log_info("Registered the pop3 server socket to attend new connection");
+    log_info("Registered the pop3 server socket ipv4 to attend new connection");
+
+    // Initialize the server socket to receive new pop3 connections and add it to the selector
+    int server_socket_ipv6 = setupServerSocket(args.conection_data[1], &pop3_server_addr);
+    if (server_socket_ipv6 < 0) {
+        fprintf(stderr, "Failed to initialize server socket\n");
+        return 1;
+    }
+
+
+    ss = selector_register(selector, server_socket_ipv6, &pop3_server_handler, OP_READ, &args);
+    if (ss != SELECTOR_SUCCESS) {
+        fprintf(stderr, "Failed to register pop3 server socket to selector: %s\n", selector_error(ss));
+        return 1;
+    }
+
+    log_info("Registered the pop3 server socket ipv6 to attend new connection");
+
 
     // Initialize the server socket to receive new pop3 connections and add it to the selector
     int monitor_socket = setupMonitorSocket(args, &pop3_monitor_addr);

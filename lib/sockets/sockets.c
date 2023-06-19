@@ -2,8 +2,6 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "sockets.h"
 #include "../selector/selector.h"
-static int initializeServerSocket(char* addr, unsigned short port, struct sockaddr_storage* res, socklen_t* socklenResult);
-static int setupSocket(struct pop3args args, struct sockaddr_storage *pop3_server_addr, int server_socket, int server, socklen_t pop3_server_addrLen);
 
 static int initializeServerSocket(char* addr, unsigned short port, struct sockaddr_storage* res, socklen_t* socklenResult) {
     int ipv6 = strchr(addr, ':') != NULL;
@@ -12,7 +10,6 @@ static int initializeServerSocket(char* addr, unsigned short port, struct sockad
         // Parse addr as IPv6
         struct sockaddr_in6 sock6;
         memset(&sock6, 0, sizeof(sock6));
-
         sock6.sin6_family = AF_INET6;
         sock6.sin6_addr = in6addr_any;
         sock6.sin6_port = htons(port);
@@ -36,13 +33,12 @@ static int initializeServerSocket(char* addr, unsigned short port, struct sockad
         // log(LOG_ERROR, "Failed IP conversion for IPv4");
         return 1;
     }
-
     *((struct sockaddr_in*)res) = sock4;
     *socklenResult = sizeof(struct sockaddr_in);
     return 0;
 }
 
-int setupServerSocket(struct pop3args args, struct sockaddr_storage* pop3_server_addr) {
+int setupServerSocket(conection_data args, struct sockaddr_storage* pop3_server_addr) {
     //define the address to store the socket
     memset(pop3_server_addr, 0, sizeof(*pop3_server_addr));
     socklen_t pop3_server_addrLen = sizeof(*pop3_server_addr);
@@ -50,7 +46,7 @@ int setupServerSocket(struct pop3args args, struct sockaddr_storage* pop3_server
     int server_socket = initializeServerSocket(args.pop3_addr, args.pop3_port, pop3_server_addr, &pop3_server_addrLen);
     int server = socket(pop3_server_addr->ss_family, SOCK_STREAM, IPPROTO_TCP);
 
-    if(setupSocket(args, pop3_server_addr, server_socket, server, pop3_server_addrLen) < 0) 
+    if(setupSocket(pop3_server_addr, server_socket, server, pop3_server_addrLen) < 0) 
         return -1;
 
     return server;
@@ -64,13 +60,13 @@ int setupMonitorSocket(struct pop3args args, struct sockaddr_storage* pop3_serve
     int server_socket = initializeServerSocket(args.monitor_addr, args.monitor_port, pop3_server_addr, &pop3_server_addrLen);
     int server = socket(pop3_server_addr->ss_family, SOCK_STREAM, IPPROTO_TCP);
 
-    if(setupSocket(args, pop3_server_addr, server_socket, server, pop3_server_addrLen) < 0) 
+    if(setupSocket(pop3_server_addr, server_socket, server, pop3_server_addrLen) < 0) 
         return -1;
 
     return server;
 }
 
-static int setupSocket(struct pop3args args, struct sockaddr_storage* pop3_server_addr, int server_socket, int server, socklen_t pop3_server_addrLen) {
+static int setupSocket(struct sockaddr_storage* pop3_server_addr, int server_socket, int server, socklen_t pop3_server_addrLen) {
     if (server < 0) {
         fprintf(stderr, "Unable to create socket");
         return -1;

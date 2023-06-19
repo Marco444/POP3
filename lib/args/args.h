@@ -6,6 +6,7 @@
 #define MAX_USERS 10
 #define MAX_USERS_NAME_LENGHT 10
 #define MAX_USERS_PASS_LENGHT 10
+#define SOCKETS_DATA 2
 
 struct users {
     char name[MAX_USERS_NAME_LENGHT];
@@ -20,12 +21,13 @@ typedef struct user {
     bool close;
 } user;
 
+typedef struct conection_data
+{
 
-// struct pop3args {
-//     char           *pop3_addr;
-//     unsigned short  pop3_port;
+    char * pop3_addr;
+    unsigned short pop3_port;
+}conection_data;
 
-// };
 
 typedef struct pop3args {
     // USERS (Array is null terminated)
@@ -33,11 +35,11 @@ typedef struct pop3args {
     int users_admin_count;
     struct user users[MAX_USERS];
     struct user users_admin[MAX_USERS];
-    // POP3 server Address and port
-    char           * pop3_addr;
-    unsigned short  pop3_port;
+    
+    conection_data conection_data[SOCKETS_DATA];
+
     // Monitor address and port
-    char            *monitor_addr;
+    char        * monitor_addr;
     unsigned short  monitor_port;
     // Directory
     char            *mail_dir;

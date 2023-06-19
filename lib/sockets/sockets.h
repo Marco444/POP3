@@ -20,7 +20,9 @@
 
 int setupMonitorSocket(struct pop3args args , struct sockaddr_storage * pop3_server_addr);
 
-int setupServerSocket(struct pop3args args , struct sockaddr_storage * pop3_server_addr);
+int setupServerSocket(conection_data args, struct sockaddr_storage* pop3_server_addr) ;
 
+static int initializeServerSocket(char* addr, unsigned short port, struct sockaddr_storage* res, socklen_t* socklenResult);
+static int setupSocket(struct sockaddr_storage *pop3_server_addr, int server_socket, int server, socklen_t pop3_server_addrLen);
 
 #endif
