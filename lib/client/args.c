@@ -45,32 +45,6 @@ version(void) {
                     "ITBA Protocolos de Comunicación 2023a \n");
 }
 
-
-// progname -> Should be argv[0] program name
-static void
-usage(const char *progname) {
-    fprintf(stderr,
-            "Usage: %s [OPTION]...\n"
-            "\n"
-            "   -h               Imprime la ayuda y termina.\n"
-            "   -l <POP3 addr>  Dirección donde servirá el POP3.\n"
-            "   -L <conf  addr>  Dirección donde servirá el servicio de monitoreo.\n"
-            "   -p <POP3 port>  Puerto entrante conexiones POP3.\n"
-            "   -P <conf port>   Puerto entrante conexiones configuracion\n"
-            "   -u <name>:<pass> Usuario y contraseña de usuario que puede usar el servidor. Hasta 10.\n"
-            "   -v               Imprime información sobre la versión versión y termina.\n"
-            "\n"
-            "   --doh-ip    <ip>    \n"
-            "   --doh-port  <port>  XXX\n"
-            "   --doh-host  <host>  XXX\n"
-            "   --doh-path  <host>  XXX\n"
-            "   --doh-query <host>  XXX\n"
-
-            "\n",
-            progname);
-    exit(1);
-}
-
 void
 parse_args(const int argc, char **argv, struct client_args *args) {
     memset(args, 0, sizeof(*args));
@@ -91,18 +65,6 @@ parse_args(const int argc, char **argv, struct client_args *args) {
     while (true) {
         int option_index = 0;
         static struct option long_options[] = {
-                // { "doh-ip",    required_argument, 0, 0xD001 },
-                // { "doh-port",  required_argument, 0, 0xD002 },
-                // { "doh-host",  required_argument, 0, 0xD003 },
-                // { "doh-path",  required_argument, 0, 0xD004 },
-                // { "doh-query", required_argument, 0, 0xD005 },
-                // { 0,           0,                 0, 0 }
-                { "doh-ip",    no_argument, 0, 0xD001 },
-                { "doh-port",  no_argument, 0, 0xD002 },
-                { "doh-user",  no_argument, 0, 0xD003 },
-                { "doh-command",  no_argument, 0, 0xD004 },
-                { "doh-newuser",  no_argument, 0, 0xD005 },
-                { "doh-metrics",  no_argument, 0, 0xD006 },
                 { 0,           0,                 0, 0 }
         };
         c = getopt_long(argc, argv, "a:p:u:n:m", long_options, &option_index);
