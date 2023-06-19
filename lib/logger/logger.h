@@ -28,7 +28,5 @@ void log_error_raw(const char * const format, ...);
 
 void log_info(const char * const format, ...);
 
-void yyerror_(const char *, ...);
-
 #endif
 

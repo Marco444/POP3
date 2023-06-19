@@ -29,7 +29,7 @@ int write_in_fd(struct selector_key *key){
     sent = send(targetFd, readPtr, capacity, MSG_NOSIGNAL);
 
     if (sent <= 0) {
-        long_error("Error sending data to client");
+        log_error("Error sending data to client");
         return 0 ;
     } else {
         metrics_register_bytes_transferred(sent);
