@@ -3,7 +3,8 @@
 #include "../../monitor_states.h"
 
 void on_arrival_quit_monitor(const unsigned state, struct selector_key *key) {
-    selector_unregister_fd(key->s, key->fd);    
+    selector_unregister_fd(key->s, key->fd);
+    key->data = NULL;    
 }
 
 void on_departure_quit_monitor(const unsigned state, struct selector_key *key) {
