@@ -45,7 +45,6 @@ static enum pop3_states process_command_acc(pop3_command commands[], size_t num_
     size_t i = 0;
     for (i = 0; i < num_commands; i++) {
         if (strcasecmp(ctx->cmd, commands[i].name) == 0) {
-            printf("Command %s\n", commands[i].name);
             return commands[i].handler(ctx,key);
         }
     }
@@ -57,7 +56,6 @@ static enum monitor_states process_command_acc_monitor(monitor_command commands[
     size_t i = 0;
     for (i = 0; i < num_commands; i++) {
         if (strcasecmp(ctx->cmd, commands[i].name) == 0) {
-            printf("Command %s\n", commands[i].name);
             return commands[i].handler(ctx,key);
         }
     }
