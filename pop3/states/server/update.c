@@ -3,7 +3,7 @@
 #include "../../pop3_states.h"
 #include "../write_buffer_helpers.h"
 #include "../../../lib/metrics/metrics.h"
-
+#include "../../../lib/logger/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -17,11 +17,13 @@ void on_arrival_update(const unsigned state, struct selector_key *key) {
     for(int i = 0; i < commands->inbox_data.email_files_length; i++) {
         if(commands->inbox_data.email_files[i].is_deleted) {
             int result = remove(commands->inbox_data.email_files[i].path);
-            metrics_register_mails_deleted();
-            commands->pop3_current_command->quit_update_state.has_deleted  = true;
             if(result < 0 ) {
+                log_error("Failed to delete email file %s", commands->inbox_data.email_files[i].name);
                 commands->pop3_current_command->quit_update_state.has_error = true;
-                printf("Failed to delete email file %s\n", commands->inbox_data.email_files[i].name);
+            }else{
+                log_info("Email file %s deleted", commands->inbox_data.email_files[i].name);
+                metrics_register_mails_deleted();
+                commands->pop3_current_command->quit_update_state.has_deleted  = true;
             }
         }
     }

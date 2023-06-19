@@ -54,8 +54,10 @@ usage(const char *progname) {
         "Usage: %s [OPTION]...\n"
         "\n"
         "   -h               Imprime la ayuda y termina.\n"
-        "   -l <POP3 addr>   Dirección donde servirá el POP3.\n"
-        "   -L <conf  addr>  Dirección donde servirá el servicio de monitoreo.\n"
+        "   -l <POP3 addr>   Dirección IPv4 donde servirá el POP3.\n"
+        "   -L <conf addr>  Dirección IPv4 donde servirá el servicio de monitoreo.\n"
+        "   -m <POP3 addr>   Dirección IPv6 donde servirá el POP3.\n"
+        "   -M <conf  addr>  Dirección IPv6 donde servirá el servicio de monitoreo.\n"
         "   -p <POP3 port>   Puerto entrante conexiones POP3.\n"
         "   -P <conf port>   Puerto entrante conexiones configuracion\n"
         "   -u <name>:<pass> Usuario y contraseña de usuario que puede usar el servidor. Hasta 10.\n"
@@ -82,6 +84,14 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
     args->monitor_addr   = "::1";
     args->monitor_port   = 8200;
 
+    // Default values for monitor address and port
+    args->conection_data_monitor[0].pop3_addr = "127.0.0.1";
+    args->conection_data_monitor[0].pop3_port = 8200;
+
+    // Default values for monitor address and port
+    args->conection_data_monitor[1].pop3_addr = "::1";
+    args->conection_data_monitor[1].pop3_port = 8200;
+
     int c;
     args->users_count = 0;
     args->users_admin_count = 0;
@@ -97,7 +107,7 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
             { 0,           0,                 0, 0 }
         };
         // TODO check if there flags that have to be removed
-        c = getopt_long(argc, argv, "hl:L:p:P:u:vd:a:", long_options, &option_index);
+        c = getopt_long(argc, argv, "hl:L:p:P:u:vd:a:m:M:", long_options, &option_index);
         
         if (c == -1)
             break;
@@ -112,12 +122,23 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
                 break;
             case 'L':
                 args->monitor_addr = optarg;
+                args->conection_data_monitor[0].pop3_addr = optarg;
+                break;
+            case 'm':
+                args->conection_data[1].pop3_addr = optarg;
+                break;
+            case 'M':
+                //args->monitor_addr = optarg;
+                args->conection_data_monitor[1].pop3_addr = optarg;
                 break;
             case 'p':
                 args->conection_data[0].pop3_port = port(optarg);
+                args->conection_data[1].pop3_port = port(optarg);
                 break;
             case 'P':
-                args->monitor_port   = port(optarg);
+                //args->monitor_port = port(optarg);
+                args->conection_data_monitor[0].pop3_port = port(optarg);
+                args->conection_data_monitor[1].pop3_port = port(optarg);
                 break;
             case 'u':
                 if(args->users_count >= MAX_USERS) {

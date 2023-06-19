@@ -3,6 +3,7 @@
 
 #include "../../lib/metrics/metrics.h"
 #include "../commands/command_service.h"
+#include "../../lib/logger/logger.h"
 #include "../pop3_states.h"
 #include "../monitor_states.h"
 #include <stdio.h>
@@ -21,13 +22,14 @@ int write_in_fd(struct selector_key *key){
     size_t capacity;
     ssize_t sent;
     if (!buffer_can_read(targetBuffer)) {
-       // return COPY;
+       return 1;
     }
     uint8_t * readPtr = buffer_read_ptr(targetBuffer, &(capacity));
 
     sent = send(targetFd, readPtr, capacity, MSG_NOSIGNAL);
 
     if (sent <= 0) {
+        log_error("Error sending data to client");
         return 0 ;
     } else {
         metrics_register_bytes_transferred(sent);
@@ -44,7 +46,7 @@ int write_in_fd_monitor(struct selector_key *key){
     size_t capacity;
     ssize_t sent;
     if (!buffer_can_read(targetBuffer)) {
-       // return COPY;
+        return 1;
     }
     uint8_t * readPtr = buffer_read_ptr(targetBuffer, &(capacity));
     sent = send(targetFd, readPtr, capacity, MSG_NOSIGNAL);

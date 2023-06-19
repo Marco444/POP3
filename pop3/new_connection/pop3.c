@@ -2,6 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../../lib/selector/selector.h"
 #include "../../lib/metrics/metrics.h"
+#include "../../lib/logger/logger.h"
 #include "../pop3_states.h"
 #include "pop3.h"
 #include "../commands/parser.h"
@@ -70,7 +71,6 @@ fd_handler * pop3State(void) {
 }
 
 void handleNewPOP3Connection(struct selector_key * key) {
-    print_metric();
     struct sockaddr_storage clientAddress;
     socklen_t clientAddressLen = sizeof(clientAddress);
 
@@ -114,7 +114,7 @@ void handleNewPOP3Connection(struct selector_key * key) {
         free(clientData);
         return;
     }
-
+    log_debug("Registered a new conection");
     metrics_register_new_client();
 
 }

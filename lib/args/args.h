@@ -4,8 +4,8 @@
 #include <stdbool.h>
 
 #define MAX_USERS 10
-#define MAX_USERS_NAME_LENGHT 10
-#define MAX_USERS_PASS_LENGHT 10
+#define MAX_USERS_NAME_LENGHT 40
+#define MAX_USERS_PASS_LENGHT 40
 #define SOCKETS_DATA 2
 
 struct users {
@@ -38,6 +38,8 @@ typedef struct pop3args {
     
     conection_data conection_data[SOCKETS_DATA];
 
+    conection_data conection_data_monitor[SOCKETS_DATA];
+    
     // Monitor address and port
     char        * monitor_addr;
     unsigned short  monitor_port;

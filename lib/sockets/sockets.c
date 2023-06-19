@@ -52,12 +52,12 @@ int setupServerSocket(conection_data args, struct sockaddr_storage* pop3_server_
     return server;
 }
 
-int setupMonitorSocket(struct pop3args args, struct sockaddr_storage* pop3_server_addr) {
+int setupMonitorSocket(conection_data args, struct sockaddr_storage* pop3_server_addr) {
     //define the address to store the socket
     memset(pop3_server_addr, 0, sizeof(*pop3_server_addr));
     socklen_t pop3_server_addrLen = sizeof(*pop3_server_addr);
 
-    int server_socket = initializeServerSocket(args.monitor_addr, args.monitor_port, pop3_server_addr, &pop3_server_addrLen);
+    int server_socket = initializeServerSocket(args.pop3_addr, args.pop3_port, pop3_server_addr, &pop3_server_addrLen);
     int server = socket(pop3_server_addr->ss_family, SOCK_STREAM, IPPROTO_TCP);
 
     if(setupSocket(pop3_server_addr, server_socket, server, pop3_server_addrLen) < 0) 

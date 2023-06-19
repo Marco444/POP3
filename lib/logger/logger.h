@@ -3,6 +3,8 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <time.h>
+
 
 // Uncomment to log in DEBUG mode (with more details).
 #define DEBUG true
@@ -25,8 +27,6 @@ void log_error(const char * const format, ...);
 void log_error_raw(const char * const format, ...);
 
 void log_info(const char * const format, ...);
-
-void yyerror_(const char *, ...);
 
 #endif
 
