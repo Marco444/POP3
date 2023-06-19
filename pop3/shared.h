@@ -4,7 +4,7 @@
 
 #include "../lib/buffer/buffer.h"
 //#include "./commands/write_list.h"
-#define BUFFER_SIZE 4096
+#define BUFFER_SIZE 8192
 #define POP3_MAX_CMD_LENGTH 10
 #define POP3_MAX_ARG_LENGTH 255
 #define POP3_MAX_EMAILS 500
