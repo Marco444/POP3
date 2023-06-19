@@ -27,7 +27,9 @@ enum monitor_states handle_write_list_users_monitor(struct selector_key *key, po
 
         snprintf(message, sizeof(message), "%s\n", current_user.name);
         if(!enters_the_buffer_monitor(key, message))
-            return ERROR_MONITOR;  
+            if(write_in_fd_monitor(key))
+                return TRANSACTION_MONITOR;
+         
         write_in_buffer_monitor(key, message, strlen(message), 0);
     }
 
