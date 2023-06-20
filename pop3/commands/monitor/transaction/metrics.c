@@ -8,7 +8,7 @@
 
 
 #define OK "+"
-#define ERROR_MSG "- "
+#define ERROR_MSG "-\r\n"
 
 #define MAX_SIZE_METRIC_RESP 200
 
