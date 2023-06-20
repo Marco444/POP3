@@ -36,9 +36,8 @@ bin/client -n new-user:new-user-pass -p portServer -u user:pass
 ```
 Analogamente si se desease ver las metrics se ejecutaria 
 ```
-bin/client -m metric-id -p portServer -u user:pass 
+bin/client -m -p portServer -u user:pass 
 ```
-donde metric-id es el identificador de la metrics en en rfc del monitor. Si no se incluye el `metric-id` entonces se imprimen todas las metricas (identificadas por su metric-id)
 
 ## Ejecucion del servidor
 Parado en la raiz del repositorio se puede compilar el servidor con el comando
