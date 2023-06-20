@@ -38,6 +38,8 @@ typedef struct pop3args {
     
     conection_data conection_data[SOCKETS_DATA];
 
+    conection_data conection_data_monitor[SOCKETS_DATA];
+    
     // Monitor address and port
     char        * monitor_addr;
     unsigned short  monitor_port;

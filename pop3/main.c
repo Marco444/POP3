@@ -93,6 +93,7 @@ int main(int argc, char** argv) {
     int server_socket = setupServerSocket(args.conection_data[0], &pop3_server_addr);
     if (server_socket < 0) {
         fprintf(stderr, "Failed to initialize server socket\n");
+        goto finnaly;
         return 1;
     }
 
@@ -100,6 +101,7 @@ int main(int argc, char** argv) {
     ss = selector_register(selector, server_socket, &pop3_server_handler, OP_READ, &args);
     if (ss != SELECTOR_SUCCESS) {
         fprintf(stderr, "Failed to register pop3 server socket to selector: %s\n", selector_error(ss));
+        goto finnaly;
         return 1;
     }
 
@@ -109,6 +111,7 @@ int main(int argc, char** argv) {
     int server_socket_ipv6 = setupServerSocket(args.conection_data[1], &pop3_server_addr);
     if (server_socket_ipv6 < 0) {
         fprintf(stderr, "Failed to initialize server socket\n");
+        goto finnaly;
         return 1;
     }
 
@@ -116,6 +119,7 @@ int main(int argc, char** argv) {
     ss = selector_register(selector, server_socket_ipv6, &pop3_server_handler, OP_READ, &args);
     if (ss != SELECTOR_SUCCESS) {
         fprintf(stderr, "Failed to register pop3 server socket to selector: %s\n", selector_error(ss));
+        goto finnaly;
         return 1;
     }
 
@@ -123,19 +127,39 @@ int main(int argc, char** argv) {
 
 
     // Initialize the server socket to receive new pop3 connections and add it to the selector
-    int monitor_socket = setupMonitorSocket(args, &pop3_monitor_addr);
+    int monitor_socket = setupMonitorSocket(args.conection_data_monitor[0], &pop3_monitor_addr);
     if (monitor_socket < 0) {
         fprintf(stderr, "Failed to initialize monitor socket\n");
+        goto finnaly;
         return 1;
     }
 
     ss = selector_register(selector, monitor_socket, &pop3_monitor_handler, OP_READ, &args);
     if (ss != SELECTOR_SUCCESS) {
         fprintf(stderr, "Failed to register pop3 monitor socket to selector: %s\n", selector_error(ss));
+        goto finnaly;
         return 1;
     }
 
-    log_info("Registered the monitor server socket to attend new connection");
+    log_info("Registered the monitor server socket ipv4 to attend new connection");
+
+    // Initialize the server socket to receive new pop3 connections and add it to the selector
+    int monitor_socket_ipv6 = setupMonitorSocket(args.conection_data_monitor[1], &pop3_monitor_addr);
+    if (monitor_socket_ipv6 < 0) {
+        fprintf(stderr, "Failed to initialize monitor socket\n");
+        goto finnaly;
+        return 1;
+    }
+
+    ss = selector_register(selector, monitor_socket_ipv6, &pop3_monitor_handler, OP_READ, &args);
+    if (ss != SELECTOR_SUCCESS) {
+        fprintf(stderr, "Failed to register pop3 monitor socket to selector: %s\n", selector_error(ss));
+        goto finnaly;
+        return 1;
+    }
+
+    log_info("Registered the monitor server socket ipv6 to attend new connection");
+
     metrics_init();
 
     // Main server loop
@@ -147,7 +171,7 @@ int main(int argc, char** argv) {
         }
     }
 
-
+finnaly:
     // Clean up
     selector_destroy(selector);
     selector_close();
