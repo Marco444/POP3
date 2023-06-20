@@ -99,10 +99,16 @@ parse_args(const int argc, char **argv, struct client_args *args) {
                 args->command.index = 0;
                 break;
             case 'm':
-                if(args->command.index != -1) {
+                if(args->command.index != -1) {  
                     fprintf(stderr, "cannot use -n with -m\n");
                     exit(1);
                 }
+                char *end     = 0;
+                if (strtol(optarg, end, 10)  < 0 )
+                {
+                    fprintf(stderr, "cannot use -n with -m\n");
+                }
+                
                 args->command.index = 1;
                 break;
             default:

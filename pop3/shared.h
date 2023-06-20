@@ -6,7 +6,7 @@
 //#include "./commands/write_list.h"
 #define BUFFER_SIZE 8192
 #define POP3_MAX_CMD_LENGTH 10
-#define POP3_MAX_ARG_LENGTH 255
+#define POP3_MAX_ARG_LENGTH 41
 #define POP3_MAX_EMAILS 500
 #define NAME_MAX 1024
 #define PATH_MAX 4096
