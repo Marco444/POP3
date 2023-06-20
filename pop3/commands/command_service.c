@@ -6,7 +6,8 @@
 #include <strings.h>
 monitor_command monitor_authorization_commands[] = {
     {"USERNAME", handle_monitor_username },
-    {"PASSWORD", handle_monitor_password }
+    {"PASSWORD", handle_monitor_password },
+    {"EXIT", handle_monitor_exit }
 };
 
 monitor_command monitor_transaction_commands[] = {

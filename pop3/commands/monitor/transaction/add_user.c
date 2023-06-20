@@ -32,7 +32,10 @@ enum monitor_states handle_monitor_add_user(struct commands_state * ctx,struct s
   } else {
     *p = 0;
     p++;
-    
+    if(*p == '\0'){
+      ctx->pop3_current_command->has_error = true;
+      return TRANSACTION_MONITOR;
+    }
     strcpy(state->args->users[state->args->users_count].name, ctx->arg1);
     strcpy(state->args->users[state->args->users_count].pass, p);
     
