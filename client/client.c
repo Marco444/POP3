@@ -45,12 +45,8 @@ void flus_socket(int socket, char* buffer,int size){
     }
 }
 void metrics_handler(int socket, char* buffer, int size,char * args){
-    char metrics[100] = {0};
-    if(strlen(args) > 0){
-        sprintf(metrics,"METRICS %s\r\n",args);
-    }else{
-        sprintf(metrics,"METRICS\r\n");
-    }
+    char metrics[100] = "METRICS\r\n";
+
     send(socket, metrics, strlen(metrics), 0);
     flus_socket(socket, buffer, size);
     printf("%s", buffer);  
