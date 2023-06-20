@@ -5,9 +5,7 @@
 #include "../../../states/write_buffer_helpers.h"
 #include <stdio.h>
 
-static enum METRICS_ARGS {
-  TOTAL_USERS = 1, TOTAL_RETRIEVED = 2, TOTAL_DELETED = 3, CURRENT_USERS = 4, MAX_USERS_HISTORY = 5, TOTAL_BYTES_TRANSFERED = 6
-} args;
+
 
 #define OK "+"
 #define ERROR_MSG "- "
@@ -39,6 +37,7 @@ enum monitor_states handle_monitor_metrics(struct commands_state * ctx,struct se
   ctx->pop3_current_command->cmd_id = METRICS;
   ctx->pop3_current_command->is_finished = false;
   ctx->pop3_current_command->has_error = ctx->arg2_length > 0;
+  ctx->pop3_current_command->metric_id = atoi(ctx->arg1); 
   ctx->pop3_current_command->noop_state = true;
 
   return TRANSACTION_MONITOR;
@@ -49,10 +48,10 @@ enum monitor_states handle_write_metrics_monitor(struct selector_key *key, pop3_
   Metrics_snapshot metrics;
   get_metrics_snapshot(&metrics);
 
+  int arg = commands->pop3_current_command->metric_id;
+
   if(current_command->has_error)
     return write_str_buffer(key, ERROR_MSG, current_command);
-
-  int arg = atoi(commands->arg1);
 
   if(arg == TOTAL_USERS)
     return write_metric(metrics.total_connection_count, key, message, current_command, commands);

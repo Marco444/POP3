@@ -91,6 +91,11 @@ typedef struct quit_update_state{
     bool has_deleted;
     bool has_error;
 }quit_update_state;
+
+enum metrics_ids {
+  TOTAL_USERS = 1, TOTAL_RETRIEVED = 2, TOTAL_DELETED = 3, CURRENT_USERS = 4, MAX_USERS_HISTORY = 5, TOTAL_BYTES_TRANSFERED = 6
+}; 
+
 typedef struct pop3_current_command{
     union {
        retr_state retr_state;
@@ -98,6 +103,7 @@ typedef struct pop3_current_command{
        quit_update_state quit_update_state;
        bool noop_state;
     };
+    enum metrics_ids metric_id;
     unsigned int cmd_id;
     bool is_finished;
     bool has_error;
