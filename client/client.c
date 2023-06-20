@@ -5,6 +5,9 @@
 #include <sys/socket.h>
 #include <unistd.h>
 typedef void (*handler)(int socket, char* buffer, int size,char * args);
+static enum METRICS_ARGS {
+  TOTAL_USERS = 1, TOTAL_RETRIEVED = 2, TOTAL_DELETED = 3, CURRENT_USERS = 4, MAX_USERS_HISTORY = 5, TOTAL_BYTES_TRANSFERED = 6
+} args;
 
 #define TOTAL_USERS "TOTAL_USERS"
 #define TOTAL_RETRIEVED "TOTAL_RETRIEVED_MAILS"
@@ -42,10 +45,11 @@ void flus_socket(int socket, char* buffer,int size){
     }
 }
 void metrics_handler(int socket, char* buffer, int size,char * args){
-    char* metrics = "METRICS\r\n";
+    char metrics[100] = "METRICS\r\n";
+
     send(socket, metrics, strlen(metrics), 0);
     flus_socket(socket, buffer, size);
-    printf("%s", buffer);
+    printf("%s", buffer);  
 }
 void add_user_hanlder(int socket,char * buffer,int size,char * args){
     char add_user[255];
@@ -59,7 +63,7 @@ int main(int argc, char** argv) {
     struct client_args args;
     parse_args(argc, argv, &args);
     handler handler []= {add_user_hanlder,metrics_handler};
-    int status, valread, client_fd;
+    int status, client_fd;
     struct sockaddr_in serv_addr;
 
     char buffer[1024] = { 0 };

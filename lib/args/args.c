@@ -128,7 +128,6 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
                 args->conection_data[1].pop3_addr = optarg;
                 break;
             case 'M':
-                //args->monitor_addr = optarg;
                 args->conection_data_monitor[1].pop3_addr = optarg;
                 break;
             case 'p':
@@ -136,7 +135,6 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
                 args->conection_data[1].pop3_port = port(optarg);
                 break;
             case 'P':
-                //args->monitor_port = port(optarg);
                 args->conection_data_monitor[0].pop3_port = port(optarg);
                 args->conection_data_monitor[1].pop3_port = port(optarg);
                 break;

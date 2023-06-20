@@ -24,13 +24,13 @@ static enum monitor_states write_str_buffer(struct selector_key * key, char * me
 }
 
 static enum monitor_states write_metric(size_t metric, struct selector_key * key, char * message, pop3_current_command * current_command, struct commands_state * commands) {
-    sprintf(message, "+ %zu\r\n", metric);
+    sprintf(message, "+\n%zu\r\n", metric);
     return write_str_buffer(key, message, current_command);
 } 
 
 
 static enum monitor_states write_metrics(Metrics_snapshot metric, struct selector_key * key, char * message, pop3_current_command * current_command, struct commands_state * commands) {
-  sprintf(message, "+ 1 %zu\n2 %zu\n3 %zu\n4 %zu\n5 %zu\n6 %zu\r\n",
+  sprintf(message, "+\n1 %zu\n2 %zu\n3 %zu\n4 %zu\n5 %zu\n6 %zu\r\n",
          metric.total_connection_count, metric.total_mails_retrieved, metric.total_mails_deleted, metric.current_connection_count, metric.max_concurrent_connections, metric.total_bytes_transferred);
   return write_str_buffer(key, message, current_command);
 }
