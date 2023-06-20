@@ -53,7 +53,6 @@ void metrics_handler(int socket, char* buffer, int size,char * args){
 }
 void add_user_hanlder(int socket,char * buffer,int size,char * args){
     char add_user[255];
-    printf("%s", args);
     sprintf(add_user,"ADD_USER %s\r\n",args);
     send(socket, add_user, strlen(add_user), 0);
     flus_socket(socket, buffer, size);
@@ -75,8 +74,7 @@ int main(int argc, char** argv) {
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(args.server_data.server_port);
 
-    // Convert IPv4 and IPv6 addresses from text to binary
-    // form
+   
     if (inet_pton(AF_INET, args.server_data.server_addr, &serv_addr.sin_addr)
         <= 0) {
         printf("%s", 
@@ -95,7 +93,6 @@ int main(int argc, char** argv) {
     char  username [255];
     char  password [255];
     sprintf(username, "USERNAME %s\r\n", args.user.name);
-    printf("%s", username);
     send(client_fd, username, strlen(username), 0);
     flus_socket(client_fd, buffer, 1024);
     if(buffer[0] != '+') {
@@ -106,7 +103,6 @@ int main(int argc, char** argv) {
     send(client_fd, password, strlen(password), 0);
     flush_buffer(buffer, 1024);
     flus_socket(client_fd, buffer, 1024);
-    printf("%s", buffer);
     if(buffer[0] != '+') {
         printf("Error: %s\n", buffer);
         return 1;
