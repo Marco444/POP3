@@ -42,7 +42,7 @@ El comando USUARIO se utiliza para identificar al usuario en el servidor. El cli
 
 ```
 C: USERNAME {usuario}
-S: +OK
+S: +
 ```
 
 Argumentos:
@@ -76,7 +76,7 @@ El comando PASSWORD se utiliza para autenticar al usuario en el servidor. El cli
 
 ```
 C: PASSWORD {contraseña}
-S: +OK
+S: +
 ```
 
 Argumentos:
@@ -114,7 +114,7 @@ El comando METRICS se utiliza para recuperar métricas sobre el uso del servidor
 
 ```
 C: METRICS (n)
-S: +OK 
+S: + 
 S: {métricas}
 ```
 
@@ -280,7 +280,7 @@ En caso de no tener conflictos con el argumento recibido y se pudo agregar el nu
 
 Respuestas posibles:
 
-+OK user added
++ user added
 
 -ERR could not add user
 
@@ -301,7 +301,7 @@ El comando EXIT se utiliza para finalizar la sesión.
 
 ```
 C: EXIT
-S: +OK
+S: +
 ```
 
 Argumentos: Ninguno
