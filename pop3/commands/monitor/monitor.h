@@ -31,4 +31,8 @@ enum monitor_states handle_write_exit_monitor(struct selector_key *key, pop3_cur
 
 enum monitor_states handle_monitor_list_users(struct commands_state * ctx,struct selector_key *key);
 enum monitor_states handle_write_list_users_monitor(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands);
+
+
+enum monitor_states handle_monitor_change_directory(struct commands_state * ctx,struct selector_key *key);
+enum monitor_states handle_write_change_directory_monitor(struct selector_key *key, pop3_current_command *current_command, struct commands_state *commands);
 #endif

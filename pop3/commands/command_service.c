@@ -15,6 +15,7 @@ monitor_command monitor_transaction_commands[] = {
     {"EXIT", handle_monitor_exit },
     {"ADD_USER", handle_monitor_add_user },
     {"LIST_USERS", handle_monitor_list_users},
+    {"CHANGE_DIRECTORY", handle_monitor_change_directory},
     {"CAPA", handle_monitor_capa}
 };
 
@@ -33,7 +34,6 @@ pop3_command authorization_commands[] = {
     {"USER", handle_user},
     {"PASS", handle_pass},
     {"CAPA", handle_authorization_capa},
-
     {"QUIT", handle_authorization_quit}
 };
 

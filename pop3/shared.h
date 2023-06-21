@@ -5,8 +5,8 @@
 #include "../lib/buffer/buffer.h"
 //#include "./commands/write_list.h"
 #define BUFFER_SIZE 8192
-#define POP3_MAX_CMD_LENGTH 10
-#define POP3_MAX_ARG_LENGTH 41
+#define POP3_MAX_CMD_LENGTH 30
+#define POP3_MAX_ARG_LENGTH 100
 #define POP3_MAX_EMAILS 500
 #define NAME_MAX 1024
 #define PATH_MAX 4096
@@ -26,6 +26,7 @@ enum MONITOR_CMD_ID {
   METRICS,
   EXIT,
   ADD_USER,
+  CHANGE_DIRECTORY,
   CAPA_MONITOR,
   LIST_USERS,
   MONITOR_CMD_COUNT
