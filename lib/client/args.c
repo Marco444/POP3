@@ -67,7 +67,7 @@ parse_args(const int argc, char **argv, struct client_args *args) {
         static struct option long_options[] = {
                 { 0,           0,                 0, 0 }
         };
-        c = getopt_long(argc, argv, "a:p:u:n:m", long_options, &option_index);
+        c = getopt_long(argc, argv, "a:p:u:n:m:d:", long_options, &option_index);
 
         if (c == -1)
             break;
@@ -105,6 +105,15 @@ parse_args(const int argc, char **argv, struct client_args *args) {
                 }
                 args->command.index = 1;
                 break;
+            case 'd':
+                if (args->command.index != -1)
+                {
+                    fprintf(stderr, "cannot use -d  with -m or -n\n");
+                    exit(1);
+                }
+                args->command.index = 2;
+                strcpy(args->command.arg, optarg);
+                break;
             default:
                 fprintf(stderr, "unknown argument %d.\n", c);
                 exit(1);
@@ -134,7 +143,7 @@ parse_args(const int argc, char **argv, struct client_args *args) {
         exit(1);
     }
     if(args->command.index == -1){
-        fprintf(stderr, "mandatory: -n or -m\n");
+        fprintf(stderr, "mandatory: -n or -m or -d\n");
         exit(1);
     }
 }
