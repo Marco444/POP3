@@ -15,6 +15,7 @@ static command_handler monitor_command_handlers[MONITOR_CMD_COUNT] = {
     [EXIT] = handle_write_exit_monitor,
     [ADD_USER] = handle_write_add_user_monitor,
     [CAPA_MONITOR] = handle_write_capa_monitor,
+    [CHANGE_DIRECTORY] = handle_write_change_directory_monitor,
     [LIST_USERS] = handle_write_list_users_monitor
 };
 

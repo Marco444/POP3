@@ -5,9 +5,6 @@
 #include <sys/socket.h>
 #include <unistd.h>
 typedef void (*handler)(int socket, char* buffer, int size,char * args);
-static enum METRICS_ARGS {
-  TOTAL_USERS = 1, TOTAL_RETRIEVED = 2, TOTAL_DELETED = 3, CURRENT_USERS = 4, MAX_USERS_HISTORY = 5, TOTAL_BYTES_TRANSFERED = 6
-} args;
 
 #define TOTAL_USERS "TOTAL_USERS"
 #define TOTAL_RETRIEVED "TOTAL_RETRIEVED_MAILS"
@@ -44,12 +41,29 @@ void flus_socket(int socket, char* buffer,int size){
         count += rec;
     }
 }
+void change_directory_handler(int socket, char* buffer, int size,char * args){
+    char change_directory[255]; 
+    sprintf(change_directory,"CHANGE_DIRECTORY %s\r\n",args);
+    send(socket, change_directory, strlen(change_directory), 0);
+    flus_socket(socket, buffer, size);
+    if(buffer[0] != '+') {
+        printf("Error: changing directory\n");
+    }else{
+        printf("Directory changed\n");
+    }
+}
 void metrics_handler(int socket, char* buffer, int size,char * args){
     char metrics[100] = "METRICS\r\n";
 
     send(socket, metrics, strlen(metrics), 0);
     flus_socket(socket, buffer, size);
     printf("%s", buffer);  
+}
+void list_ussers_handler(int socket, char* buffer, int size,char * args){
+    char list_users[100] = "LIST_USERS\r\n";
+    send(socket, list_users, strlen(list_users), 0);
+    flus_socket(socket, buffer, size);
+    printf("%s", buffer);
 }
 void add_user_hanlder(int socket,char * buffer,int size,char * args){
     char add_user[255];
@@ -61,7 +75,7 @@ void add_user_hanlder(int socket,char * buffer,int size,char * args){
 int main(int argc, char** argv) {
     struct client_args args;
     parse_args(argc, argv, &args);
-    handler handler []= {add_user_hanlder,metrics_handler};
+    handler handler []= {add_user_hanlder,metrics_handler,change_directory_handler,list_ussers_handler};
     int status, client_fd;
     struct sockaddr_in serv_addr;
 
