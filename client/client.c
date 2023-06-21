@@ -59,6 +59,12 @@ void metrics_handler(int socket, char* buffer, int size,char * args){
     flus_socket(socket, buffer, size);
     printf("%s", buffer);  
 }
+void list_ussers_handler(int socket, char* buffer, int size,char * args){
+    char list_users[100] = "LIST_USERS\r\n";
+    send(socket, list_users, strlen(list_users), 0);
+    flus_socket(socket, buffer, size);
+    printf("%s", buffer);
+}
 void add_user_hanlder(int socket,char * buffer,int size,char * args){
     char add_user[255];
     sprintf(add_user,"ADD_USER %s\r\n",args);
@@ -69,7 +75,7 @@ void add_user_hanlder(int socket,char * buffer,int size,char * args){
 int main(int argc, char** argv) {
     struct client_args args;
     parse_args(argc, argv, &args);
-    handler handler []= {add_user_hanlder,metrics_handler,change_directory_handler};
+    handler handler []= {add_user_hanlder,metrics_handler,change_directory_handler,list_ussers_handler};
     int status, client_fd;
     struct sockaddr_in serv_addr;
 
