@@ -106,7 +106,6 @@ parse_args(const int argc, char **argv, struct pop3args *args) {
             { "version",  no_argument, 0, 0xD002 },
             { 0,           0,                 0, 0 }
         };
-        // TODO check if there flags that have to be removed
         c = getopt_long(argc, argv, "hl:L:p:P:u:vd:a:m:M:", long_options, &option_index);
         
         if (c == -1)
