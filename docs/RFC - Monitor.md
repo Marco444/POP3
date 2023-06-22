@@ -192,6 +192,30 @@ C: METRICS 2
 
 S: 15
 
+## CHANGE_DIRECTORY
+El comando CHANGE_DIRECTORY modificara el repositorio donde el servidor POP3 buscara los correos de cada usuario.
+
+```
+C: CHANGE_DIRECTORY <path>
+S: +
+```
+Argumentos: Path al directorio que contiene los correos de los usuarios
+
+Restricciones: Solo se puede utilizar en el estado TRANSACTION
+
+Comentario: El monitor retornara un mensaje con estado postivo en el caso de poder modificar dicho directorio en el servidor POP3. El servidor PUEDE retornar un estado de error si el servidor POP3 no pudo utilizar el path otorgado.
+
+Respuestas posibles:
++
+-
+
+Ejemplos:
+
+C: CHANGE_DIRECTORY /root/emailDirectory
+
+S: +
+
+
 ## CAPA
 
 El comando CAPA retorna una lista de las capacidades soportadas por el servidor monitos. Estará solo disponible en el estado TRANSACTION.
