@@ -32,7 +32,6 @@ void pop3_monitor_write(struct selector_key * key) {
     if (key->data == NULL)
         return;
 
-    write_in_fd_monitor(key);
     pop3_current_command *current_command = ((struct monitor_connection_state *) key->data)->commands.pop3_current_command;
     if(current_command->is_finished && !buffer_can_read(&((struct monitor_connection_state *) key->data)->commands.write_buffer)) {
         if(buffer_can_read(&((struct monitor_connection_state *) key->data)->commands.read_buffer)){

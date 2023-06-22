@@ -17,6 +17,8 @@ enum monitor_states on_read_ready_error_monitor(struct selector_key *key){ retur
 enum monitor_states on_write_ready_error_monitor(struct selector_key *key) { 
     write_in_buffer_monitor(key, ERROR_MSG, strlen(ERROR_MSG), 0);
     write_in_fd_monitor(key);
+    pop3_current_command *current_command = ((struct monitor_connection_state *) key->data)->commands.pop3_current_command;
+    current_command->is_finished = true;
     return ((struct monitor_connection_state *)key->data)->commands.last_state;
 
 }
