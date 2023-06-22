@@ -39,11 +39,6 @@ write_user(char *s, struct user *user) {
 
 }
 
-static void
-version(void) {
-    fprintf(stderr, "pop3 version 0.0\n"
-                    "ITBA Protocolos de Comunicación 2023a \n");
-}
 
 void
 parse_args(const int argc, char **argv, struct client_args *args) {
@@ -56,7 +51,6 @@ parse_args(const int argc, char **argv, struct client_args *args) {
 
     char c;
     int nusers = 0;
-    int nusers_admin = 0;
 
     // Flags for mandatory parameters
     bool mandatory_address = false;
