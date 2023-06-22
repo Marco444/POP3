@@ -10,7 +10,7 @@ void on_arrival_error_monitor(const unsigned state, struct selector_key *key) {
   return; 
 }
 void on_departure_error_monitor(const unsigned state, struct selector_key *key){
-    // ((struct monitor_connection_state *)key->data)->commands.last_state = ERROR_MONITOR;
+   ((struct monitor_connection_state *)key->data)->commands.last_state = ERROR_MONITOR;
 }
 enum monitor_states on_read_ready_error_monitor(struct selector_key *key){ return ERROR_MONITOR;}
 
