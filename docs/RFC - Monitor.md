@@ -60,8 +60,10 @@ Para autenticar utilizando la combinación de ordenes USERNAME y PASSWORD, el cl
 El servidor monitor debe devolver una respuesta positiva solo en caso de que exista el usuario monitor en el servidor.
 
 Respuestas posibles:
+```
 +
 -
+```
 
 Ejemplos:
 C: USERNAME admin
@@ -91,9 +93,11 @@ Comentario:
 Cuando el cliente envía la orden PASSWORD, el servidor monitor utiliza el par de argumentos de las órdenes USER y PASS para determinar si al cliente debería proporcionársele el acceso servidor monitor. El servidor monitor puede tratar los espacios en el argumento como parte de la contraseña en lugar de como separador de argumentos.
 
 Respuestas posibles:
+```
 +
 -
 -
+```
 
 Ejemplos:
 C: USERNAME admin
@@ -141,7 +145,7 @@ Los valores de las métricas están codificados con un numero entero positivo de
 6: Cantidad de bytes transferidos
 
 Respuesta posibles:
-
+```
 +
 
 1 n
@@ -165,10 +169,12 @@ n
 …
 
 -
+```
 
 Donde n representa el valor de una métrica en cada caso. El primer caso es una respuesta multilínea, donde se muestran todas las métricas. Y el segundo, una respuesta también multilínea, donde se muestra el valor para la métrica solicitada.
 
 Ejemplo:
+```
 
 C: METRICS
 
@@ -191,6 +197,7 @@ S: 6 54030
 C: METRICS 2
 
 S: 15
+```
 
 ## CHANGE_DIRECTORY
 El comando CHANGE_DIRECTORY modificara el repositorio donde el servidor POP3 buscara los correos de cada usuario.
@@ -206,14 +213,18 @@ Restricciones: Solo se puede utilizar en el estado TRANSACTION
 Comentario: El monitor retornara un mensaje con estado postivo en el caso de poder modificar dicho directorio en el servidor POP3. El servidor PUEDE retornar un estado de error si el servidor POP3 no pudo utilizar el path otorgado.
 
 Respuestas posibles:
+```
 +
 -
+```
 
 Ejemplos:
+```
 
 C: CHANGE_DIRECTORY /root/emailDirectory
 
 S: +
+```
 
 
 ## CAPA
@@ -230,10 +241,12 @@ El servidor PUEDE listar comandos adicionales en caso de que los haya implementa
 El servidor PUEDE retornar un mensaje con estado positivo sin ninguna información adicional, solamente en el caso en el que no desee listar información adicional sobre el servidor y no haya implementado ningun comando por fuera del protocolo.
 
 Respuestas posibles:
-
+```
 +
+```
 
 Ejemplos:
+```
 
 C: CAPA
 
@@ -246,6 +259,7 @@ S: +
 S: ADD_USER
 S: LIST_USERS
 S: …
+```
 
 ## LIST_USERS
 
@@ -266,10 +280,12 @@ Restricciones: Solo se puede utilizar en el estado TRANSACTION
 Comentario: El monitor retornara un listado de los usuarios creados en el servidor POP3.
 
 Respuestas posibles:
-
+```
 +
+```
 
 Ejemplos:
+```
 
 C: LIST_USERS
 
@@ -282,6 +298,7 @@ S: <usuario2>
 S: <usuario3>
 
 S: …
+```
 
 ### ADD_USER
 
@@ -303,12 +320,15 @@ El monitor tomara la cadena recibida como argumento, para separar la parte previ
 En caso de no tener conflictos con el argumento recibido y se pudo agregar el nuevo usuario al servidor POP3, se debe retornar un mensaje positivo, de caso contrario se debe informar el error.
 
 Respuestas posibles:
+```
 
 + user added
 
 -ERR could not add user
+```
 
 Ejemplos:
+```
 
 C: ADD_USER name:pass
 
@@ -318,6 +338,7 @@ S: - could not add user
 
 C: ADD_USER name:pass
 S: + user added
+```
 
 ### EXIT
 
@@ -335,16 +356,20 @@ Restricciones: Ninguna
 Comentario: El servidor monitor cerrara la conexión con el cliente.
 
 Respuestas posibles:
+```
 
 +
 
 -
+```
 
 Ejemplos:
+```
 
 C: exit
 
 S: +
+```
 
 ## Consideraciones de seguridad
 
