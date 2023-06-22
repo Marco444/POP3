@@ -15,9 +15,6 @@ void on_departure_error(const unsigned state, struct selector_key *key){
 }
 
 enum pop3_states on_read_ready_error(struct selector_key *key){
-  // selector_unregister_fd(key->s, key->fd);
-  // close(key->fd);
-  // clean_user_data(key->data);
   return ERROR_STATE;
 }
 

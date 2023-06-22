@@ -3,7 +3,7 @@
 #include "../../../states/write_buffer_helpers.h"
 #include <stdio.h>
 
-#define OK_CAPA_MONITOR "+OK Capability list follows\n\rMETRICS\nEXIT\nLIST_USERS\nADD_USER\nCAPA\r\n"
+#define OK_CAPA_MONITOR "+OK Capability list follows\n\rMETRICS\nEXIT\nLIST_USERS\nADD_USER\nCAPA\nCHANGE_DIRECTORY\r\n"
 #define ERRORS_CAPA_MONITOR "-ERR\r\n"
 
 enum monitor_states handle_monitor_capa(struct commands_state * ctx,struct selector_key *key){
