@@ -45,3 +45,4 @@ void get_metrics_snapshot(Metrics_snapshot* snapshot) {
 int get_current_connection_count() {
     return metrics.current_connection_count;
 }
+

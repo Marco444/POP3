@@ -81,3 +81,4 @@ enum monitor_states handle_write_metrics_monitor(struct selector_key *key, pop3_
 
   return write_metrics(metrics, key, message, current_command, commands);
 }
+
