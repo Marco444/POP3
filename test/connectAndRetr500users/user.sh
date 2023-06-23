@@ -1,5 +1,9 @@
 #!/bin/bash
 
+### NOTA: hay que modificar el path de los mails o  
+### borrar el archivo pop3/commands/server/authorization/pass.c borrar la linea 40:
+### strcat(path, "/curl/");
+
 # Function to generate ADD_USER commands
 generate_add_user_commands() {
   for ((i=1; i<=500; i++)); do
