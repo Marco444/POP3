@@ -79,7 +79,10 @@ void handleNewPOP3Connection(struct selector_key * key) {
     if (newClientSocket < 0) {
         return;
     }
-
+    if(get_current_connection_count() >= MAX_USERS){
+        close(newClientSocket);
+        return;
+    }
     if (newClientSocket > 1023) {
         close(newClientSocket);
         return;

@@ -26,6 +26,8 @@ void metrics_register_bytes_transferred(size_t byte );
 
 void print_metric();
 
+int get_current_connection_count();
+
 void get_metrics_snapshot(Metrics_snapshot* snapshot);
 
 #endif
