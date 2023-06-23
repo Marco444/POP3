@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #define MAX_USERS 500
+#define MAX_USERS_MONITOR 10
 #define MAX_USERS_NAME_LENGHT 40
 #define MAX_USERS_PASS_LENGHT 40
 #define SOCKETS_DATA 2
@@ -34,7 +35,7 @@ typedef struct pop3args {
     int users_count;
     int users_admin_count;
     struct user users[MAX_USERS];
-    struct user users_admin[MAX_USERS];
+    struct user users_admin[MAX_USERS_MONITOR];
     
     conection_data conection_data[SOCKETS_DATA];
 

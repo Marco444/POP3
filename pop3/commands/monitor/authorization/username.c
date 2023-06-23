@@ -18,7 +18,7 @@ enum monitor_states handle_monitor_username(struct commands_state * ctx,struct s
   struct monitor_connection_state * state = (struct monitor_connection_state *) key->data;
   
   int i;
-  for(i = 0; state->args->users_admin[i].name != NULL && i < state->args->users_admin_count; i++){
+  for(i = 0; state->args->users_admin[i].name[0] != '\0' && i < state->args->users_admin_count; i++){
     if(strcmp(state->args->users_admin[i].name, ctx->arg1) == 0){
       state->auth_data.user_index = i;
       state->auth_data.is_logged = false;
